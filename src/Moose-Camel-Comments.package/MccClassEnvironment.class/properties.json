@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "MccEnvironment",
+	"category" : "Moose-Camel-Comments",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"classes"
+	],
+	"name" : "MccClassEnvironment",
+	"type" : "normal"
+}
