@@ -2,4 +2,4 @@ navigation
 allMccCommentClasses
 	<gtExample>
 	
-	^ (self allMccClasses) mccCommentClasses
+	^ (self allMccClasses) mccCommentClasses.

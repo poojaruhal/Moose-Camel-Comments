@@ -1,5 +1,7 @@
 accessing
 mccCommentClasses
 	
-		 ^ mccCommentClasses:=  self allClasses collect: [ :eachClass | 
-				 MccComment fromClass: eachClass].
+	<return: #Array of: #MccComment>
+	
+	^ mccCommentClasses:=  self allClasses collect: 
+			[ :eachClass | MccComment fromClass: eachClass].

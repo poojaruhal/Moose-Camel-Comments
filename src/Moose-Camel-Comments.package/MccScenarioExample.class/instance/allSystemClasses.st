@@ -1,6 +1,6 @@
 gt-examples
 allSystemClasses
-<gtExample>
-<description:'collect all system classes'>
+	<gtExample>
+	<description:'collect all system classes'>
 
- ^ SystemNavigation default allClasses.
+ 	^ SystemNavigation default allClasses.

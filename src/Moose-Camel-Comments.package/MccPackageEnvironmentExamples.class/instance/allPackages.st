@@ -1,10 +1,11 @@
 gt-examples
 allPackages
-<gtExample>
+	<gtExample>
 
-	|packagesToConsider packageEnvironment|
+	| packagesToConsider packageEnvironment |
 
 	packagesToConsider := #(Compiler).
 	packageEnvironment := MccPackageEnvironment ofPackages: packagesToConsider.
+	
 	^ packageEnvironment packages.
 	
