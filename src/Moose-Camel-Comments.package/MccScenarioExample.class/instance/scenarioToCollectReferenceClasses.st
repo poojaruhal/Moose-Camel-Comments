@@ -6,7 +6,7 @@ scenarioToCollectReferenceClasses
 	| allSystemClasses allClassesOfCompilerPackageAsSymbols allClassesWithComments |
 	
 	allSystemClasses := self allSystemClasses.
-	allClassesOfCompilerPackageAsSymbols:= self allClassesOfCompilerPackageAsSymbols.
+	allClassesOfCompilerPackageAsSymbols:= self allClassesOfSelectedPackageAsSymbols.
 	allClassesWithComments:= self allClassesWithComments.
 	
 	

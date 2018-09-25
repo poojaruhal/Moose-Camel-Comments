@@ -1,5 +1,5 @@
 gt-examples
-allClassesOfCompilerPackage
+allClassesOfSelectedPackage
 	<gtExample>
 	<description:'collect all classes of Compiler package'>
 	

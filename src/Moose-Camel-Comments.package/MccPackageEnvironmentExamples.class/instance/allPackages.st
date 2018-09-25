@@ -4,7 +4,7 @@ allPackages
 
 	| packagesToConsider packageEnvironment |
 
-	packagesToConsider := #(Compiler).
+	packagesToConsider := #(Brick).
 	packageEnvironment := MccPackageEnvironment ofPackages: packagesToConsider.
 	
 	^ packageEnvironment packages.
