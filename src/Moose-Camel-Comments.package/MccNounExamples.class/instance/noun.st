@@ -7,7 +7,7 @@ noun
 	
 	aWord := 'Parser'.
 	
-	^ MccNoun fromWord:aWord.
+	^ (MccNoun fromWord:aWord)
 	
 	
 	

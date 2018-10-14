@@ -3,4 +3,4 @@ allClasses
 	<gtExample>
 	| allClasses |
 
-	^ allClasses := self allPackages flatCollect: [ :eachPackage | eachPackage definedClasses ]
+	^ allClasses := self allPackages flatCollect: [ :eachPackage | eachPackage definedClasses]

@@ -5,7 +5,7 @@ sentence
 	
 	| sentenceExample mccSentence |
 	
-	sentenceExample:= 'Answer the set of temporary variables that are read before they are written in the visited parse tree'.
+	sentenceExample:= 'I am responsibile for calculating the distance between question one and question two'.
 	mccSentence := MccCommentExamples new sentences first.
 	self assert: (mccSentence sentence) equals: sentenceExample.
 	

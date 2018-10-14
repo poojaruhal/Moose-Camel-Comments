@@ -5,7 +5,7 @@ mccComment
 	
 	| classesWithComments mccComment aClass|
 	
-	classesWithComments := (MccClassesExamples new) withComments.
+	classesWithComments := (MccClassesExamples new) classesWithComments.
 	"aClass := classesWithComments asArray first."
 	aClass := McQuestionsDistance.
 	

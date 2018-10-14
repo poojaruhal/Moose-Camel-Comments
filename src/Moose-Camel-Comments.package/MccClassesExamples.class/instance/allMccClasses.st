@@ -2,4 +2,4 @@ navigation
 allMccClasses
 	<gtExample>
 	
-	^ MccClasses fromClasses: (MccPackageEnvironmentExamples new) allClasses
+	^ MccClasses fromClasses: (MccPackageEnvironmentExamples new) allClasses.

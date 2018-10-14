@@ -3,4 +3,4 @@ allClassesWithComments
 	<gtExample>
 	<description:'collect all classes of Compiler with comments'>
 
- 	^ MccClassesExamples new withComments.
+ 	^ MccClassesExamples new classesWithComments.

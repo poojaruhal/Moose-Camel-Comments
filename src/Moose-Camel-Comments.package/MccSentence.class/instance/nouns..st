@@ -1,5 +1,5 @@
 accessing
-nouns: aCollectionOfNouns
+nouns: aCollectionOfNounWords
 
-	aCollectionOfNouns do: [ :eachNoun | 
-		nouns add: (MccNoun fromWord: eachNoun) asSymbol].
+	aCollectionOfNounWords do: [ :eachNounWord | 
+		nouns add: (MccNoun fromWord: eachNounWord)].

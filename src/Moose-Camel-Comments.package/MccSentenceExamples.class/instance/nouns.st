@@ -6,6 +6,6 @@ nouns
 	| nouns aSentence |
 	
 	aSentence := self sentence.
-	nouns := aSentence splitIntoNouns.
+	nouns := aSentence splitAndCollectAsOrderedCollection.
 	
 	^ nouns.

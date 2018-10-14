@@ -4,8 +4,8 @@ allPackages
 
 	| packagesToConsider packageEnvironment |
 
-	packagesToConsider := #(Brick).
+	packagesToConsider := #(Brick Bloc).
 	packageEnvironment := MccPackageEnvironment ofPackages: packagesToConsider.
 	
-	^ packageEnvironment packages.
+	^ packageEnvironment packages
 	

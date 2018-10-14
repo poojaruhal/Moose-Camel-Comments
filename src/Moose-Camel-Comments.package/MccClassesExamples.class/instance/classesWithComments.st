@@ -1,6 +1,6 @@
 gt-examples
-withComments
+classesWithComments
 	<gtExample>
 	<description: 'all classes with comments'>
 	
-	^ (self allMccClasses) withComments
+	^ (self allMccClasses) classesWithComments
