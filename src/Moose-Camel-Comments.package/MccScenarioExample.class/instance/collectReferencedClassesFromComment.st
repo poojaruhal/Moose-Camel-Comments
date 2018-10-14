@@ -6,7 +6,7 @@ collectReferencedClassesFromComment
 	| mccComment referncedClassesByAllMethods sentences classesReferencedFromComment |
 
 	mccComment := MccCommentExamples new.
-	referncedClassesByAllMethods := mccComment collectReferencedClasses.
+	referncedClassesByAllMethods := mccComment referencedClassesFromProject.
 	referncedClassesByAllMethods := referncedClassesByAllMethods collect:
 		[:eachClass | eachClass name asLowercase asSymbol].
 	sentences := mccComment sentences.

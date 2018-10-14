@@ -1,9 +1,9 @@
 gt-examples
-collectReferencedClasses
+referencedClassesFromProject
 	<gtExample>
 	<description: 'collect referenced classes by MccComment class'>
 	
-	^ self mccComment collectReferencedClasses.
+	^ self mccComment referencedClassesFromProject.
 	
 	
 	
