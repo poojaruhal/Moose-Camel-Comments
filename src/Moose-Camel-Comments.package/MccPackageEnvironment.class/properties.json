@@ -1,12 +1,13 @@
 {
-	"commentStamp" : "",
+	"commentStamp" : "PoojaRani 10/17/2018 16:49",
 	"super" : "MccEnvironment",
 	"category" : "Moose-Camel-Comments",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"packages"
+		"packages",
+		"prefixOfPackage"
 	],
 	"name" : "MccPackageEnvironment",
 	"type" : "normal"

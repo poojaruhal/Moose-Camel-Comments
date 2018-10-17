@@ -2,4 +2,4 @@ gt-examples
 compareReferenceClassesofProjectAndComment
 	<return: #Array of: #ReferencedClass>
 				
-				^((self referencedClassesFromProject) intersection: (self referencedClassesFromComment)).
+				^((self referencedClassesFromProject) intersection: (self referencedNounsFromComment)).

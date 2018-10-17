@@ -1,7 +1,7 @@
 ui
 gtInspectorPackagesIn: aComposite
-	<gtInspectorPresentationOrder: 1>
+	<gtInspectorPresentationOrder: 0>
 
-	^ aComposite fastList
+	^ aComposite table
 		title: 'Packages';
-		display: [ self packages ]
+		display: [( self packagesAsSymbols) asOrderedCollection]

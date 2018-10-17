@@ -4,4 +4,5 @@ gtInspectorallClassesIn: aComposite
 
 	^ aComposite fastList
 		title: 'Classes';
-		display: [ self allClasses]
+		display: [ self allClasses ];
+		format: [ :eachClass | eachClass printString ]
