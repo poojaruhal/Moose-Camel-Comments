@@ -5,7 +5,7 @@ How developers express their thoughts of writing code and what pattern this prod
 # Install
 ```smalltalk
 Metacello new
-   baseline: 'Camel';
-   repository: 'github://poojaruhal65/Moose-Camel/src';
+   baseline: 'CamelComments';
+   repository: 'github://poojaruhal65/Moose-Camel-Comments/src';
    loa
 
