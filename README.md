@@ -7,5 +7,5 @@ How developers express their thoughts of writing code and what pattern this prod
 Metacello new
    baseline: 'CamelComments';
    repository: 'github://poojaruhal65/Moose-Camel-Comments/src';
-   loa
+   load
 
