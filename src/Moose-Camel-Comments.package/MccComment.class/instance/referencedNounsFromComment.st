@@ -5,4 +5,4 @@ referencedNounsFromComment
 	self sentencesFromComment.
 	^ self sentences 
 			flatCollect: [ :eachSentence | 
-				eachSentence splitIntoNouns asArray].
+				 ((MccSentenceProcessor fromSentence: eachSentence) splitIntoNouns) asArray].

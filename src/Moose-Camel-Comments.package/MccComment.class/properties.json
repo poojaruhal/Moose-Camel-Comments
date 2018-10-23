@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "PoojaRani 10/17/2018 17:03",
+	"commentStamp" : "PoojaRani 10/18/2018 17:29",
 	"super" : "Object",
 	"category" : "Moose-Camel-Comments",
 	"classinstvars" : [ ],
@@ -10,7 +10,8 @@
 		"commentClass",
 		"referencedClasses",
 		"sentences",
-		"prefixOfPackage"
+		"prefixOfPackage",
+		"commentProcessor"
 	],
 	"name" : "MccComment",
 	"type" : "normal"

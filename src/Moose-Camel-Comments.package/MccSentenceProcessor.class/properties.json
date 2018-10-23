@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "MccClassCommentProcessor",
+	"category" : "Moose-Camel-Comments",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"sentence",
+		"mcInputProcessor"
+	],
+	"name" : "MccSentenceProcessor",
+	"type" : "normal"
+}

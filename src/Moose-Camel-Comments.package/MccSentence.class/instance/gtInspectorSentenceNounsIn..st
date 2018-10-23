@@ -4,4 +4,4 @@ gtInspectorSentenceNounsIn: aComposite
 
 	^ aComposite list
 			title: 'List of Noun Words';
-			display: [ self splitAndCollectAsOrderedCollection].
+			display: [MccSentenceProcessor fromSentence:( self sentence)splitIntoNouns].

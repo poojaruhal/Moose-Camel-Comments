@@ -15,7 +15,8 @@ collectReferencedClassesFromAllClassesComment
 				sentences
 					flatCollect: [ :eachSentence | 
 						| nouns |
-						nouns:= eachSentence splitIntoNouns asArray.
+						"nouns: ({'brick'.'block'.'blelement' })."
+						nouns:= (MccSentenceProcessorExamples new splitIntoNouns) asArray.
 						referncedClassesByAllMethods intersection: nouns] ]
 			as: Set.
 

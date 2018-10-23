@@ -1,4 +1,6 @@
 I represent a comment of the class. 
+I use information from MccClasses.
+
 I know  comment, class of the comment. 
 My aim is to collect maximum information from a comment. 
 I can collect potential reference classes from comment.
