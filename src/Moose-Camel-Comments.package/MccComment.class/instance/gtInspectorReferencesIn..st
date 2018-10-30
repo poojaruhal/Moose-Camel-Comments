@@ -4,4 +4,5 @@ gtInspectorReferencesIn: aComposite
 	
 	^ aComposite fastList
 		title: 'References' translated;
-		display: [ self references ]
+		display: [ self references ];
+		when: [  self references isNotEmpty ]

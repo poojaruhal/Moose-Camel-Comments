@@ -1,7 +1,7 @@
 gt-inspector-extension
-gtInspectorCommentIn: aComposite
+gtInspectorTextIn: aComposite
 	<gtInspectorPresentationOrder: 1>
 
 	^ aComposite text
-			title: 'Comment' translated;
+			title: 'Text' translated;
 			display: [ self asString ]
