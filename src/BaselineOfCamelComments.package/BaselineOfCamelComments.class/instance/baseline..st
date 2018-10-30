@@ -7,4 +7,6 @@ baseline: spec
 			baseline: 'Camel' with: [ spec repository: 'github://poojaruhal65/Moose-Camel/src' ].
 
 		spec package: #'Moose-Camel-Comments' with: [ spec requires: #(Camel) ].
-		spec group: 'default' with: #('Moose-Camel-Comments') ]
+		spec package: #'Moose-Camel-Comments-Examples' with: [ spec requires: #('Moose-Camel-Comments') ].
+	
+		spec group: 'default' with: #('Moose-Camel-Comments' 'Moose-Camel-Comments-Examples') ]

@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "AliakseiSyrel 10/30/2018 00:07",
+	"super" : "Object",
+	"category" : "Moose-Camel-Comments-Model - Reference",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"comment",
+		"environment"
+	],
+	"name" : "MccReferenceFinder",
+	"type" : "normal"
+}

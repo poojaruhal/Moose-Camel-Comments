@@ -1,3 +1,3 @@
 accessing
-classes: anObject
-	classes := anObject
+classes: aCollectionOfClasses
+	classes := aCollectionOfClasses

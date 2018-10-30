@@ -1,13 +1,13 @@
 {
-	"commentStamp" : "PoojaRani 10/18/2018 17:29",
+	"commentStamp" : "AliakseiSyrel 10/30/2018 01:20",
 	"super" : "Object",
-	"category" : "Moose-Camel-Comments",
+	"category" : "Moose-Camel-Comments-Model - Comment",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
+		"artefact",
 		"comment",
-		"commentClass",
 		"referencedClasses",
 		"sentences",
 		"prefixOfPackage",

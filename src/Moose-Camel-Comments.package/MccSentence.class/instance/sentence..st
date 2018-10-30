@@ -1,3 +1,3 @@
 accessing
-sentence: anObject
-	sentence := anObject
+sentence: aString
+	string := aString trimmed

@@ -1,13 +1,13 @@
 {
 	"commentStamp" : "PoojaRani 10/17/2018 17:08",
 	"super" : "Object",
-	"category" : "Moose-Camel-Comments",
+	"category" : "Moose-Camel-Comments-Model - Text",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"sentence",
-		"nouns"
+		"nouns",
+		"string"
 	],
 	"name" : "MccSentence",
 	"type" : "normal"

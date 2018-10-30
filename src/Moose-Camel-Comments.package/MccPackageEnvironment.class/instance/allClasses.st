@@ -2,5 +2,4 @@ navigation
 allClasses
 	<return: #Array of: #Classes>
 	
-	^  self allDefinedClasses
-	
+	^ self packages flatCollect: #definedClasses

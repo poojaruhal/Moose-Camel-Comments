@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "MccEnvironment",
-	"category" : "Moose-Camel-Comments",
+	"category" : "Moose-Camel-Comments-Model - Environment",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

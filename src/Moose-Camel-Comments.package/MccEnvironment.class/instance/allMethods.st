@@ -1,0 +1,3 @@
+navigation
+allMethods
+	^ self subclassResponsibility

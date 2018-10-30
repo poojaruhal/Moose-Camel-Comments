@@ -2,4 +2,6 @@ printing
 printOn: aStream
 	aStream
 		nextPutAll: 'Comment of ';
-		nextPutAll: self commentClass name
+		nextPut: $(;
+		nextPutAll: self artefact asString;
+		nextPut: $)

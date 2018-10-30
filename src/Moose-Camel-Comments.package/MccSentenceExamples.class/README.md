@@ -1,1 +1,0 @@
-I am a sentence written in English and know nouns.

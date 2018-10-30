@@ -1,3 +1,6 @@
 navigation
 allClasses
-	self subclassResponsibility.
+	"Return all classes in this environment"
+	<return: #MccClasses>
+
+	^ self subclassResponsibility

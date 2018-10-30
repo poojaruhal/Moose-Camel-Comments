@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "PoojaRani 10/15/2018 23:22",
 	"super" : "Object",
-	"category" : "Moose-Camel-Comments",
+	"category" : "Moose-Camel-Comments-Model",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

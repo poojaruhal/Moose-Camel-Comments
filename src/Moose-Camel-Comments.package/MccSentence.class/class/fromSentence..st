@@ -1,4 +1,3 @@
 instance creation
 fromSentence: aSentence
-	^ (self new)
-		sentence: aSentence.
+	^ self new sentence: aSentence

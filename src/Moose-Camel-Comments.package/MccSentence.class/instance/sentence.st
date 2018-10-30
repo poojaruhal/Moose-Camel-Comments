@@ -1,3 +1,5 @@
 accessing
 sentence
-	^ sentence
+	<return: #String>
+
+	^ string

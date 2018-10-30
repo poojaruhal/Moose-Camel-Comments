@@ -1,5 +1,5 @@
 accessing
 packages
-	<return: #Array of: #Packages>
+	<return: #Array of: #RPackage>
 	
 	^ packages	

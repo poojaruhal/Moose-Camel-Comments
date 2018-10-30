@@ -1,3 +1,3 @@
 accessing
-packages: anArray
-	packages := anArray collect: [ :eachPackage | eachPackage asPackage ].
+packages: thePackages
+	packages := thePackages

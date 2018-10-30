@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "AliakseiSyrel 10/29/2018 23:18",
+	"super" : "MccComment",
+	"category" : "Moose-Camel-Comments-Model - Comment",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "MccClassComment",
+	"type" : "normal"
+}

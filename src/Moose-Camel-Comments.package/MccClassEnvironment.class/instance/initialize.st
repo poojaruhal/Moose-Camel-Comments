@@ -1,4 +1,5 @@
 initialization
 initialize
 	super initialize.
-	classes := OrderedCollection new.
+	
+	classes := OrderedCollection new

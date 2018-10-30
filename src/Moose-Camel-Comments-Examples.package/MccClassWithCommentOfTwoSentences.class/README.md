@@ -1,0 +1,1 @@
+I am a class with a comment. It consists of two sentenses.

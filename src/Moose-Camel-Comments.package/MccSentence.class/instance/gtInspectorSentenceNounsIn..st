@@ -1,6 +1,6 @@
-as yet unclassified
+gt-inspector-extension
 gtInspectorSentenceNounsIn: aComposite
-	<gtInspectorPresentationOrder: 2>
+	<gtInspectorPresentationOrder: 3>
 
 	^ aComposite list
 			title: 'List of Noun Words';

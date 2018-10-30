@@ -1,7 +1,8 @@
-ui
+gt-inspector-extension
 gtInspectorPackagesIn: aComposite
 	<gtInspectorPresentationOrder: 0>
 
-	^ aComposite table
-		title: 'Packages';
-		display: [( self packagesAsSymbols) asOrderedCollection]
+	^ aComposite fastList
+		title: 'Packages' translated;
+		display: [ self packages ];
+		format: #name

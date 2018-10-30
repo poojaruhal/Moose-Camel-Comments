@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "MccReference",
+	"category" : "Moose-Camel-Comments-Model - Reference",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "MccInstanceVariableReference",
+	"type" : "normal"
+}
