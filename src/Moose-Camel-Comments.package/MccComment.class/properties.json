@@ -6,12 +6,7 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"artefact",
-		"comment",
-		"referencedClasses",
-		"sentences",
-		"prefixOfPackage",
-		"commentProcessor"
+		"artefact"
 	],
 	"name" : "MccComment",
 	"type" : "normal"

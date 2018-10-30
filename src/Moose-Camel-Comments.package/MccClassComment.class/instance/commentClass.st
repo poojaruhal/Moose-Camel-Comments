@@ -1,4 +1,4 @@
-access
+accessing
 commentClass
 	<return: #Class>
 
