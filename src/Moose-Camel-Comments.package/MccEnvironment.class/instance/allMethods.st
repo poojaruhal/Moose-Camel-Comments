@@ -1,3 +1,6 @@
 navigation
 allMethods
-	^ self subclassResponsibility
+	"Return all methods in this environment"
+	<return: #Collection of: #CompiledMethod>
+
+	^ self allClasses flatCollect: [ :eachClass | eachClass methods ]

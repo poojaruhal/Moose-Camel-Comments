@@ -1,0 +1,1 @@
+I play a role of an environment or scope in which we are searching references
