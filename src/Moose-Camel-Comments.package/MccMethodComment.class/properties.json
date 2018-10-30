@@ -5,9 +5,7 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [
-		"method"
-	],
+	"instvars" : [ ],
 	"name" : "MccMethodComment",
 	"type" : "normal"
 }
