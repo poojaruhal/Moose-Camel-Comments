@@ -1,15 +1,13 @@
 {
 	"commentStamp" : "",
-	"super" : "Object",
+	"super" : "MccReferenceFinder",
 	"category" : "Moose-Camel-Comments-Model - Reference",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"comment",
-		"artefact",
-		"interval"
+		"classOrMetaclass"
 	],
-	"name" : "MccReference",
+	"name" : "MccMethodReferenceFinder",
 	"type" : "normal"
 }

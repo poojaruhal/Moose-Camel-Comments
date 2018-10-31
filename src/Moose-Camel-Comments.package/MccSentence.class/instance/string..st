@@ -1,3 +1,3 @@
 accessing
 string: aString
-	string := aString trimmed
+	self string: aString interval: (1 to: aString size - 1)

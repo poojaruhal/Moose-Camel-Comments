@@ -5,9 +5,9 @@ findExactReferencesIn: aSentence
 
 	^ Array streamContents: [ :aStream | 
 		aSentence words do: [ :eachWord |
-			self environment
-				classNamed: eachWord asSymbol
-				ifFound: [ :aClass | aStream nextPut: (MccClassReference new
+			classOrMetaclass
+				classAndMethodFor: eachWord asSymbol
+				do: [ :c :aMethod | aStream nextPut: (MccMethodReference new
 					interval: eachWord interval;
-					artefact: aClass) ]
-				ifNone: [  ] ] ]
+					artefact: aMethod) ]
+				ifAbsent: [] ] ]

@@ -7,7 +7,8 @@
 	"classvars" : [ ],
 	"instvars" : [
 		"nouns",
-		"string"
+		"string",
+		"interval"
 	],
 	"name" : "MccSentence",
 	"type" : "normal"

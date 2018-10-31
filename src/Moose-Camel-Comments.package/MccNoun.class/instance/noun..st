@@ -1,3 +1,3 @@
 accessing
-noun: anObject
-	noun := anObject
+noun: aNoun
+	noun := aNoun

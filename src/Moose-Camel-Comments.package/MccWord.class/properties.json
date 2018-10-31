@@ -6,7 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"string"
+		"string",
+		"interval"
 	],
 	"name" : "MccWord",
 	"type" : "normal"
