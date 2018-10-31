@@ -5,7 +5,7 @@ words
 	^ Array streamContents: [ :aStream | 
 		| aCommentString |
 		(aCommentString := self asString)
-			splitOn: [ :eachChar | (eachChar isDigit or: [ eachChar isLetter ]) not ]
+			splitOn: [ :eachChar | (eachChar isDigit or: [ eachChar isLetter or: [ eachChar = $: "for mutators" ] ]) not ]
 			indicesDo: [ :start :end |
 				| aWord anOffset aString |
 				aString := aCommentString copyFrom: start to: end.
