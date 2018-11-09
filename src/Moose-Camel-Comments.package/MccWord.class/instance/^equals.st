@@ -6,4 +6,4 @@ comparing
 		ifTrue: [ ^ true ].
 	self class = anObject class
 		ifFalse: [ ^ false ].
-	^ string = anObject string and: [ interval = anObject interval ]
+	^ string = anObject string

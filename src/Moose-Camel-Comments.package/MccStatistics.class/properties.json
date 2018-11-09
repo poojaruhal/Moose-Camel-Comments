@@ -9,8 +9,7 @@
 		"environment",
 		"allStatistics",
 		"filteredEntities",
-		"allEntities",
-		"words"
+		"allEntities"
 	],
 	"name" : "MccStatistics",
 	"type" : "normal"

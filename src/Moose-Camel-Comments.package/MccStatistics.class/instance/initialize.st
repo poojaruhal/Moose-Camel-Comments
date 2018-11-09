@@ -6,4 +6,3 @@ initialize
 
 	allEntities := nil. "lazy"
 	filteredEntities := nil. "lazy"
-	words := nil "lazy"

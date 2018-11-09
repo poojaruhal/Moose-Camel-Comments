@@ -6,7 +6,9 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"artefact"
+		"artefact",
+		"sentences",
+		"words"
 	],
 	"name" : "MccComment",
 	"type" : "normal"
