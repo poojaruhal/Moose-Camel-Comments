@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "",
-	"super" : "MccClassCommentProcessor",
+	"super" : "Object",
 	"category" : "Moose-Camel-Comments",
 	"classinstvars" : [ ],
 	"pools" : [ ],

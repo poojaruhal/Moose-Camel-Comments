@@ -1,11 +1,11 @@
 {
 	"commentStamp" : "",
-	"super" : "Object",
-	"category" : "Moose-Camel-Comments-Examples-Examples",
+	"super" : "MccStatistics",
+	"category" : "Moose-Camel-Comments-Model",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "MccSentenceExamples",
+	"name" : "MccMethodStatistics",
 	"type" : "normal"
 }

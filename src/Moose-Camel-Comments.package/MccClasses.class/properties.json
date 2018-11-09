@@ -1,14 +1,13 @@
 {
 	"commentStamp" : "PoojaRani 10/17/2018 16:35",
-	"super" : "Object",
+	"super" : "Array",
 	"category" : "Moose-Camel-Comments-Model",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"allClasses",
 		"mccCommentClasses"
 	],
 	"name" : "MccClasses",
-	"type" : "normal"
+	"type" : "variable"
 }

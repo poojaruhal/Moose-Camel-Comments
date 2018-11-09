@@ -1,0 +1,17 @@
+{
+	"commentStamp" : "PoojaRani 11/8/2018 14:44",
+	"super" : "Object",
+	"category" : "Moose-Camel-Comments-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"environment",
+		"allStatistics",
+		"filteredEntities",
+		"allEntities",
+		"words"
+	],
+	"name" : "MccStatistics",
+	"type" : "normal"
+}

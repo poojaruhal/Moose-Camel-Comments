@@ -1,4 +1,4 @@
 converting
 asSymbols
 
-	^ self allClasses collect: [ :eachClass | eachClass name asLowercase asSymbol ]
+	^ self collect: [ :eachClass | eachClass name asLowercase asSymbol ]

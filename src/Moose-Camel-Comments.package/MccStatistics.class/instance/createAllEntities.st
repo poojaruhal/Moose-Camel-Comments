@@ -1,0 +1,3 @@
+initialization
+createAllEntities
+	^ self subclassResponsibility

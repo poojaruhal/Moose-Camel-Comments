@@ -6,6 +6,6 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "MccSentenceExamples",
+	"name" : "MccStatisticsExamples",
 	"type" : "normal"
 }

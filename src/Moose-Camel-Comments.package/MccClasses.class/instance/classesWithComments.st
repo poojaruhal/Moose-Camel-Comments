@@ -1,5 +1,5 @@
 gt-examples
 classesWithComments
-	<return: #Array of: #Classes>
+	<return: #Array of: #Classe>
 	
-	^ self allClasses select:#hasComment
+	^ self select: #hasComment
