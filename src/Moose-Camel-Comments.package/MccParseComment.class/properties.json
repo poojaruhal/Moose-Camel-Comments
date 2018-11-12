@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "PPCompositeParser",
+	"category" : "Moose-Camel-Comments",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"string",
+		"comment"
+	],
+	"name" : "MccParseComment",
+	"type" : "normal"
+}

@@ -1,0 +1,3 @@
+accessing
+start 
+	^ comment end
