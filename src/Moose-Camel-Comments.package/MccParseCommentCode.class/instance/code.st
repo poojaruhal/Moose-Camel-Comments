@@ -1,3 +1,3 @@
 accessing
 code 
-	^ (string, '[[[' asParser, string , ']]]' asParser  ==> [ :aToken | aToken third ]) star.
+	^ '[[[' asPParser, string, ']]]' asPParser  ==> [ :aToken | aToken second as: String ]
