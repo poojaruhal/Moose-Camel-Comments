@@ -1,11 +1,11 @@
 {
-	"commentStamp" : "AliakseiSyrel 11/15/2018 18:05",
-	"super" : "PP2Node",
+	"commentStamp" : "",
+	"super" : "PP2Strategy",
 	"category" : "Moose-Camel-Comments",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "MccSmalltalkInCommentParser",
+	"name" : "MccSmalltalkInCommentStrategy",
 	"type" : "normal"
 }
