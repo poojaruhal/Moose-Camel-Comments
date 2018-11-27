@@ -36,7 +36,7 @@ Collect potential classes from the comment.
 Class {
 	#name : #MccScenarioExample,
 	#superclass : #Object,
-	#category : 'Moose-Camel-Comments-Examples'
+	#category : #'Moose-Camel-Comments-Examples'
 }
 
 { #category : #'gt-examples' }

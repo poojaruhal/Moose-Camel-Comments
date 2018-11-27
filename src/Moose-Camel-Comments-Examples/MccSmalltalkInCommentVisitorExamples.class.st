@@ -160,6 +160,29 @@ MccSmalltalkInCommentVisitorExamples >> visitSelfKeywordWithBlockArgument [
 ]
 
 { #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitSequenceWithInvalidFirstStatementAndSelfKeywordWithBlockArgument [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := 'Examples.
+	self show: ''Doing...'' from: 0 to: 50 during: [ :bar |
+	0 to: 50 do: [ :x | 
+		bar increment.
+		bar label: x asString.
+		(Delay forMilliseconds: 20) wait "Just to slow it down so we can see what''s going on" ] ].'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid not.
+	self assert: aResult isPartiallyValid not.
+	
+	^ aResult
+]
+
+{ #category : #visiting }
 MccSmalltalkInCommentVisitorExamples >> visitUnimplementedMessageToGlobal [
 	<gtExample>
 	| aParser aText aVisitor anAST aResult |

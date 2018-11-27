@@ -9,7 +9,7 @@ Users can reference other classes directly, for example:
 Class {
 	#name : #MccClassWithComment,
 	#superclass : #Object,
-	#category : 'Moose-Camel-Comments-Examples-Artefacts'
+	#category : #'Moose-Camel-Comments-Examples-Artefacts'
 }
 
 { #category : #accessing }

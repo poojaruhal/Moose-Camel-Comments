@@ -1,7 +1,7 @@
 Class {
 	#name : #MccStatisticsExamples,
 	#superclass : #Object,
-	#category : 'Moose-Camel-Comments-Examples-Examples'
+	#category : #'Moose-Camel-Comments-Examples-Examples'
 }
 
 { #category : #navigation }

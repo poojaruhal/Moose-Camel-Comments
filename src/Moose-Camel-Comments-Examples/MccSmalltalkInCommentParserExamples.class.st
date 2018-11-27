@@ -49,6 +49,25 @@ MccSmalltalkInCommentParserExamples >> parseSelfKeywordWithBlockArgument [
 ]
 
 { #category : #parsing }
+MccSmalltalkInCommentParserExamples >> parseSequenceWithInvalidFirstStatementAndSelfKeywordWithBlockArgument [
+	<gtExample>
+	| aParser aString anAST |
+	
+	aParser := self parser.
+	aString := '
+Examples.
+self show: ''Doing...'' from: 500 to: 600 during: [ :bar |
+	500 to: 600 do: [ :x | 
+		bar current: x.
+		(Delay forMilliseconds: 20) wait 
+		"Just to slow it down so we can see what''s going on" ] ].'.
+	
+	anAST := aParser parse: aString.
+	
+	^ anAST
+]
+
+{ #category : #parsing }
 MccSmalltalkInCommentParserExamples >> parseSequenceWithOnlyFirstValidExpression [
 	<gtExample>
 	| aParser aString anAST |
