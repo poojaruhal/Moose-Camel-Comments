@@ -1,3 +1,0 @@
-accessing
-filteredAST
-	^ filteredAST

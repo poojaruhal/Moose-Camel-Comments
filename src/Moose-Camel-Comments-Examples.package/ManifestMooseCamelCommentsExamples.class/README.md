@@ -1,1 +1,0 @@
-I contain examples of the camel comments project
