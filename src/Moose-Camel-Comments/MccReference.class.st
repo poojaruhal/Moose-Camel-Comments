@@ -24,9 +24,13 @@ MccReference >> browseDueTo: anEvent [
 	"Browse reference artefact"
 
 	anEvent target fireEvent: (GLMBlocObjectToSelect new toSelect: self artefact).
-	anEvent target fireEvent: (GtPhlowObjectToSpawn new 
-		object: self artefact;
-		sourceElement: anEvent target)
+
+	self class environment
+		at: #GtPhlowObjectToSpawn
+		ifPresent: [ :aClass |
+			anEvent target fireEvent: (aClass new 
+				object: self artefact;
+				sourceElement: anEvent target) ]
 ]
 
 { #category : #accessing }

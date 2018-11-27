@@ -195,6 +195,7 @@ MccSmalltalkInCommentVisitor >> visitSequenceNode: aSequenceNode [
 				toBeRemoved := theStatements last: (theStatements size - eachIndex + 1).
 				toBeRemoved do: [ :statementToRemove | aSequenceNode removeNode: statementToRemove ].
 
+		
 				aSequenceNode periods: (aSequenceNode periods first: eachIndex - 1).
 
 				theResult isValid: false.

@@ -31,29 +31,45 @@ Class {
 
 { #category : #parsing }
 MccSmalltalkInCommentParser class >> parse: aString [
-	| theSnippets aStringToSplit  |
+	| aStringToSplit |
 
 	aString
-		ifEmpty: [ ^ aString ].
+		ifEmpty: [ ^ #() ].
 
 	aStringToSplit := ({ Character cr . Character lf } includes: aString last)
 		ifTrue: [ aString ]
-		ifFalse: [ aString, String cr ]. 
+		ifFalse: [
+			aString, String cr ]. 
 
-	theSnippets := aStringToSplit splitOn: ('(\',String cr,'|\', String lf, ')[\s|\-]*(\',String cr,'|\', String lf, ')') asRegex.
+	^ Array streamContents: [ :aStream |
+		aStringToSplit
+			splitOn: ('(\',String cr,'|\', String lf, ')[\s|\-]*(\',String cr,'|\', String lf, ')') asRegex
+			indicesDo: [ :aStart :anEnd |
+				| eachSnippetToken tokenToParse theCode theCodeToken |
 
-	^ theSnippets flatCollect: [ :eachSnippet |
-		Array streamContents: [ :aStream |
-			| result stringToParse |
-			
-			stringToParse := eachSnippet.
-			result := (MccSmalltalkInCommentParser new sea) parse: stringToParse.
-			
-			[ result isNotEmpty and: [ stringToParse isNotEmpty ] ] whileTrue: [
-				aStream nextPut: (result first as: String).
-				aStream nextPut: (result second).
-				stringToParse := result third as: String.
-				result := (MccSmalltalkInCommentParser new sea) parse: stringToParse ] ] ]
+				eachSnippetToken := PP2Token
+					on: aString
+					start: (aStart min: aString size) stop: (anEnd min: aString size).
+				
+				tokenToParse := eachSnippetToken.
+				
+				[ tokenToParse value isNotEmpty ] whileTrue: [
+					| parsedResult |
+					parsedResult := (MccSmalltalkInCommentParser new sea) parse: tokenToParse value.
+					theCode := parsedResult second.
+					theCodeToken := PP2Token
+						on: aString
+						start: (theCode sourceInterval first min: theCode sourceInterval last) + tokenToParse start - 1
+						stop: theCode sourceInterval last + tokenToParse start - 1.
+					
+					theCode sourceInterval
+						ifNotEmpty: [ aStream nextPut: theCodeToken ].
+					
+					tokenToParse := PP2Token
+						on: aString
+						start: (tokenToParse start + parsedResult first size - 1 + theCode sourceInterval size + aStart) stop: (anEnd min: aString size).
+
+					tokenToParse ] ] ].
 ]
 
 { #category : #visiting }
