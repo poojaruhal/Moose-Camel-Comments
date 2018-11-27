@@ -1,11 +1,14 @@
 {
 	"commentStamp" : "",
-	"super" : "PP2SmalltalkParser",
+	"super" : "RBProgramNodeVisitor",
 	"category" : "Moose-Camel-Comments-Parser",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [ ],
-	"name" : "MccSmalltalkParser",
+	"instvars" : [
+		"assignments",
+		"classOrMetaclass"
+	],
+	"name" : "MccSmalltalkInCommentVisitor",
 	"type" : "normal"
 }

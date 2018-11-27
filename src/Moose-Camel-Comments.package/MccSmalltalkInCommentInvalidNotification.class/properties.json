@@ -1,11 +1,13 @@
 {
 	"commentStamp" : "",
-	"super" : "PP2SmalltalkParser",
+	"super" : "Notification",
 	"category" : "Moose-Camel-Comments-Parser",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [ ],
-	"name" : "MccSmalltalkParser",
+	"instvars" : [
+		"errorNode"
+	],
+	"name" : "MccSmalltalkInCommentInvalidNotification",
 	"type" : "normal"
 }

@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "PP2Strategy",
-	"category" : "Moose-Camel-Comments",
+	"category" : "Moose-Camel-Comments-Parser",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

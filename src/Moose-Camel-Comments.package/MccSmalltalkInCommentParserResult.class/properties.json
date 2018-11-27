@@ -1,0 +1,18 @@
+{
+	"commentStamp" : "",
+	"super" : "Object",
+	"category" : "Moose-Camel-Comments-Parser",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"errorNode",
+		"errorResult",
+		"isValid",
+		"isPartiallyValid",
+		"filteredAST",
+		"originalAST"
+	],
+	"name" : "MccSmalltalkInCommentParserResult",
+	"type" : "normal"
+}
