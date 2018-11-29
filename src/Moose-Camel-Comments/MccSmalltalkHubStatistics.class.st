@@ -14,14 +14,13 @@ MccSmalltalkHubStatistics >> projects [
 { #category : #'as yet unclassified' }
 MccSmalltalkHubStatistics >> smalltalkHubJson [
 
-	^ NeoJSONReader fromString: self smalltalkhubData.
+	^ NeoJSONReader fromString: self smalltalkhubFile.
 
 ]
 
 { #category : #'as yet unclassified' }
 MccSmalltalkHubStatistics >> smalltalkhubData [
 	
-	" ^ '/Users/poojarani/Downloads/smalltalk_hub_projects_20181121124234.json' asFileReference contents."
 	^ '[
   {
     "user": "OlesDobosevych",
@@ -149,4 +148,17 @@ MccSmalltalkHubStatistics >> smalltalkhubData [
     ]
   }
 ]'.
+]
+
+{ #category : #'as yet unclassified' }
+MccSmalltalkHubStatistics >> smalltalkhubFile [
+	
+		 ^ '/Users/poojarani/Downloads/smalltalk_hub_projects_20181121124234.json' asFileReference contents.
+]
+
+{ #category : #walking }
+MccSmalltalkHubStatistics >> timestamps [
+	<return:#Timestamp>
+	
+	^ self projects collect:#timestamp.
 ]

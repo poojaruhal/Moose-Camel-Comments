@@ -17,13 +17,15 @@ MccProjectStatistics class >> from: aProject [
 MccProjectStatistics >> commits [
 	<return:#Dictionary of:#Commits>
 	
-	^ self project at:'commits'
+	^ (self project at:'commits')
+	ifEmpty: [ '' ].
 ]
 
 { #category : #'as yet unclassified' }
 MccProjectStatistics >> contributers [
 
-	^ self project at:'contributers'
+	^ (self project at:'contributers')
+	ifEmpty: [ '' ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -44,7 +46,8 @@ MccProjectStatistics >> graphData [
 MccProjectStatistics >> metadata [
 	<return:#Dictionary>
 	
-	^ self project at:'data'.
+	^ (self project at:'data')
+	ifNil: [''] .
 ]
 
 { #category : #walking }
@@ -70,5 +73,15 @@ MccProjectStatistics >> projectName [
 MccProjectStatistics >> timestamp [
 	<return:#TimeStamp>
 	
-	^ DateAndTime fromUnixTime: (self metadata at:'created').
+	^ (self unixTimestamp)
+	ifNil: [ '' ]
+	ifNotNil: [ DateAndTime fromUnixTime: self unixTimestamp].
+]
+
+{ #category : #walking }
+MccProjectStatistics >> unixTimestamp [
+	
+	^ (self metadata) 
+	ifEmpty:[]
+	ifNotEmpty: [  self metadata at:'created' ]	.
 ]
