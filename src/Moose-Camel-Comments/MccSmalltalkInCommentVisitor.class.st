@@ -75,6 +75,11 @@ MccSmalltalkInCommentVisitor >> resultFor: aRBNode [
 ]
 
 { #category : #visiting }
+MccSmalltalkInCommentVisitor >> visitArrayNode: anArrayNode [ 
+	^ self resultFor: anArrayNode
+]
+
+{ #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitAssignmentNode: anAssignmentNode [
 	assignments add: anAssignmentNode variable.
 	
