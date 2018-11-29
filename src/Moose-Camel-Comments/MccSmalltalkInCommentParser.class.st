@@ -25,8 +25,8 @@ asfafasfj' copyReplaceAll: String cr with: String cr, '.'.
 "
 Class {
 	#name : #MccSmalltalkInCommentParser,
-	#superclass : #PP2Node,
-	#category : 'Moose-Camel-Comments-Parser'
+	#superclass : #PP2PluggableNode,
+	#category : #'Moose-Camel-Comments-Parser'
 }
 
 { #category : #parsing }
@@ -45,36 +45,53 @@ MccSmalltalkInCommentParser class >> parse: aString [
 		aStringToSplit
 			splitOn: ('(\',String cr,'|\', String lf, ')[\s|\-]*(\',String cr,'|\', String lf, ')') asRegex
 			indicesDo: [ :aStart :anEnd |
-				| eachSnippetToken tokenToParse theCode theCodeToken |
-
-				eachSnippetToken := PP2Token
+				| tokenToParse |
+				
+				"initial value"
+				tokenToParse := MccSmalltalkSnippetToken
 					on: aString
 					start: (aStart min: aString size) stop: (anEnd min: aString size).
 				
-				tokenToParse := eachSnippetToken.
-				
-				[ tokenToParse value isNotEmpty ] whileTrue: [
-					| parsedResult |
-					parsedResult := (MccSmalltalkInCommentParser new sea) parse: tokenToParse value.
-					theCode := parsedResult second.
-					theCodeToken := PP2Token
-						on: aString
-						start: (theCode sourceInterval first min: theCode sourceInterval last) + tokenToParse start - 1
-						stop: theCode sourceInterval last + tokenToParse start - 1.
-					
-					theCode sourceInterval
-						ifNotEmpty: [ aStream nextPut: theCodeToken ].
-					
-					tokenToParse := PP2Token
-						on: aString
-						start: (tokenToParse start + parsedResult first size - 1 + theCode sourceInterval size + aStart) stop: (anEnd min: aString size).
+				[ (tokenToParse := self processToken: tokenToParse in: aStream of: aString) isEmpty ] whileFalse ] ]
+]
 
-					tokenToParse ] ] ].
+{ #category : #parsing }
+MccSmalltalkInCommentParser class >> processToken: aToken in: aStream of: aString [
+	| parsedResult theTextToken theCode theCodeToken nextToken |
+					
+	parsedResult := (MccSmalltalkInCommentParser new sea) parse: aToken value.
+
+	"the island (second item) is the AST"
+	theCode := parsedResult second.
+
+	theCodeToken := MccSmalltalkCodeToken
+		on: aString
+		start: theCode sourceInterval first + aToken start - 1
+		stop: ((parsedResult third isEmpty and: [ theCode sourceInterval isNotEmpty ]) ifTrue: [ aToken stop ] ifFalse: [ theCode sourceInterval last + aToken start - 1 ]).
+	theCodeToken ast: theCode.
+
+	theTextToken := MccSmalltalkTextToken
+		on: aString
+		start: aToken start
+		stop: (theCodeToken isEmpty ifTrue: [ aToken stop ] ifFalse: [ (theCodeToken start - 1) ]).
+		
+	theTextToken isEmpty
+		ifFalse: [ aStream nextPut: theTextToken ].
+
+	theCodeToken isEmpty
+		ifFalse: [ aStream nextPut: theCodeToken ].
+	
+	nextToken := MccSmalltalkSnippetToken
+		on: aString
+		start: aToken stop - parsedResult third size + 1
+		stop: aToken stop.
+
+	^ nextToken
 ]
 
 { #category : #visiting }
 MccSmalltalkInCommentParser >> accept: aPP2ParserVisitor [
-	^ aPP2ParserVisitor visitPluggable: self
+	^ true
 ]
 
 { #category : #'parsing - adaptable' }

@@ -48,6 +48,25 @@ MccSmalltalkInCommentVisitorExamples >> visitComplexMessageChain [
 ]
 
 { #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitDot [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := '.'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid.
+	self assert: aResult isPartiallyValid.
+	self assert: aResult filteredAST sourceInterval equals: (1 to: 0).
+	
+	^ aResult
+]
+
+{ #category : #visiting }
 MccSmalltalkInCommentVisitorExamples >> visitEmptyBlock [
 	<gtExample>
 	| aParser aText aVisitor anAST aResult |
@@ -61,6 +80,7 @@ MccSmalltalkInCommentVisitorExamples >> visitEmptyBlock [
 	
 	self assert: aResult isValid.
 	self assert: aResult isPartiallyValid.
+	self assert: aResult filteredAST sourceInterval equals: (1 to: 2).
 	
 	^ aResult
 ]
@@ -79,6 +99,26 @@ MccSmalltalkInCommentVisitorExamples >> visitHello [
 	
 	self assert: aResult isValid not.
 	self assert: aResult isPartiallyValid not.
+	self assert: aResult filteredAST sourceInterval equals: (1 to: 0).
+	
+	^ aResult
+]
+
+{ #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitHelloWithDot [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := 'Hello.'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid not.
+	self assert: aResult isPartiallyValid not.
+	self assert: aResult filteredAST sourceInterval equals: (1 to: 0).
 	
 	^ aResult
 ]
@@ -115,6 +155,44 @@ MccSmalltalkInCommentVisitorExamples >> visitLiteralArray [
 	
 	self assert: aResult isValid.
 	self assert: aResult isPartiallyValid.
+	
+	^ aResult
+]
+
+{ #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitObjectWithDot [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := 'Object.'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid.
+	self assert: aResult isPartiallyValid.
+	self assert: aResult filteredAST sourceInterval equals: (1 to: aText size - 1).
+	
+	^ aResult
+]
+
+{ #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitObjectWithoutDot [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := 'Object'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid.
+	self assert: aResult isPartiallyValid.
+	self assert: aResult filteredAST sourceInterval equals: (1 to: aText size).
 	
 	^ aResult
 ]

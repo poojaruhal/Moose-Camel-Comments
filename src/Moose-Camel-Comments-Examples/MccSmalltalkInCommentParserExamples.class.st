@@ -5,80 +5,176 @@ Class {
 }
 
 { #category : #parsing }
+MccSmalltalkInCommentParserExamples >> parseCodeWithLastDot [
+	<gtExample>
+	| aParser aString theTokens |
+	
+	aParser := self parser.
+	aString := 'self extent: 200@200.'.
+	
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
+	
+	^ theTokens
+]
+
+{ #category : #parsing }
+MccSmalltalkInCommentParserExamples >> parseCodeWithoutLastDot [
+	<gtExample>
+	| aParser aString theTokens |
+	
+	aParser := self parser.
+	aString := 'self extent: 200@200'.
+	
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
+	
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parseEmpty [
+	<gtExample>
+	| aParser aString theTokens |
+	
+	aParser := self parser.
+	aString := ''.
+	
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 0.
+	
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
 MccSmalltalkInCommentParserExamples >> parseFortyTwo [
 	<gtExample>
-	| aParser aString anAST |
+	| aParser aString theTokens |
 	
 	aParser := self parser.
 	aString := 'fortyTwo := 42.
 fortyTwo logCr'.
 	
-	anAST := aParser parse: aString.
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
 	
-	^ anAST
+	^ theTokens
 ]
 
-{ #category : #parsing }
+{ #category : #'parsing - simple' }
 MccSmalltalkInCommentParserExamples >> parseHelloWorld [
 	<gtExample>
-	| aParser aString anAST |
+	| aParser aString theTokens |
 	
 	aParser := self parser.
 	aString := 'Hello World'.
 	
-	anAST := aParser parse: aString.
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
 	
-	^ anAST
+	^ theTokens
 ]
 
 { #category : #parsing }
 MccSmalltalkInCommentParserExamples >> parseSelfKeywordWithBlockArgument [
 	<gtExample>
-	| aParser aString anAST |
+	| aParser aString theTokens |
 	
 	aParser := self parser.
 	aString := 'self show: ''Doing...'' from: 0 to: 50 during: [ :bar |
 	0 to: 50 do: [ :x | 
 		bar increment.
 		bar label: x asString.
-		(Delay forMilliseconds: 20) wait "Just to slow it down so we can see what''s going on" ] ].'.
+		(Delay forMilliseconds: 20) wait "Just to slow it down so we can see what''s going on" ] ]'.
 	
-	anAST := aParser parse: aString.
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
 	
-	^ anAST
+	^ theTokens
 ]
 
 { #category : #parsing }
 MccSmalltalkInCommentParserExamples >> parseSequenceWithInvalidFirstStatementAndSelfKeywordWithBlockArgument [
 	<gtExample>
-	| aParser aString anAST |
+	| aParser aTextString aCodeString aString theTokens |
 	
 	aParser := self parser.
-	aString := '
+	
+	aTextString := '
 Examples.
-self show: ''Doing...'' from: 500 to: 600 during: [ :bar |
+'.
+	
+	aCodeString := 'self show: ''Doing...'' from: 500 to: 600 during: [ :bar |
 	500 to: 600 do: [ :x | 
 		bar current: x.
 		(Delay forMilliseconds: 20) wait 
-		"Just to slow it down so we can see what''s going on" ] ].'.
+		"Just to slow it down so we can see what''s going on" ] ]'.
+
+	aString := aTextString, aCodeString.
 	
-	anAST := aParser parse: aString.
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 2.
 	
-	^ anAST
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aTextString size.
+	self assert: theTokens first value equals: aTextString.
+	
+	self assert: (theTokens second isKindOf: MccSmalltalkCodeToken).
+	self assert: theTokens second start equals: aTextString size + 1.
+	self assert: theTokens second stop equals: aString size.
+	self assert: theTokens second value equals: aCodeString.
+	
+	^ theTokens
 ]
 
 { #category : #parsing }
 MccSmalltalkInCommentParserExamples >> parseSequenceWithOnlyFirstValidExpression [
 	<gtExample>
-	| aParser aString anAST |
+	| aParser aString theTokens aTextString aCodeString |
 	
 	aParser := self parser.
-	aString := 'SystemProgressMorph reset.
+	
+	aCodeString := 'SystemProgressMorph reset.'.
+	aTextString := '
 Examples.'.
+
+	aString := aCodeString, aTextString.
 	
-	anAST := aParser parse: aString.
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 2.
 	
-	^ anAST
+	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aCodeString size.
+	self assert: theTokens first value equals: aCodeString.
+	
+	self assert: (theTokens second isKindOf: MccSmalltalkTextToken).
+	self assert: theTokens second start equals: aCodeString size + 2. "Cr is not there"
+	self assert: theTokens second stop equals: aString size.
+	self assert: theTokens second value equals: aTextString allButFirst. "without Cr"
+	
+	^ theTokens
 ]
 
 { #category : #parsing }
@@ -154,4 +250,75 @@ MccSmalltalkInCommentParserExamples >> parser [
 	<gtExample>
 	
 	^ MccSmalltalkInCommentParser
+]
+
+{ #category : #'parsing - sea' }
+MccSmalltalkInCommentParserExamples >> seaParseDot [
+	<gtExample>
+	| aParser aString theAST |
+	
+	aParser := self seaParser.
+	aString := '.'.
+	
+	theAST := aParser parse: aString.
+	self assert: theAST first isEmpty.
+	self assert: theAST second sourceInterval equals: (1 to: 0).
+	self assert: theAST third isEmpty.
+	
+	^ theAST
+]
+
+{ #category : #'parsing - sea' }
+MccSmalltalkInCommentParserExamples >> seaParseExamplesWithDot [
+	<gtExample>
+	| aParser aString theAST |
+	
+	aParser := self seaParser.
+	aString := 'Examples.'.
+	
+	theAST := aParser parse: aString.
+	self assert: theAST first equals: aString allButLast asOrderedCollection.
+	self assert: theAST second sourceInterval equals: (1 to: 0).
+	self assert: theAST third isEmpty.
+	
+	^ theAST
+]
+
+{ #category : #'parsing - sea' }
+MccSmalltalkInCommentParserExamples >> seaParseObject [
+	<gtExample>
+	| aParser aString theAST |
+	
+	aParser := self seaParser.
+	aString := 'Object'.
+	
+	theAST := aParser parse: aString.
+	self assert: theAST first equals: aString asOrderedCollection.
+	self assert: theAST second sourceInterval equals: (1 to: 0).
+	self assert: theAST third isEmpty.
+
+	^ theAST
+]
+
+{ #category : #'parsing - sea' }
+MccSmalltalkInCommentParserExamples >> seaParseObjectWithDot [
+	<gtExample>
+	| aParser aString theAST |
+	
+	aParser := self seaParser.
+	aString := 'Object.'.
+	
+	theAST := aParser parse: aString.
+	self assert: theAST first equals: aString allButLast asOrderedCollection.
+	self assert: theAST second sourceInterval equals: (1 to: 0).
+	self assert: theAST third isEmpty.
+
+	^ theAST
+]
+
+{ #category : #'instance creation' }
+MccSmalltalkInCommentParserExamples >> seaParser [
+	<gtExample>
+	
+	^ MccSmalltalkInCommentParser new sea
 ]

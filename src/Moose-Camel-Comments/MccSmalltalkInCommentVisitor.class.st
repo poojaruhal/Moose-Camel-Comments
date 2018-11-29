@@ -92,7 +92,11 @@ MccSmalltalkInCommentVisitor >> visitBlockNode: aBlockNode [
 	
 	^ theBodyResult isValid
 		ifTrue: [ self resultFor: aBlockNode ]
-		ifFalse: [ (self errorFor: aBlockNode) errorResult: theBodyResult ].
+		ifFalse: [
+			| anError |
+			anError := (self errorFor: aBlockNode) errorResult: theBodyResult.
+			aBlockNode right: aBlockNode left - 1.
+			anError ].
 ]
 
 { #category : #visiting }
@@ -153,9 +157,6 @@ MccSmalltalkInCommentVisitor >> visitMessageNode: aMessageNode [
 			aReceiverObject := self class environment at: aMessageNode receiver name.
 			(aReceiverObject respondsTo: aMessageNode selector)
 				ifFalse: [ ^ self errorFor: aMessageNode ] ].
-	
-	(aMessageNode receiver isVariable and: [ aMessageNode receiver name isPseudovariableName ])
-		ifTrue: [ ^ self errorFor: aMessageNode ].
 
 	theArguments := aMessageNode arguments.
 	theArguments withIndexDo: [ :eachArgument :eachIndex |
@@ -183,6 +184,7 @@ MccSmalltalkInCommentVisitor >> visitSequenceNode: aSequenceNode [
 	self visitTemporaryNodes: aSequenceNode temporaries.
 
 	theStatements := aSequenceNode statements.
+	theStatements ifEmpty: [ aSequenceNode periods: #() ].
 	
 	theResult := self resultFor: aSequenceNode.
 	
@@ -195,7 +197,6 @@ MccSmalltalkInCommentVisitor >> visitSequenceNode: aSequenceNode [
 				toBeRemoved := theStatements last: (theStatements size - eachIndex + 1).
 				toBeRemoved do: [ :statementToRemove | aSequenceNode removeNode: statementToRemove ].
 
-		
 				aSequenceNode periods: (aSequenceNode periods first: eachIndex - 1).
 
 				theResult isValid: false.
@@ -228,5 +229,5 @@ MccSmalltalkInCommentVisitor >> visitVariableNode: aVariableNode [
 	aVariableNode name = #super
 		ifTrue: [ ^ theResult ].
 	
-	^ self errorFor: aVariableNode
+	^ (self errorFor: aVariableNode) filteredAST: (aVariableNode class named: #'' start: 1)
 ]

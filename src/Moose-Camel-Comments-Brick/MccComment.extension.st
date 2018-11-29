@@ -6,25 +6,13 @@ MccComment >> gtInspectorBrickEditorIn: aComposite [
 
 	^ aComposite blocText
 		title: 'Live' translated;
-		display: [
-			| theReferences aText |
-			theReferences := self references.
-			aText := self asString asRopedText.
-			theReferences do: [ :eachReference |
-				| aSubText |
-				aSubText := aText from: eachReference from to: eachReference to.
-				eachReference style: aSubText.
-				aSubText attributes: {
-					BrTextClickAttribute new 
-						beNotOverwritableByStyler;
-						action: [ :clickedText :aTarget :anEvent | eachReference browseDueTo: anEvent ] } ].
-				aText ]
+		display: [ self gtViewText ]
 ]
 
 { #category : #'*Moose-Camel-Comments-Brick' }
 MccComment >> gtViewText [
 	<return: #BlText>
-	| theReferences aText |
+	| theReferences aText codeSnippets |
 
 	theReferences := self references.
 	aText := self asString asRopedText.
@@ -35,7 +23,27 @@ MccComment >> gtViewText [
 		aSubText attributes: {
 			BrTextClickAttribute new 
 				beNotOverwritableByStyler;
-				action: [ :clickedText :aTarget :anEvent | eachReference browseDueTo: anEvent ] } ].
+				action: [ :clickedText :aTarget :aTextEditor :anEvent | eachReference browseDueTo: anEvent ] } ].
+		
+	codeSnippets := MccSmalltalkInCommentParser parse: self asString.
+	codeSnippets do: [ :eachToken | eachToken codeDo: [ :aCodeToken |
+		| aSubText |
+		aSubText := aText from: eachToken start to: eachToken stop.
+		aSubText
+			replacingAdornment: [
+				BrEditorElement new
+					margin: (BlInsets all: 10);
+					padding: (BlInsets all: 10);
+					editor: (BrTextEditor new
+						styler: (BrRBTextStyler new);
+						text: aSubText asString asRopedText monospace);
+					background: (Color white);
+					look: BrShadowLook;
+					constraintsDo: [ :c |
+						c horizontal matchParent.
+						c vertical matchParent.
+						c textFlow pushLine ] ] ] ].
+
 	^ aText
 ]
 
