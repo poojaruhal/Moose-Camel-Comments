@@ -7,7 +7,7 @@ MccComment >> gtInspectorBrickEditorIn: aComposite [
 	^ aComposite blocText
 		title: 'Live' translated;
 		display: [
-			| theReferences aText codeSnippets |
+			| theReferences aText |
 			theReferences := self references.
 			aText := self asString asRopedText.
 			theReferences do: [ :eachReference |
@@ -17,28 +17,8 @@ MccComment >> gtInspectorBrickEditorIn: aComposite [
 				aSubText attributes: {
 					BrTextClickAttribute new 
 						beNotOverwritableByStyler;
-						action: [ :clickedText :aTarget :aTextEditor :anEvent | eachReference browseDueTo: anEvent ] } ].
-				
-			codeSnippets := MccSmalltalkInCommentParser parse: self asString.
-			codeSnippets do: [ :eachToken |
-				| aSubText |
-				aSubText := aText from: eachToken start to: eachToken stop.
-				aSubText
-					replacingAdornment: [
-						BrEditorElement new
-							margin: (BlInsets all: 10);
-							padding: (BlInsets all: 10);
-							editor: (BrTextEditor new
-								styler: (BrRBTextStyler new);
-								text: aSubText asString asRopedText monospace);
-							background: (Color white);
-							look: BrShadowLook;
-							constraintsDo: [ :c |
-								c horizontal matchParent.
-								c vertical matchParent.
-								c textFlow pushLine ] ] ].
-			
-			aText ]
+						action: [ :clickedText :aTarget :anEvent | eachReference browseDueTo: anEvent ] } ].
+				aText ]
 ]
 
 { #category : #'*Moose-Camel-Comments-Brick' }
