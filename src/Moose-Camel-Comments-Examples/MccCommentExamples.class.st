@@ -1,7 +1,7 @@
 Class {
 	#name : #MccCommentExamples,
 	#superclass : #Object,
-	#category : 'Moose-Camel-Comments-Examples-Examples'
+	#category : #'Moose-Camel-Comments-Examples-Examples'
 }
 
 { #category : #'examples - comment' }

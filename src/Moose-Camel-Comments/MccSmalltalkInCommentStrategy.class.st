@@ -1,7 +1,7 @@
 Class {
 	#name : #MccSmalltalkInCommentStrategy,
 	#superclass : #PP2Strategy,
-	#category : 'Moose-Camel-Comments-Parser'
+	#category : #'Moose-Camel-Comments-Parser'
 }
 
 { #category : #parsing }

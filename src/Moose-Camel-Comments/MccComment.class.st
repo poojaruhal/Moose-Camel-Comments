@@ -66,7 +66,7 @@ Class {
 		'sentences',
 		'words'
 	],
-	#category : 'Moose-Camel-Comments-Model - Comment'
+	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
 { #category : #'instance creation' }

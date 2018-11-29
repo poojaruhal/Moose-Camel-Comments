@@ -4,7 +4,7 @@ I am responsible for all packages and classes needs to be considered in experime
 Class {
 	#name : #MccPackageEnvironmentExamples,
 	#superclass : #Object,
-	#category : 'Moose-Camel-Comments-Examples-Examples'
+	#category : #'Moose-Camel-Comments-Examples-Examples'
 }
 
 { #category : #'environment - examples' }

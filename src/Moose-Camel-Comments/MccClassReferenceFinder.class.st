@@ -4,7 +4,7 @@ I am looking for class references
 Class {
 	#name : #MccClassReferenceFinder,
 	#superclass : #MccReferenceFinder,
-	#category : 'Moose-Camel-Comments-Model - Reference'
+	#category : #'Moose-Camel-Comments-Model - Reference'
 }
 
 { #category : #searching }

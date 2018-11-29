@@ -4,7 +4,7 @@ I represent a package comment
 Class {
 	#name : #MccPackageComment,
 	#superclass : #MccComment,
-	#category : 'Moose-Camel-Comments-Model - Comment'
+	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
 { #category : #testing }

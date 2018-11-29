@@ -1,7 +1,7 @@
 Class {
 	#name : #MccMethodReference,
 	#superclass : #MccReference,
-	#category : 'Moose-Camel-Comments-Model - Reference'
+	#category : #'Moose-Camel-Comments-Model - Reference'
 }
 
 { #category : #accessing }

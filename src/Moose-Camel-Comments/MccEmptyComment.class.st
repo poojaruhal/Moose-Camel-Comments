@@ -6,7 +6,7 @@ Empty comments do not reference any code artefacts
 Class {
 	#name : #MccEmptyComment,
 	#superclass : #MccComment,
-	#category : 'Moose-Camel-Comments-Model - Comment'
+	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
 { #category : #testing }

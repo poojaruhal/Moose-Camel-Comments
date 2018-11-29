@@ -8,7 +8,7 @@ I am just a textual comment that does not belong to anything.
 Class {
 	#name : #MccTextComment,
 	#superclass : #MccComment,
-	#category : 'Moose-Camel-Comments-Model - Comment'
+	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
 { #category : #testing }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'errorNode'
 	],
-	#category : 'Moose-Camel-Comments-Parser'
+	#category : #'Moose-Camel-Comments-Parser'
 }
 
 { #category : #accessing }

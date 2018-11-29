@@ -6,7 +6,7 @@ Class {
 		'artefact',
 		'interval'
 	],
-	#category : 'Moose-Camel-Comments-Model - Reference'
+	#category : #'Moose-Camel-Comments-Model - Reference'
 }
 
 { #category : #accessing }

@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'packages'
 	],
-	#category : 'Moose-Camel-Comments-Model - Environment'
+	#category : #'Moose-Camel-Comments-Model - Environment'
 }
 
 { #category : #'instance creation' }

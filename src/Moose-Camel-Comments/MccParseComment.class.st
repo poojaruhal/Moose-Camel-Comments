@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'string'
 	],
-	#category : 'Moose-Camel-Comments'
+	#category : #'Moose-Camel-Comments'
 }
 
 { #category : #accessing }

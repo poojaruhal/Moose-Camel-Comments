@@ -1,7 +1,7 @@
 Class {
 	#name : #MccClassWithoutComment,
 	#superclass : #Object,
-	#category : 'Moose-Camel-Comments-Examples-Artefacts'
+	#category : #'Moose-Camel-Comments-Examples-Artefacts'
 }
 
 { #category : #accessing }

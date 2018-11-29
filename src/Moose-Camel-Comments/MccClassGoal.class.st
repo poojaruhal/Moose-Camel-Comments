@@ -15,7 +15,7 @@ Class {
 	#instVars : [
 		'goal'
 	],
-	#category : 'Moose-Camel-Comments-Model'
+	#category : #'Moose-Camel-Comments-Model'
 }
 
 { #category : #'as yet unclassified' }

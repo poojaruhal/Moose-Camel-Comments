@@ -1,7 +1,7 @@
 Class {
 	#name : #MccClassStatistics,
 	#superclass : #MccStatistics,
-	#category : 'Moose-Camel-Comments-Model'
+	#category : #'Moose-Camel-Comments-Model'
 }
 
 { #category : #accessing }

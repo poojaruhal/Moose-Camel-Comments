@@ -5,7 +5,7 @@ Using me is expensive
 Class {
 	#name : #MccSystemEnvironment,
 	#superclass : #MccEnvironment,
-	#category : 'Moose-Camel-Comments-Model - Environment'
+	#category : #'Moose-Camel-Comments-Model - Environment'
 }
 
 { #category : #'instance creation' }

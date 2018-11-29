@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'methods'
 	],
-	#category : 'Moose-Camel-Comments-Model - Environment'
+	#category : #'Moose-Camel-Comments-Model - Environment'
 }
 
 { #category : #navigation }

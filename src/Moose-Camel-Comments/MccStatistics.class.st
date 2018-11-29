@@ -16,7 +16,7 @@ Class {
 		'filteredEntities',
 		'allEntities'
 	],
-	#category : 'Moose-Camel-Comments-Model'
+	#category : #'Moose-Camel-Comments-Model'
 }
 
 { #category : #'instance creation' }

@@ -5,7 +5,7 @@ Class {
 		'assignments',
 		'classOrMetaclass'
 	],
-	#category : 'Moose-Camel-Comments-Parser'
+	#category : #'Moose-Camel-Comments-Parser'
 }
 
 { #category : #accessing }

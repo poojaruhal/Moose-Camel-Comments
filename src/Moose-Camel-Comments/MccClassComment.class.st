@@ -33,7 +33,7 @@ Class {
 	#instVars : [
 		'commentStamps'
 	],
-	#category : 'Moose-Camel-Comments-Model - Comment'
+	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
 { #category : #testing }

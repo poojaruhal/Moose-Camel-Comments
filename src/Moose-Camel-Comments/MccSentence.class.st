@@ -14,7 +14,7 @@ Class {
 		'string',
 		'interval'
 	],
-	#category : 'Moose-Camel-Comments-Model - Text'
+	#category : #'Moose-Camel-Comments-Model - Text'
 }
 
 { #category : #'instance creation' }

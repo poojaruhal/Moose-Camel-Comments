@@ -9,7 +9,7 @@ Class {
 		'filteredAST',
 		'originalAST'
 	],
-	#category : 'Moose-Camel-Comments-Parser'
+	#category : #'Moose-Camel-Comments-Parser'
 }
 
 { #category : #'instance creation' }

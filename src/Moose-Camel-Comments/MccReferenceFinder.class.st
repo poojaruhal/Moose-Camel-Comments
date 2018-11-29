@@ -8,7 +8,7 @@ Class {
 		'comment',
 		'environment'
 	],
-	#category : 'Moose-Camel-Comments-Model - Reference'
+	#category : #'Moose-Camel-Comments-Model - Reference'
 }
 
 { #category : #accessing }

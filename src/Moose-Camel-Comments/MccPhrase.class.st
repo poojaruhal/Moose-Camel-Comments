@@ -7,5 +7,5 @@ Class {
 	#instVars : [
 		'words'
 	],
-	#category : 'Moose-Camel-Comments-Model - Text'
+	#category : #'Moose-Camel-Comments-Model - Text'
 }

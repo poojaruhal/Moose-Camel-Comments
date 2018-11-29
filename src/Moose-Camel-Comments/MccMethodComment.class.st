@@ -4,7 +4,7 @@ I represent a method comment
 Class {
 	#name : #MccMethodComment,
 	#superclass : #MccComment,
-	#category : 'Moose-Camel-Comments-Model - Comment'
+	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
 { #category : #testing }

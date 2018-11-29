@@ -5,7 +5,7 @@ Class {
 		'sentence',
 		'mcInputProcessor'
 	],
-	#category : 'Moose-Camel-Comments'
+	#category : #'Moose-Camel-Comments'
 }
 
 { #category : #'instance creation' }
