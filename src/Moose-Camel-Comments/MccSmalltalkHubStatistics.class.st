@@ -26,6 +26,31 @@ MccSmalltalkHubStatistics >> projects [
 ]
 
 { #category : #'accessing - data' }
+MccSmalltalkHubStatistics >> projectsInBarChartByTimeline [
+	| b ds |.
+	b := RTGrapher new.
+	"We defien the size of the charting area"
+	b extent: 500 @ 100.
+	ds := RTData new.
+	"When the mouse is above a bar, say which class we are point at"
+	ds interaction popup.
+	"Each subclass of RTShape will be a bar"
+	ds points: (self timestampsByTimeline).
+	
+	"The height of a bar will be the number of methods (defined in the instance side)"
+	ds y: [ :c |		c size asInteger].
+	"We set a color of the rectangle"
+	ds dotShape rectangle color: Color blue.
+	"Set the width of a bar"
+	ds barShape color: Color blue; width: 15.
+
+	b add: ds.
+	b axisX title:'Year'.
+	b axisY title:'Number of projects'.
+	^ b
+]
+
+{ #category : #'accessing - data' }
 MccSmalltalkHubStatistics >> smalltalkHubJson [
 
 	^ NeoJSONReader fromString: self smalltalkhubFile.
@@ -174,8 +199,14 @@ MccSmalltalkHubStatistics >> smalltalkhubFile [
 MccSmalltalkHubStatistics >> timestampsByTimeline [
 	<return:#Timestamp>
 	
-	^ ((self projects collect:#timestamp)
+	|timestamps|
+	
+	timestamps:= ((self projects collect:#timestamp)
 			select:[:aTimestamp | aTimestamp ~=''])
-			sort:[:a :b | a asDateAndTime   < b asDateAndTime ]
+			sort:[:a :b |
+				 a asDateAndTime
+				< b asDateAndTime ].
+			
+	^ timestamps groupedBy: [:aTimestamp | aTimestamp year].
 	
 ]

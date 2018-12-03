@@ -50,12 +50,27 @@ MccSmalltalkHubProjectStatistics >> graphData [
 	^ allStatistics.
 ]
 
+{ #category : #'gt-inspector-extension' }
+MccSmalltalkHubProjectStatistics >> gtInspectorPackagesIn: aComposite [
+	<gtInspectorPresentationOrder: 0>
+
+	^ aComposite text
+		title: 'Project' translated;
+		display: [ self project].
+]
+
 { #category : #accessing }
 MccSmalltalkHubProjectStatistics >> metadata [
 	<return:#Dictionary>
 	
 	^ (self project at:'data')
 	ifNil: [''] .
+]
+
+{ #category : #accessing }
+MccSmalltalkHubProjectStatistics >> printOn: aStream [
+	aStream 
+		nextPutAll: self projectName.
 ]
 
 { #category : #walking }
