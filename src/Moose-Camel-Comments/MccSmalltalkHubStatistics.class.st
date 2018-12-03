@@ -1,3 +1,17 @@
+"
+I am responsible for showing timestamps and projects from smalltalk hub.
+I have data from smalltalk hub in the form of JSON.
+I can get JSON either from smalltalkhubDataExample or smalltalkhubFile.
+Once I have correct data, I can give you the list of project as by timeline.
+My method timestampsByTimeline is responsibile for providing timestamps of all the project sorted.
+
+I can be used with: 
+
+smalltalkHubProjects:= MccSmalltalkHubStatistics new.
+smalltalkHubProjects timestampsByTimeline.
+
+
+"
 Class {
 	#name : #MccSmalltalkHubStatistics,
 	#superclass : #MccStatistics,
@@ -8,18 +22,18 @@ Class {
 MccSmalltalkHubStatistics >> projects [
 	<return:#Dictionary>
 	
-	^ self smalltalkHubJson collect:[:each | MccProjectStatistics from:each]
+	^ self smalltalkHubJson collect:[:each | MccSmalltalkHubProjectStatistics from:each]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - data' }
 MccSmalltalkHubStatistics >> smalltalkHubJson [
 
 	^ NeoJSONReader fromString: self smalltalkhubFile.
 
 ]
 
-{ #category : #'as yet unclassified' }
-MccSmalltalkHubStatistics >> smalltalkhubData [
+{ #category : #'accessing - data' }
+MccSmalltalkHubStatistics >> smalltalkhubDataExample [
 	
 	^ '[
   {
@@ -150,15 +164,18 @@ MccSmalltalkHubStatistics >> smalltalkhubData [
 ]'.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - data' }
 MccSmalltalkHubStatistics >> smalltalkhubFile [
 	
 		 ^ '/Users/poojarani/Downloads/smalltalk_hub_projects_20181121124234.json' asFileReference contents.
 ]
 
 { #category : #walking }
-MccSmalltalkHubStatistics >> timestamps [
+MccSmalltalkHubStatistics >> timestampsByTimeline [
 	<return:#Timestamp>
 	
-	^ self projects collect:#timestamp.
+	^ ((self projects collect:#timestamp)
+			select:[:aTimestamp | aTimestamp ~=''])
+			sort:[:a :b | a asDateAndTime   < b asDateAndTime ]
+	
 ]

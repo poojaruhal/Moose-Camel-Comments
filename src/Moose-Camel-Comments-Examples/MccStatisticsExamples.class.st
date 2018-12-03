@@ -1,7 +1,7 @@
 Class {
 	#name : #MccStatisticsExamples,
 	#superclass : #Object,
-	#category : #'Moose-Camel-Comments-Examples-Examples'
+	#category : #'Moose-Camel-Comments-Examples-Statistics'
 }
 
 { #category : #navigation }
@@ -18,4 +18,13 @@ MccStatisticsExamples >> mccStatistics [
 	<return: #Instance of: #MccStatistics>
 	
 	^ (MccStatistics with: ((MccSystemEnvironment new) allClasses as:MccClasses))
+]
+
+{ #category : #navigation }
+MccStatisticsExamples >> smalltalkHubProjectsTimestamp [
+	<gtExample>
+	<return: #Array of: 'Timestamp'>
+	
+	^ MccSmalltalkHubStatistics new timestampsByTimeline
+
 ]

@@ -1,5 +1,13 @@
+"
+I am a project selected from SmalltalkHub.
+I know all parameters of a project like commits, contributers, metadata, project, timestamp of the project.
+My instance is created from MccSmalltalkHubStatistics smalltalkHubJson.
+MccSmalltalkHubStatistics smalltalkHubJson can take ExampleData or File.
+
+
+"
 Class {
-	#name : #MccProjectStatistics,
+	#name : #MccSmalltalkHubProjectStatistics,
 	#superclass : #MccStatistics,
 	#instVars : [
 		'project'
@@ -8,28 +16,28 @@ Class {
 }
 
 { #category : #'instance creation' }
-MccProjectStatistics class >> from: aProject [
+MccSmalltalkHubProjectStatistics class >> from: aProject [
 
 	^ self new project: aProject.
 ]
 
 { #category : #walking }
-MccProjectStatistics >> commits [
+MccSmalltalkHubProjectStatistics >> commits [
 	<return:#Dictionary of:#Commits>
 	
 	^ (self project at:'commits')
 	ifEmpty: [ '' ].
 ]
 
-{ #category : #'as yet unclassified' }
-MccProjectStatistics >> contributers [
+{ #category : #walking }
+MccSmalltalkHubProjectStatistics >> contributers [
 
 	^ (self project at:'contributers')
 	ifEmpty: [ '' ].
 ]
 
-{ #category : #'as yet unclassified' }
-MccProjectStatistics >> graphData [
+{ #category : #metrics }
+MccSmalltalkHubProjectStatistics >> graphData [
 	<return:#Dictionary of:#Metrics>
 
 	self allStatistics addAll:{
@@ -43,7 +51,7 @@ MccProjectStatistics >> graphData [
 ]
 
 { #category : #accessing }
-MccProjectStatistics >> metadata [
+MccSmalltalkHubProjectStatistics >> metadata [
 	<return:#Dictionary>
 	
 	^ (self project at:'data')
@@ -51,35 +59,35 @@ MccProjectStatistics >> metadata [
 ]
 
 { #category : #walking }
-MccProjectStatistics >> project [
+MccSmalltalkHubProjectStatistics >> project [
 	<return:#Dictionary of:#ProjectData>
 	
 	^ project
 ]
 
 { #category : #accessing }
-MccProjectStatistics >> project: anObject [
+MccSmalltalkHubProjectStatistics >> project: anObject [
 	project := anObject
 ]
 
 { #category : #accessing }
-MccProjectStatistics >> projectName [
+MccSmalltalkHubProjectStatistics >> projectName [
 	<return:#String>
 	
 	^ self project at: 'project'
 ]
 
 { #category : #walking }
-MccProjectStatistics >> timestamp [
+MccSmalltalkHubProjectStatistics >> timestamp [
 	<return:#TimeStamp>
 	
 	^ (self unixTimestamp)
-	ifNil: [ '' ]
-	ifNotNil: [ DateAndTime fromUnixTime: self unixTimestamp].
+	ifNil: [ '']
+	ifNotNil: [ DateAndTime fromUnixTime: self unixTimestamp - 2177452800].
 ]
 
 { #category : #walking }
-MccProjectStatistics >> unixTimestamp [
+MccSmalltalkHubProjectStatistics >> unixTimestamp [
 	
 	^ (self metadata) 
 	ifEmpty:[]
