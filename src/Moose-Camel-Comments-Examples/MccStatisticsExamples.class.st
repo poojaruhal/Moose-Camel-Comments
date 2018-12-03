@@ -25,6 +25,6 @@ MccStatisticsExamples >> smalltalkHubProjectsTimestamp [
 	<gtExample>
 	<return: #Array of: 'Timestamp'>
 	
-	^ MccSmalltalkHubStatistics new timestampsByTimeline
+	^ MccSmalltalkHubStatistics new timestampsByYear
 
 ]

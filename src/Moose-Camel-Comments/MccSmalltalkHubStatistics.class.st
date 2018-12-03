@@ -26,31 +26,6 @@ MccSmalltalkHubStatistics >> projects [
 ]
 
 { #category : #'accessing - data' }
-MccSmalltalkHubStatistics >> projectsInBarChartByTimeline [
-	| b ds |.
-	b := RTGrapher new.
-	"We defien the size of the charting area"
-	b extent: 500 @ 100.
-	ds := RTData new.
-	"When the mouse is above a bar, say which class we are point at"
-	ds interaction popup.
-	"Each subclass of RTShape will be a bar"
-	ds points: (self timestampsByTimeline).
-	
-	"The height of a bar will be the number of methods (defined in the instance side)"
-	ds y: [ :c |		c size asInteger].
-	"We set a color of the rectangle"
-	ds dotShape rectangle color: Color blue.
-	"Set the width of a bar"
-	ds barShape color: Color blue; width: 15.
-
-	b add: ds.
-	b axisX title:'Year'.
-	b axisY title:'Number of projects'.
-	^ b
-]
-
-{ #category : #'accessing - data' }
 MccSmalltalkHubStatistics >> smalltalkHubJson [
 
 	^ NeoJSONReader fromString: self smalltalkhubFile.
@@ -196,17 +171,49 @@ MccSmalltalkHubStatistics >> smalltalkhubFile [
 ]
 
 { #category : #walking }
-MccSmalltalkHubStatistics >> timestampsByTimeline [
+MccSmalltalkHubStatistics >> timestamps [
 	<return:#Timestamp>
 	
-	|timestamps|
-	
-	timestamps:= ((self projects collect:#timestamp)
+	^ ((self projects collect:#timestamp)
 			select:[:aTimestamp | aTimestamp ~=''])
 			sort:[:a :b |
 				 a asDateAndTime
 				< b asDateAndTime ].
-			
-	^ timestamps groupedBy: [:aTimestamp | aTimestamp year].
 	
+	
+]
+
+{ #category : #walking }
+MccSmalltalkHubStatistics >> timestampsByYear [
+	<return:#Timestamp>
+			
+	^ self timestamps groupedBy: [:aTimestamp | aTimestamp year].
+	
+]
+
+{ #category : #'accessing - data' }
+MccSmalltalkHubStatistics >> viewStatisticsGroupedByYear [
+	| b ds dataSet|.
+
+	b := RTGrapher new.
+	b extent: 500 @ 200.
+	ds := RTData new.
+	ds interaction highlight.
+	ds points: self timestampsByYear associations.
+	ds barShape width: 10.
+	ds y: [ :e | e value size].
+	ds barChartWithBarTitle: #key.
+	b add: ds.
+	dataSet := RTData new.
+	dataSet dotShape color: (Color red alpha: 0.3);
+	labeledAs: [ :e | e value size asString].
+	dataSet
+	points: self timestampsByYear associations;
+	y: [ :e | e value size].
+	b add: dataSet.
+	b axisY.
+	b axisX
+		noTick;
+		noLabel.
+ 	^ b
 ]
