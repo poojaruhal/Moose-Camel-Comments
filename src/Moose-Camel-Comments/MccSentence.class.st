@@ -72,6 +72,16 @@ MccSentence >> gtInspectorWordsIn: aComposite [
 		display: [  self words ]
 ]
 
+{ #category : #accessing }
+MccSentence >> hasWarning [
+	
+	| warnings |
+	
+	warnings := MccClassGoal new warningWords.
+	
+	^ warnings anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
+]
+
 { #category : #comparing }
 MccSentence >> hash [
 	"Answer an integer value that is related to the identity of the receiver."

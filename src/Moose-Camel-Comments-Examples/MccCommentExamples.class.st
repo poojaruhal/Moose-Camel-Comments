@@ -5,6 +5,38 @@ Class {
 }
 
 { #category : #'examples - comment' }
+MccCommentExamples >> classCommentGetCodeTokens [
+	<gtExample>
+	| aClassComment code |
+	
+	aClassComment := MccClassComment of: MccClassWithComment.
+	code := aClassComment code.
+
+	self assert: (aClassComment isKindOf: MccClassComment).
+	self assert: aClassComment commentClass equals: MccClassWithComment.
+	self assert: aClassComment asString equals: MccClassWithComment comment.
+	self assert: code isEmpty.
+	
+	^ code
+]
+
+{ #category : #'examples - comment' }
+MccCommentExamples >> classCommentGetTextTokens [
+	<gtExample>
+	| aClassComment text |
+	
+	aClassComment := MccClassComment of: MccClassWithComment.
+	text := aClassComment text.
+
+	self assert: (aClassComment isKindOf: MccClassComment).
+	self assert: aClassComment commentClass equals: MccClassWithComment.
+	self assert: aClassComment asString equals: MccClassWithComment comment.
+	self assert: text size = 2.
+	
+	^ text
+]
+
+{ #category : #'examples - comment' }
 MccCommentExamples >> classCommentOnClassWithComment [
 	<gtExample>
 	| aClassComment |
@@ -48,6 +80,22 @@ MccCommentExamples >> classCommentOnClassWithoutComment [
 	self assert: aClassComment references equals: #().
 	
 	^ aClassComment
+]
+
+{ #category : #'examples - comment' }
+MccCommentExamples >> classCommentSplitIntoSentences [
+	<gtExample>
+	| aClassComment sentences |
+	
+	aClassComment := MccClassComment of: MccClassWithComment.
+	sentences := aClassComment sentences.
+
+	self assert: (aClassComment isKindOf: MccClassComment).
+	self assert: aClassComment commentClass equals: MccClassWithComment.
+	self assert: aClassComment asString equals: MccClassWithComment comment.
+	self assert: sentences size equals: 7.
+	
+	^ sentences
 ]
 
 { #category : #'examples - comment' }

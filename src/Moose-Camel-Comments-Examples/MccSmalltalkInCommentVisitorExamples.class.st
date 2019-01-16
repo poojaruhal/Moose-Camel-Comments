@@ -30,6 +30,24 @@ MccSmalltalkInCommentVisitorExamples >> visitAssignment [
 ]
 
 { #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitCodeInASentence [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := 'Also, (Color red: 0.2 green: 0.6 blue: 1.0) or (Color r: 0.2 g: 0.6 b: 1.0) are code.'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid not.
+	self assert: aResult isPartiallyValid.
+	
+	^ aResult
+]
+
+{ #category : #visiting }
 MccSmalltalkInCommentVisitorExamples >> visitComplexMessageChain [
 	<gtExample>
 	| aParser aText aVisitor anAST aResult |
@@ -81,6 +99,24 @@ MccSmalltalkInCommentVisitorExamples >> visitEmptyBlock [
 	self assert: aResult isValid.
 	self assert: aResult isPartiallyValid.
 	self assert: aResult filteredAST sourceInterval equals: (1 to: 2).
+	
+	^ aResult
+]
+
+{ #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitHashtagExample [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := '#Variable is an instance variable'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid not.
+	self assert: aResult isPartiallyValid not.
 	
 	^ aResult
 ]
@@ -216,6 +252,24 @@ MccSmalltalkInCommentVisitorExamples >> visitOnlyNil [
 ]
 
 { #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitSelfInASentence [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := 'It started itself by going wild'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid not.
+	self assert: aResult isPartiallyValid not.
+	
+	^ aResult
+]
+
+{ #category : #visiting }
 MccSmalltalkInCommentVisitorExamples >> visitSelfKeywordWithBlockArgument [
 	<gtExample>
 	| aParser aText aVisitor anAST aResult |
@@ -233,6 +287,42 @@ MccSmalltalkInCommentVisitorExamples >> visitSelfKeywordWithBlockArgument [
 	
 	self assert: aResult isValid.
 	self assert: aResult isPartiallyValid.
+	
+	^ aResult
+]
+
+{ #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitSentenceWithApostrophes [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := 'He''s happy it''s only a cold'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid not.
+	self assert: aResult isPartiallyValid not.
+	
+	^ aResult
+]
+
+{ #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitSentenceWithColon [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := 'He said: this is my mom'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid not.
+	self assert: aResult isPartiallyValid not.
 	
 	^ aResult
 ]
@@ -256,6 +346,29 @@ MccSmalltalkInCommentVisitorExamples >> visitSequenceWithInvalidFirstStatementAn
 	
 	self assert: aResult isValid not.
 	self assert: aResult isPartiallyValid not.
+	
+	^ aResult
+]
+
+{ #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitUndeclaredVariableAsReceivedObject [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := '(LayoutFrame identity
+	topOffset: topHeight;
+	bottomFraction: 0;
+	bottomOffset: self buttonsBarHeight;
+	leftOffset: -1;
+	rightOffset: 1)'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid.
+	self assert: aResult isPartiallyValid.
 	
 	^ aResult
 ]

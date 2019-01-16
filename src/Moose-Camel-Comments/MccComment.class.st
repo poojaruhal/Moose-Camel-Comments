@@ -64,9 +64,11 @@ Class {
 	#instVars : [
 		'artefact',
 		'sentences',
-		'words'
+		'words',
+		'code',
+		'text'
 	],
-	#category : 'Moose-Camel-Comments-Model - Comment'
+	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
 { #category : #'instance creation' }
@@ -121,6 +123,18 @@ MccComment >> asString [
 	^ self subclassResponsibility
 ]
 
+{ #category : #accessing }
+MccComment >> code [
+	"returns array of code tokens from comment"
+	| aParser theTokens |
+
+	aParser := MccSmalltalkInCommentParser.
+	theTokens := aParser parse: self asString.
+	code := theTokens select: [ :eachToken | 
+		eachToken isKindOf: MccSmalltalkCodeToken ].
+	^ code
+]
+
 { #category : #private }
 MccComment >> computeSentences [
 	"Split and return a collection of sentences of this comment"
@@ -128,13 +142,59 @@ MccComment >> computeSentences [
 
 	^ Array streamContents: [ :aStream | 
 		| aCommentString |
-		(aCommentString := self asString)
-			splitOn: String cr
+		(aCommentString := self computeSentencesWithRegex)
+			splitOn: '<stop>'
 			indicesDo: [ :start :end |
 				| aString |
 				aString := aCommentString copyFrom: start to: end.
 				aString ifNotEmpty: [
 					aStream nextPut: (MccSentence new string: aString interval: (start to: end)) ] ] ]
+]
+
+{ #category : #private }
+MccComment >> computeSentencesWithRegex [
+"return a new version of comment with indicators on where to split"
+	| alphabets prefixes suffixes starters acronyms websites textToSplit |
+	alphabets := '([A-Za-z])'.
+	prefixes := '(Mr|St|Mrs|Ms|Dr)[.]'.
+	suffixes := '(Inc|Ltd|Jr|Sr|Co)'.
+	starters := 	'(Mr|Mrs|Ms|Dr|He\s|She\s|It\s|They\s|Their\s|Our\s|We\s|But\s|However\s|That\s|This\s|Wherever)'.
+	acronyms := '([A-Za-z][.][A-Za-z][.]([A-Za-z][.])?)'.
+	websites := '[.](com|net|org|io|gov)'.
+
+	textToSplit := self asString.
+	textToSplit := ' ', textToSplit, '  '.
+	textToSplit := textToSplit copyWithRegex: '(\',String cr,'|\', String lf, ')([ -]|[-])' matchesReplacedWith: '<stop>-'.
+	textToSplit := textToSplit copyWithRegex: '\n' matchesReplacedWith: ' '.
+	textToSplit := textToSplit copyWithRegex: prefixes matchesTranslatedUsing: [:each | each copyReplaceAll: '.' 	with: '<prd>'].
+	textToSplit := textToSplit copyWithRegex: websites matchesTranslatedUsing: [:each | each copyReplaceAll: '.' 	with: '<prd>'].
+	textToSplit := textToSplit copyWithRegex: (acronyms, ' ', starters) matchesTranslatedUsing: [:each | each 	copyReplaceAll: '. ' with: '.<stop> '].
+	textToSplit := textToSplit copyWithRegex: acronyms matchesTranslatedUsing: [:each | each copyReplaceAll: '.' 	with: '<prd>'].
+	textToSplit := textToSplit copyWithRegex: ('\s', alphabets, '[.] ') matchesTranslatedUsing: [:each | each 	copyReplaceAll: '.' with: '<prd>'].
+	textToSplit := textToSplit copyWithRegex: (' ', suffixes, '[.] ', starters) matchesTranslatedUsing: [:each | each 	copyReplaceAll: '. ' with: '.<stop> '].
+	textToSplit := textToSplit copyWithRegex: (' ', suffixes, '[.]') matchesTranslatedUsing: [:each | each 	copyReplaceAll: '.' with: '<prd>'].
+	textToSplit := textToSplit copyWithRegex: (' ', alphabets, '[.]') matchesTranslatedUsing: [:each | each 	copyReplaceAll: '.' with: '.<prd>'].
+
+	textToSplit := textToSplit copyReplaceAll: '?''' with: '''?'.
+	textToSplit := textToSplit copyReplaceAll: '.''' with: '''.'.
+	textToSplit := textToSplit copyReplaceAll: '!''' with: '''!'.
+	textToSplit := textToSplit copyReplaceAll: '...''' with: '''...'.
+	textToSplit := textToSplit copyReplaceAll: '?"' with: '"?'.
+	textToSplit := textToSplit copyReplaceAll: '."' with: '".'.
+	textToSplit := textToSplit copyReplaceAll: '!"' with: '"!'.
+	textToSplit := textToSplit copyReplaceAll: '..."' with: '"...'.
+
+	textToSplit := textToSplit copyReplaceAll: '?' with: '?<stop>'.
+	textToSplit := textToSplit copyReplaceAll: '...' with: '<prd><prd><prd><stop>'.
+	textToSplit := textToSplit copyReplaceAll: '!' with: '!<stop>'.
+	textToSplit := textToSplit copyReplaceAll: '.' with: '.<stop>'.
+
+	textToSplit := textToSplit copyReplaceAll: '<prd>' with: '.'.
+
+	"splitArray := text splitOn: '<stop>'.
+	splitArray remove: (sentences last).
+	sentences := splitArray collect: [ :each | each trim ]."
+	^ textToSplit
 ]
 
 { #category : #private }
@@ -232,6 +292,18 @@ MccComment >> stopwords [
 	<return: #Collection of: #MccWord>
 
 	^ self words select: #isStopword
+]
+
+{ #category : #accessing }
+MccComment >> text [
+	"returns array of text tokens from comment"
+	| aParser theTokens |
+
+	aParser := MccSmalltalkInCommentParser.
+	theTokens := aParser parse: self asString.
+	text := theTokens select: [ :eachToken | 
+		eachToken isKindOf: MccSmalltalkTextToken ].
+	^ text
 ]
 
 { #category : #accessing }

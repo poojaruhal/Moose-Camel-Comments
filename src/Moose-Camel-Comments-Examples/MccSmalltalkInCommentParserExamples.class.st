@@ -4,6 +4,22 @@ Class {
 	#category : #'Moose-Camel-Comments-Examples-Parser'
 }
 
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parseCodeInSentence [
+	<gtExample>
+	| aParser aString theTokens |
+	
+	aParser := self parser.
+	aString := 'Also, (Color red: 0.2 green: 0.6 blue: 1.0) or (Color r: 0.2 g: 0.6 b: 1.0) are code.'.
+	
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 5.
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
+	self assert: (theTokens second isKindOf: MccSmalltalkCodeToken).
+
+	^ theTokens
+]
+
 { #category : #parsing }
 MccSmalltalkInCommentParserExamples >> parseCodeWithLastDot [
 	<gtExample>
@@ -74,6 +90,24 @@ fortyTwo logCr'.
 ]
 
 { #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parseHashtagExample [
+	<gtExample>
+	| aParser aString theTokens |
+	
+	aParser := self parser.
+	aString := '#Variable is an instance variable'.
+	
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
+	
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
 MccSmalltalkInCommentParserExamples >> parseHelloWorld [
 	<gtExample>
 	| aParser aString theTokens |
@@ -88,6 +122,24 @@ MccSmalltalkInCommentParserExamples >> parseHelloWorld [
 	self assert: theTokens first stop equals: aString size.
 	self assert: theTokens first value equals: aString.
 	
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parseSelfInSentence [
+	<gtExample>
+	| aParser aString theTokens |
+	
+	aParser := self parser.
+	aString := 'It started itself a few minutes ago.'.
+	
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
+
 	^ theTokens
 ]
 
@@ -106,6 +158,42 @@ MccSmalltalkInCommentParserExamples >> parseSelfKeywordWithBlockArgument [
 	theTokens := aParser parse: aString.
 	self assert: theTokens size equals: 1.
 	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
+	
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parseSentenceWithApostrophes [
+	<gtExample>
+	| aParser aString theTokens |
+	
+	aParser := self parser.
+	aString := 'He''s happy it''s only a cold.'.
+	
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
+	
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parseSentenceWithColon [
+	<gtExample>
+	| aParser aString theTokens |
+	
+	aParser := self parser.
+	aString := 'Example: this.'.
+	
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
 	self assert: theTokens first start equals: 1.
 	self assert: theTokens first stop equals: aString size.
 	self assert: theTokens first value equals: aString.
@@ -243,6 +331,29 @@ p := ProgressBarMorph from: 0 to: 100.'.
 	anAST := aParser parse: aString.
 	
 	^ anAST
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parseUndeclaredVariableAsReceivedObject [
+	<gtExample>
+	| aParser aString theTokens |
+	
+	aParser := self parser.
+	aString := '(LayoutFrame identity
+	topOffset: topHeight;
+	bottomFraction: 0;
+	bottomOffset: self buttonsBarHeight;
+	leftOffset: -1;
+	rightOffset: 1)'.
+	
+	theTokens := aParser parse: aString.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
+
+	^ theTokens
 ]
 
 { #category : #'instance creation' }
