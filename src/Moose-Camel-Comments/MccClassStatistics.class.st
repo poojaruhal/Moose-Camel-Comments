@@ -1,7 +1,16 @@
 Class {
 	#name : #MccClassStatistics,
 	#superclass : #MccStatistics,
-	#category : 'Moose-Camel-Comments-Model'
+	#instVars : [
+		'inst'
+	],
+	#classVars : [
+		'cls'
+	],
+	#classInstVars : [
+		'stat'
+	],
+	#category : #'Moose-Camel-Comments-Model'
 }
 
 { #category : #accessing }

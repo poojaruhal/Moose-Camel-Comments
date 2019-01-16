@@ -51,6 +51,11 @@ MccSmalltalkInCommentParserResult >> filteredAST: anObject [
 	filteredAST := anObject
 ]
 
+{ #category : #accessing }
+MccSmalltalkInCommentParserResult >> filteredAstDo: aBlock [
+	aBlock value: self filteredAST
+]
+
 { #category : #'as yet unclassified' }
 MccSmalltalkInCommentParserResult >> gtInspectorValidPartIn: aComposite [
 	<gtInspectorPresentationOrder: 1>

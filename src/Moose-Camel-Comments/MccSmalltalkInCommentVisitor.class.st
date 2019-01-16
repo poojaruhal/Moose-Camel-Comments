@@ -5,7 +5,10 @@ Class {
 		'assignments',
 		'classOrMetaclass'
 	],
-	#category : 'Moose-Camel-Comments-Parser'
+	#classVars : [
+		'allMethods'
+	],
+	#category : #'Moose-Camel-Comments-Parser'
 }
 
 { #category : #accessing }
@@ -40,7 +43,13 @@ MccSmalltalkInCommentVisitor >> errorFor: aRBNode [
 MccSmalltalkInCommentVisitor >> initialize [
 	super initialize.
 	
-	assignments := OrderedCollection new
+	assignments := OrderedCollection new.
+	
+
+	allMethods := allMethods ifNil: [
+		(SystemNavigation default allMethods)
+			collect: [ :each | each selector ]
+			as: Set ]
 ]
 
 { #category : #'private - testing' }
@@ -139,7 +148,7 @@ MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
 
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitMessageNode: aMessageNode [ 
-	| aMessageResult theArguments |
+	| aMessageResult theArguments theSelector |
 	
 	aMessageResult := self resultFor: aMessageNode.
 	
@@ -147,13 +156,22 @@ MccSmalltalkInCommentVisitor >> visitMessageNode: aMessageNode [
 		ifTrue: [
 			| aReceiverResult |
 			aReceiverResult := self visitNode: aMessageNode receiver.
-			aReceiverResult isValid
-				ifFalse: [
+			(aReceiverResult isValid not and: [ aReceiverResult isPartiallyValid not ])
+				ifTrue: [
 					aMessageResult isValid: false.
 					aMessageResult isPartiallyValid: false.
 					aMessageResult errorNode: aMessageNode receiver.
 					aMessageResult errorResult: aReceiverResult.
-					^ aMessageResult ] ].
+					^ aMessageResult ].
+			(aReceiverResult isValid not and: [ aReceiverResult isPartiallyValid ])
+				ifTrue: [
+					aMessageResult isValid: false.
+					aMessageResult isPartiallyValid: true.
+					aMessageResult errorNode: aReceiverResult errorNode.
+					aMessageResult errorResult: aReceiverResult.
+					aMessageResult filteredAST: aReceiverResult filteredAST.
+					^ aMessageResult 
+				] ].
 			
 	"here we know that receiver is valid"
 	(self isGlobal: aMessageNode receiver)
@@ -180,6 +198,17 @@ MccSmalltalkInCommentVisitor >> visitMessageNode: aMessageNode [
 				
 				^ aMessageResult ] ].
 		
+	theSelector := aMessageNode selector.
+	( allMethods includes: theSelector )
+		ifFalse: [ 
+				aMessageResult isValid: false.
+				aMessageResult isPartiallyValid: true.
+				aMessageResult errorNode: (RBLiteralValueNode value: aMessageNode selector start: aMessageNode keywordsPositions first stop: aMessageNode stop).
+				"aMessageResult errorNode: aMessageNode."
+				aMessageResult filteredAST: aMessageNode receiver.
+	
+				^ aMessageResult ].
+	
 	^ aMessageResult
 ]
 
@@ -198,11 +227,12 @@ MccSmalltalkInCommentVisitor >> visitSequenceNode: aSequenceNode [
 		eachResult := self visitNode: eachStatement.
 		eachResult isValid
 			ifFalse: [
-				| toBeRemoved |
-				toBeRemoved := theStatements last: (theStatements size - eachIndex + 1).
-				toBeRemoved do: [ :statementToRemove | aSequenceNode removeNode: statementToRemove ].
-
-				aSequenceNode periods: (aSequenceNode periods first: eachIndex - 1).
+			
+				theResult filteredAstDo: [ :aFilteredAST |
+					| toBeRemoved |
+					toBeRemoved := theStatements last: (theStatements size - eachIndex + 1).
+					toBeRemoved do: [ :statementToRemove | aFilteredAST removeNode: statementToRemove ].
+					aFilteredAST periods: (aFilteredAST periods first: eachIndex - 1) ].
 
 				theResult isValid: false.
 				theResult isPartiallyValid: (eachIndex > 1).

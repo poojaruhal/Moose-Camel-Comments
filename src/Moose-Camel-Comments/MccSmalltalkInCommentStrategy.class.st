@@ -11,7 +11,9 @@ MccSmalltalkInCommentStrategy >> parseOn: aPP2Context [
 	
 	smalltalkParser := MccSmalltalkParser new.
 	aResult := smalltalkParser parseOn: aPP2Context.
-
+	
+	(WrapperSignal emit: (((aPP2Context instVarNamed: #collection) asOrderedCollection add: $| afterIndex: aPP2Context position; yourself) as: String)).
+	
 	aResult isPetit2Failure
 		ifTrue: [ aPP2Context restorePosition: position ]
 		ifFalse: [ aResult := self processAST: aResult with: aPP2Context at: position ].
@@ -29,14 +31,19 @@ MccSmalltalkInCommentStrategy >> processAST: anRBNode with: aPP2Context at: aPos
 			^ PP2Failure message: 'First node can not be variable' context: aPP2Context ].
 
 	aResult := anRBNode acceptVisitor: MccSmalltalkInCommentVisitor new.
+	
+	
+	
 	aResult isValid
 		ifTrue: [ ^ anRBNode ].
 	
+
 	aPP2Context restorePosition: aResult errorNode start - 1.
 	
 	aResult isPartiallyValid
 		ifTrue: [
 			| allChildrenNodes |
+			
 			allChildrenNodes := aResult filteredAST allChildren reject: #isSequence.
 			(allChildrenNodes size = 1 and: [ allChildrenNodes first isVariable or: [ allChildrenNodes first isLiteralNode ] ])
 				ifFalse: [ ^ aResult filteredAST ] ].
