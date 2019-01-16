@@ -1,3 +1,17 @@
+"
+I am responsible for showing timestamps and projects from smalltalk hub.
+I have data from smalltalk hub in the form of JSON.
+I can get JSON either from smalltalkhubDataExample or smalltalkhubFile.
+Once I have correct data, I can give you the list of project as by timeline.
+My method timestampsByTimeline is responsibile for providing timestamps of all the project sorted.
+
+I can be used with: 
+
+smalltalkHubProjects:= MccSmalltalkHubStatistics new.
+smalltalkHubProjects timestampsByTimeline.
+
+
+"
 Class {
 	#name : #MccSmalltalkHubStatistics,
 	#superclass : #MccStatistics,
@@ -8,20 +22,19 @@ Class {
 MccSmalltalkHubStatistics >> projects [
 	<return:#Dictionary>
 	
-	^ self smalltalkHubJson collect:[:each | MccProjectStatistics from:each]
+	^ self smalltalkHubJson collect:[:each | MccSmalltalkHubProjectStatistics from:each]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - data' }
 MccSmalltalkHubStatistics >> smalltalkHubJson [
 
-	^ NeoJSONReader fromString: self smalltalkhubData.
+	^ NeoJSONReader fromString: self smalltalkhubFile.
 
 ]
 
-{ #category : #'as yet unclassified' }
-MccSmalltalkHubStatistics >> smalltalkhubData [
+{ #category : #'accessing - data' }
+MccSmalltalkHubStatistics >> smalltalkhubDataExample [
 	
-	" ^ '/Users/poojarani/Downloads/smalltalk_hub_projects_20181121124234.json' asFileReference contents."
 	^ '[
   {
     "user": "OlesDobosevych",
@@ -149,4 +162,58 @@ MccSmalltalkHubStatistics >> smalltalkhubData [
     ]
   }
 ]'.
+]
+
+{ #category : #'accessing - data' }
+MccSmalltalkHubStatistics >> smalltalkhubFile [
+	
+		 ^ '/Users/poojarani/Downloads/smalltalk_hub_projects_20181121124234.json' asFileReference contents.
+]
+
+{ #category : #walking }
+MccSmalltalkHubStatistics >> timestamps [
+	<return:#Timestamp>
+	
+	^ ((self projects collect:#timestamp)
+			select:[:aTimestamp | aTimestamp ~=''])
+			sort:[:a :b |
+				 a asDateAndTime
+				< b asDateAndTime ].
+	
+	
+]
+
+{ #category : #walking }
+MccSmalltalkHubStatistics >> timestampsByYear [
+	<return:#Timestamp>
+			
+	^ self timestamps groupedBy: [:aTimestamp | aTimestamp year].
+	
+]
+
+{ #category : #'accessing - data' }
+MccSmalltalkHubStatistics >> viewStatisticsGroupedByYear [
+	| b ds dataSet|.
+
+	b := RTGrapher new.
+	b extent: 500 @ 200.
+	ds := RTData new.
+	ds interaction highlight.
+	ds points: self timestampsByYear associations.
+	ds barShape width: 10.
+	ds y: [ :e | e value size].
+	ds barChartWithBarTitle: #key.
+	b add: ds.
+	dataSet := RTData new.
+	dataSet dotShape color: (Color red alpha: 0.3);
+	labeledAs: [ :e | e value size asString].
+	dataSet
+	points: self timestampsByYear associations;
+	y: [ :e | e value size].
+	b add: dataSet.
+	b axisY.
+	b axisX
+		noTick;
+		noLabel.
+ 	^ b
 ]
