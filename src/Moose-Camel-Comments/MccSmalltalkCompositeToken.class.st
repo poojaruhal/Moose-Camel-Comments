@@ -32,3 +32,14 @@ MccSmalltalkCompositeToken >> parse [
 	
 	^ self
 ]
+
+{ #category : #'as yet unclassified' }
+MccSmalltalkCompositeToken >> textAndCodeTokens [
+
+	| allTokens textAndCodeTokens |
+	
+	allTokens := self withDeepCollect: #children.
+	textAndCodeTokens := allTokens
+		reject: [ :each | each isKindOf: self class ].
+	^ textAndCodeTokens sort: [ :a :b | a start < b start ]
+]

@@ -58,6 +58,16 @@ MccSmalltalkInCommentVisitor >> isGlobal: aRBNode [
 		and: [ self class environment includesKey: aRBNode name ]
 ]
 
+{ #category : #testing }
+MccSmalltalkInCommentVisitor >> isWordContraction: aString [
+
+	| contractions |
+	
+	contractions := '(m[ |.]|re[ |.]|s[ |.]|t[ |.]|ve[ |.]|ll[ |.]|d[ |.])'.
+	
+	^ aString matchesRegex: contractions
+]
+
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> popArgumentNode: anArgumentNode [
 	assignments remove: anArgumentNode
@@ -143,7 +153,19 @@ MccSmalltalkInCommentVisitor >> visitLiteralArrayNode: aLiteralNode [
 
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
-	^ self resultFor: aLiteralNode
+
+	| aLiteralResult stringLiteral |
+	aLiteralResult := self resultFor: aLiteralNode.
+	stringLiteral := aLiteralNode value asString.
+	
+	((stringLiteral matchesRegex: '-?\d+(\.\d+)?') or: ( stringLiteral size < 3 ) )
+		ifTrue: [ ^ aLiteralResult  ].
+	
+	((self isWordContraction: (aLiteralNode value copyFrom: 1 to: 2)) 
+	or: (self isWordContraction: (aLiteralNode value copyFrom: 1 to: 3)))
+		ifFalse: [ ^ aLiteralResult ].
+	
+	^ (self errorFor: aLiteralNode) "filteredAST: (aLiteralNode class named: #'' start: 1)"
 ]
 
 { #category : #visiting }
