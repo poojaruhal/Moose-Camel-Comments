@@ -12,8 +12,6 @@ MccSmalltalkInCommentStrategy >> parseOn: aPP2Context [
 	smalltalkParser := MccSmalltalkParser new.
 	aResult := smalltalkParser parseOn: aPP2Context.
 	
-	(WrapperSignal emit: (((aPP2Context instVarNamed: #collection) asOrderedCollection add: $| afterIndex: aPP2Context position; yourself) as: String)).
-	
 	aResult isPetit2Failure
 		ifTrue: [ aPP2Context restorePosition: position ]
 		ifFalse: [ aResult := self processAST: aResult with: aPP2Context at: position ].
@@ -23,16 +21,22 @@ MccSmalltalkInCommentStrategy >> parseOn: aPP2Context [
 
 { #category : #parsing }
 MccSmalltalkInCommentStrategy >> processAST: anRBNode with: aPP2Context at: aPosition [
-	| aResult |
+	| aResult allNodes aFirstNode hasSequenceOrCascade |
+
+
+	allNodes := { anRBNode } , anRBNode allChildren.
 	
-	(anRBNode isVariable or: [ anRBNode isLiteralNode ])
+	"to get access to the first *visual* node we shoould ask for the last AST node, since it returns them breadth first"
+	aFirstNode := allNodes last.
+
+	hasSequenceOrCascade := allNodes anySatisfy: [ :eachNode | eachNode isCascade or: [ eachNode isSequence ] ].
+
+	(hasSequenceOrCascade not and: [ anRBNode isVariable or: [ anRBNode isLiteralNode or: [ aFirstNode isSelfOrSuper ] ] ])
 		ifTrue: [
 			aPP2Context restorePosition: aPosition.
-			^ PP2Failure message: 'First node can not be variable' context: aPP2Context ].
+			^ PP2Failure message: 'First node can not be variable, self or super' context: aPP2Context ].
 
 	aResult := anRBNode acceptVisitor: MccSmalltalkInCommentVisitor new.
-	
-	
 	
 	aResult isValid
 		ifTrue: [ ^ anRBNode ].

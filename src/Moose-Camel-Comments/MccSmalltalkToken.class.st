@@ -17,6 +17,14 @@ MccSmalltalkToken >> allCodeAndTextDo: aBlock [
 	self allChildren do: [ :eachNode | eachNode codeOrTextDo: aBlock ]
 ]
 
+{ #category : #converting }
+MccSmalltalkToken >> asTextToken [
+	^ MccSmalltalkTextToken 
+		on: self collection
+		start: self start
+		stop: self stop
+]
+
 { #category : #accessing }
 MccSmalltalkToken >> children [
 	^ { }
@@ -52,6 +60,11 @@ MccSmalltalkToken >> gtTreeFor: aView [
 
 { #category : #testing }
 MccSmalltalkToken >> isCode [
+	^ false
+]
+
+{ #category : #testing }
+MccSmalltalkToken >> isComposite [
 	^ false
 ]
 
@@ -126,6 +139,15 @@ MccSmalltalkToken >> parse [
 	<return: #MccSmalltalkToken>
 
 	^ self subclassResponsibility
+]
+
+{ #category : #'as yet unclassified' }
+MccSmalltalkToken >> textAndCodeTokens [
+	| allTokens textAndCodeTokens |
+	
+	allTokens := self withDeepCollect: #children.
+	textAndCodeTokens := allTokens select: [ :each | each isCode or: [ each isText ] ].
+	^ textAndCodeTokens sort: [ :a :b | a start < b start ]
 ]
 
 { #category : #enumerating }

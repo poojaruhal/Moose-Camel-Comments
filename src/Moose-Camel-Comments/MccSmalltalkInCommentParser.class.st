@@ -39,10 +39,7 @@ MccSmalltalkInCommentParser class >> parse: aString [
 	aStringToSplit := ({ Character cr . Character lf } includes: aString last)
 		ifTrue: [ aString ]
 		ifFalse: [
-			aString, String cr ]. 
-
-	
-		
+			aString, String cr ].		
 		
 	theNodes := Array streamContents: [ :aStream |
 		aStringToSplit
@@ -55,7 +52,9 @@ MccSmalltalkInCommentParser class >> parse: aString [
 					on: aString
 					start: (aStart min: aString size) stop: (anEnd min: aString size).
 				
-				aStream nextPut: tokenToParse parse ] ].
+				[ aStream nextPut: tokenToParse parse ]
+					on: Error
+					do: [ aStream nextPut: tokenToParse asTextToken ] ] ].
 		
 	^ (theNodes size = 1)
 		ifTrue: [ theNodes first ]

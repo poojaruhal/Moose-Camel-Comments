@@ -35,7 +35,7 @@ MccSmalltalkInCommentVisitorExamples >> visitCodeInASentence [
 	| aParser aText aVisitor anAST aResult |
 	
 	aParser := self smalltalkParser.
-	aText := 'Also, (Color red: 0.2 green: 0.6 blue: 1.0) or (Color r: 0.2 g: 0.6 b: 1.0) are code.'.
+	aText := '(Color r: 0.2 g: 0.6 b: 1.0) are code.'.
 	aVisitor := self visitor.
 	
 	anAST := aParser parse: aText.
@@ -99,24 +99,6 @@ MccSmalltalkInCommentVisitorExamples >> visitEmptyBlock [
 	self assert: aResult isValid.
 	self assert: aResult isPartiallyValid.
 	self assert: aResult filteredAST sourceInterval equals: (1 to: 2).
-	
-	^ aResult
-]
-
-{ #category : #visiting }
-MccSmalltalkInCommentVisitorExamples >> visitHashtagExample [
-	<gtExample>
-	| aParser aText aVisitor anAST aResult |
-	
-	aParser := self smalltalkParser.
-	aText := '#Variable is an instance variable'.
-	aVisitor := self visitor.
-	
-	anAST := aParser parse: aText.
-	aResult := anAST acceptVisitor: aVisitor.
-	
-	self assert: aResult isValid not.
-	self assert: aResult isPartiallyValid not.
 	
 	^ aResult
 ]
@@ -218,7 +200,7 @@ MccSmalltalkInCommentVisitorExamples >> visitObjectWithDot [
 MccSmalltalkInCommentVisitorExamples >> visitObjectWithoutDot [
 	<gtExample>
 	| aParser aText aVisitor anAST aResult |
-	
+
 	aParser := self smalltalkParser.
 	aText := 'Object'.
 	aVisitor := self visitor.
@@ -297,7 +279,7 @@ MccSmalltalkInCommentVisitorExamples >> visitSentenceWithApostrophes [
 	| aParser aText aVisitor anAST aResult |
 	
 	aParser := self smalltalkParser.
-	aText := 'He''s happy it''s only a cold'.
+	aText := '''s happy it''s only a cold'.
 	aVisitor := self visitor.
 	
 	anAST := aParser parse: aText.
@@ -346,29 +328,6 @@ MccSmalltalkInCommentVisitorExamples >> visitSequenceWithInvalidFirstStatementAn
 	
 	self assert: aResult isValid not.
 	self assert: aResult isPartiallyValid not.
-	
-	^ aResult
-]
-
-{ #category : #visiting }
-MccSmalltalkInCommentVisitorExamples >> visitUndeclaredVariableAsReceivedObject [
-	<gtExample>
-	| aParser aText aVisitor anAST aResult |
-	
-	aParser := self smalltalkParser.
-	aText := '(LayoutFrame identity
-	topOffset: topHeight;
-	bottomFraction: 0;
-	bottomOffset: self buttonsBarHeight;
-	leftOffset: -1;
-	rightOffset: 1)'.
-	aVisitor := self visitor.
-	
-	anAST := aParser parse: aText.
-	aResult := anAST acceptVisitor: aVisitor.
-	
-	self assert: aResult isValid.
-	self assert: aResult isPartiallyValid.
 	
 	^ aResult
 ]

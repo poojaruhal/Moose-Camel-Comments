@@ -77,6 +77,23 @@ fortyTwo logCr'.
 ]
 
 { #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parseGiveMyselfYourself [
+	<gtExample>
+	| aParser aString theToken |
+	
+	aParser := self parser.
+	aString := 'Give myself yourself'.
+	
+	theToken := aParser parse: aString.
+	self assert: (theToken isKindOf: MccSmalltalkTextToken).
+	self assert: theToken start equals: 1.
+	self assert: theToken stop equals: aString size.
+	self assert: theToken value equals: aString.
+
+	^ theToken
+]
+
+{ #category : #'parsing - simple' }
 MccSmalltalkInCommentParserExamples >> parseHashtagExample [
 	<gtExample>
 	| aParser aString theToken |
@@ -377,17 +394,17 @@ MccSmalltalkInCommentParserExamples >> parseUndeclaredVariableAsReceivedObject [
 	| aParser aString theTokens anAST |
 	
 	aParser := self parser.
-	aString := '(LayoutFrame identity
+	aString := 'LayoutFrame identity
 	topOffset: topHeight;
 	bottomFraction: 0;
 	bottomOffset: self buttonsBarHeight;
 	leftOffset: -1;
-	rightOffset: 1)'.
+	rightOffset: 1'.
 	
 	anAST := aParser parse: aString.
 	theTokens := anAST textAndCodeTokens.
 	self assert: theTokens size equals: 1.
-	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
 	self assert: theTokens first start equals: 1.
 	self assert: theTokens first stop equals: aString size.
 	self assert: theTokens first value equals: aString.
@@ -400,6 +417,23 @@ MccSmalltalkInCommentParserExamples >> parser [
 	<gtExample>
 	
 	^ MccSmalltalkInCommentParser
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parserLowersMySelfEsteem [
+	<gtExample>
+	| aParser aString theToken |
+	
+	aParser := self parser.
+	aString := 'My self esteem is too high'.
+	
+	theToken := aParser parse: aString.
+	self assert: (theToken isKindOf: MccSmalltalkTextToken).
+	self assert: theToken start equals: 1.
+	self assert: theToken stop equals: aString size.
+	self assert: theToken value equals: aString.
+
+	^ theToken
 ]
 
 { #category : #'parsing - sea' }
