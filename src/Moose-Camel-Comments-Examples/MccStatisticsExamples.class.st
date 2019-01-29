@@ -1,3 +1,13 @@
+"
+<Example>
+hub:= MccSmalltalkHubStatistics new.
+projects:= hub projects.
+projects groupBy: #commits.
+first:= projects first.
+first timestamp year.
+timestamps:= hub timestampsByTimeline.
+hub projectsInBarChartByTimeline. 
+"
 Class {
 	#name : #MccStatisticsExamples,
 	#superclass : #Object,
