@@ -58,16 +58,6 @@ MccSmalltalkInCommentVisitor >> isGlobal: aRBNode [
 		and: [ self class environment includesKey: aRBNode name ]
 ]
 
-{ #category : #testing }
-MccSmalltalkInCommentVisitor >> isWordContraction: aString [
-
-	| contractions |
-	
-	contractions := '(m[ |.]|re[ |.]|s[ |.]|t[ |.]|ve[ |.]|ll[ |.]|d[ |.])'.
-	
-	^ aString matchesRegex: contractions
-]
-
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> popArgumentNode: anArgumentNode [
 	assignments remove: anArgumentNode
@@ -129,7 +119,7 @@ MccSmalltalkInCommentVisitor >> visitCascadeNode: aCascadeNode [
 
 	theResult := self resultFor: aCascadeNode.
 
-	theMessages := aCascadeNode messages.	
+	theMessages := aCascadeNode messages.
 	theMessages withIndexDo: [ :eachMessage :eachIndex |
 		| eachResult |
 		eachResult := self visitNode: eachMessage.
@@ -153,18 +143,18 @@ MccSmalltalkInCommentVisitor >> visitLiteralArrayNode: aLiteralNode [
 
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
-
 	| aLiteralResult stringLiteral |
+	
 	aLiteralResult := self resultFor: aLiteralNode.
 	stringLiteral := aLiteralNode value asString.
 	
-	((stringLiteral matchesRegex: '-?\d+(\.\d+)?') or: ( stringLiteral size < 3 ) )
+	((stringLiteral matchesRegex: '-?\d+(\.\d+)?') or: [ stringLiteral size < 3 ])
 		ifTrue: [ ^ aLiteralResult  ].
-	
-	((self isWordContraction: (aLiteralNode value copyFrom: 1 to: 2)) 
-	or: (self isWordContraction: (aLiteralNode value copyFrom: 1 to: 3)))
-		ifFalse: [ ^ aLiteralResult ].
-	
+
+	((stringLiteral copyFrom: 1 to: 2) isWordContraction 
+		or: [ (stringLiteral copyFrom: 1 to: 3) isWordContraction ])
+			ifFalse: [ ^ aLiteralResult ].
+
 	^ (self errorFor: aLiteralNode) "filteredAST: (aLiteralNode class named: #'' start: 1)"
 ]
 
@@ -284,6 +274,9 @@ MccSmalltalkInCommentVisitor >> visitVariableNode: aVariableNode [
 		ifTrue: [ ^ theResult ].
 	
 	aVariableNode name = #super
+		ifTrue: [ ^ theResult ].
+		
+	(aVariableNode parents anySatisfy: [ :eachParentNode | eachParentNode isCascade ])
 		ifTrue: [ ^ theResult ].
 	
 	^ (self errorFor: aVariableNode) filteredAST: (aVariableNode class named: #'' start: 1)

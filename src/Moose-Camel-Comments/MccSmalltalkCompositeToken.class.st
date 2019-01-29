@@ -18,6 +18,11 @@ MccSmalltalkCompositeToken >> children: aCollecitonOfNodes [
 ]
 
 { #category : #testing }
+MccSmalltalkCompositeToken >> isComposite [
+	^ true
+]
+
+{ #category : #testing }
 MccSmalltalkCompositeToken >> isEmpty [
 	<return: #Boolean>
 
@@ -31,15 +36,4 @@ MccSmalltalkCompositeToken >> parse [
 	children := children select: #isNotEmpty thenCollect: #parse.
 	
 	^ self
-]
-
-{ #category : #'as yet unclassified' }
-MccSmalltalkCompositeToken >> textAndCodeTokens [
-
-	| allTokens textAndCodeTokens |
-	
-	allTokens := self withDeepCollect: #children.
-	textAndCodeTokens := allTokens
-		reject: [ :each | each isKindOf: self class ].
-	^ textAndCodeTokens sort: [ :a :b | a start < b start ]
 ]
