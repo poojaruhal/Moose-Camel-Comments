@@ -17,15 +17,18 @@ Class {
 { #category : #'instance creation' }
 MccExternalEnvironment class >> fromCSV: aFileReference [
 
-	|aCollectionOfclassComment|
+	|aCollectionOfClassComment|
 	
-	aCollectionOfclassComment:=
+	aCollectionOfClassComment:=
 		(NeoCSVReader on: aFileReference readStream)
 			addField;
 			addField;
 			upToEnd.
 			
-	^ self new classesWithComment: aCollectionOfclassComment
+	^ self new classesWithComment: (
+		aCollectionOfClassComment 
+			collect:[:eachItem |
+				 (eachItem at:1) -> (MccTextComment of:(eachItem at:2))]).
 	
 	
 	 
@@ -72,17 +75,8 @@ MccExternalEnvironment >> classesWithComment: anObject [
 
 { #category : #'as yet unclassified' }
 MccExternalEnvironment >> createClassCommentModel [
-
-	classCommentModel := (self classesWithComment) collect:
-		[:eachClassCommentArray |
-			(eachClassCommentArray at:1) -> 
-				(MccTextComment of:(eachClassCommentArray at:2))].
 			
-	self classes: (classCommentModel collect:[:eachItem | eachItem key]).
-
-	
-				
-
+	^ self classes:(self classesWithComment collect:[:eachItem | eachItem key])
 ]
 
 { #category : #initialization }

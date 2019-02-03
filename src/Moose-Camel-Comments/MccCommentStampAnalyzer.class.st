@@ -32,6 +32,24 @@ MccCommentStampAnalyzer >> analyzeCommentStamp [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzer >> authorsWithCommentDate [
+	"get information which author commited on which date"
+	
+	^ (self withoutHistoricalCommentStamps
+			collect:[:eachItem |
+				(eachItem value at:1)-> (eachItem value at:2)]) sort: [ :a :b | a value < b value ]
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzer >> classesWithCommentDate [
+	"get information which author commited on which date"
+	
+	^ (self withoutHistoricalCommentStamps
+			collect:[:eachItem |
+				(eachItem key )-> (eachItem value at:2)]) sort: [ :a :b | a value < b value ]
+]
+
 { #category : #accessing }
 MccCommentStampAnalyzer >> classesWithCommentStamp [
 	^ classesWithCommentStamp
@@ -63,6 +81,14 @@ MccCommentStampAnalyzer >> gtInspectorCommentStampsIn: aComposite [
 			]
 ]
 
+{ #category : #accessing }
+MccCommentStampAnalyzer >> historical [
+	"return all classes with comment stamp as historical. 
+	Historical means comment stamp is not available."
+	
+	^ self classesWithCommentStamp select:[:eachItem | eachItem value = 'historical']
+]
+
 { #category : #initialization }
 MccCommentStampAnalyzer >> initialize [ 	
 	super initialize.
@@ -78,6 +104,33 @@ MccCommentStampAnalyzer >> parseCommentStamps [
 	^ self classesWithCommentStamp collect: [ 
 		:eachRecord |
 		eachRecord value: (mccCommentStampParser parse:(eachRecord value))]
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzer >> viewStatisticsGroupedByAuthorAndDates [
+	| b ds dataSet|.
+
+	b := RTGrapher new.
+	b extent: 500 @ 200.
+	ds := RTData new.
+	ds interaction highlight.
+	ds points: self authorsWithCommentDate.
+	ds barShape width: 10.
+	ds y: [ :e | e value size].
+	ds barChartWithBarTitle: #key.
+	b add: ds.
+	dataSet := RTData new.
+	dataSet dotShape color: (Color red alpha: 0.3);
+	labeledAs: [ :e | e value size asString].
+	dataSet
+	points: self authorsWithCommentDate associations;
+	y: [ :e | e value size].
+	b add: dataSet.
+	b axisY.
+	b axisX
+		noTick;
+		noLabel.
+ 	^ b
 ]
 
 { #category : #'as yet unclassified' }
@@ -105,4 +158,12 @@ MccCommentStampAnalyzer >> viewStatisticsGroupedByYearAndClasses [
 		noTick;
 		noLabel.
  	^ b
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> withoutHistoricalCommentStamps [
+	"return all classes without comment stamp as historical. 
+	Historical means comment stamp is not available."
+	
+	^ self classesWithCommentStamp reject:[:eachItem |eachItem value = 'historical']
 ]

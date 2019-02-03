@@ -27,7 +27,7 @@ Class {
 		'stampTime',
 		'space'
 	],
-	#category : #'Moose-Camel-Comments'
+	#category : #'Moose-Camel-Comments-Parser'
 }
 
 { #category : #accessing }
