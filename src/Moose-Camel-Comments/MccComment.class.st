@@ -139,33 +139,39 @@ MccComment >> code [
 MccComment >> computeSentences [
 	"Split and return a collection of sentences of this comment"
 	<return: #Collection of: #MccSentence>
-
+	| counter |
+	counter := 0.
+	
 	^ Array streamContents: [ :aStream | 
 		| aCommentString |
 		(aCommentString := self computeSentencesWithRegex)
 			splitOn: '<stop>'
 			indicesDo: [ :start :end |
-				| aString |
+				| aString computedStart computedEnd |
+				computedStart := start - (6*counter).
+				computedEnd := end - (6*counter).
+				counter := counter + 1.
 				aString := aCommentString copyFrom: start to: end.
 				aString ifNotEmpty: [
-					aStream nextPut: (MccSentence new string: aString interval: (start to: end)) ] ] ]
+					aStream nextPut: (MccSentence new string: aString interval: (computedStart to: computedEnd)) ] ] ]
 ]
 
 { #category : #private }
 MccComment >> computeSentencesWithRegex [
 "return a new version of comment with indicators on where to split"
-	| alphabets prefixes suffixes starters acronyms websites textToSplit |
+	| alphabets prefixes suffixes numbers starters acronyms websites sentenceEndings textToSplit |
 	alphabets := '([A-Za-z])'.
-	prefixes := '(Mr|St|Mrs|Ms|Dr)[.]'.
+	prefixes := '(Mr|St|Mrs|Ms|Dr|etc|resp)[.]'.
 	suffixes := '(Inc|Ltd|Jr|Sr|Co)'.
+	numbers := '(\d+)[.]'.
 	starters := 	'(Mr|Mrs|Ms|Dr|He\s|She\s|It\s|They\s|Their\s|Our\s|We\s|But\s|However\s|That\s|This\s|Wherever)'.
 	acronyms := '([A-Za-z][.][A-Za-z][.]([A-Za-z][.])?)'.
 	websites := '[.](com|net|org|io|gov)'.
+	sentenceEndings := '(\.|\?|\!)+'.
 
 	textToSplit := self asString.
-	textToSplit := ' ', textToSplit, '  '.
-	textToSplit := textToSplit copyWithRegex: '(\',String cr,'|\', String lf, ')([ -]|[-])' matchesReplacedWith: '<stop>-'.
-	textToSplit := textToSplit copyWithRegex: '\n' matchesReplacedWith: ' '.
+	textToSplit := '', textToSplit, ''.
+	textToSplit := textToSplit copyWithRegex: '(\',String cr,'|\', String lf, ')' matchesReplacedWith: ' <stop>'.
 	textToSplit := textToSplit copyWithRegex: prefixes matchesTranslatedUsing: [:each | each copyReplaceAll: '.' 	with: '<prd>'].
 	textToSplit := textToSplit copyWithRegex: websites matchesTranslatedUsing: [:each | each copyReplaceAll: '.' 	with: '<prd>'].
 	textToSplit := textToSplit copyWithRegex: (acronyms, ' ', starters) matchesTranslatedUsing: [:each | each 	copyReplaceAll: '. ' with: '.<stop> '].
@@ -173,7 +179,8 @@ MccComment >> computeSentencesWithRegex [
 	textToSplit := textToSplit copyWithRegex: ('\s', alphabets, '[.] ') matchesTranslatedUsing: [:each | each 	copyReplaceAll: '.' with: '<prd>'].
 	textToSplit := textToSplit copyWithRegex: (' ', suffixes, '[.] ', starters) matchesTranslatedUsing: [:each | each 	copyReplaceAll: '. ' with: '.<stop> '].
 	textToSplit := textToSplit copyWithRegex: (' ', suffixes, '[.]') matchesTranslatedUsing: [:each | each 	copyReplaceAll: '.' with: '<prd>'].
-	textToSplit := textToSplit copyWithRegex: (' ', alphabets, '[.]') matchesTranslatedUsing: [:each | each 	copyReplaceAll: '.' with: '.<prd>'].
+	textToSplit := textToSplit copyWithRegex: (' ', alphabets, '[.]') matchesTranslatedUsing: [:each | each 	copyReplaceAll: '.' with: '<prd>'].
+	textToSplit := textToSplit copyWithRegex: numbers matchesTranslatedUsing: [:each | each copyReplaceAll: '.' 	with: '<prd>'].
 
 	textToSplit := textToSplit copyReplaceAll: '?''' with: '''?'.
 	textToSplit := textToSplit copyReplaceAll: '.''' with: '''.'.
@@ -184,10 +191,7 @@ MccComment >> computeSentencesWithRegex [
 	textToSplit := textToSplit copyReplaceAll: '!"' with: '"!'.
 	textToSplit := textToSplit copyReplaceAll: '..."' with: '"...'.
 
-	textToSplit := textToSplit copyReplaceAll: '?' with: '?<stop>'.
-	textToSplit := textToSplit copyReplaceAll: '...' with: '<prd><prd><prd><stop>'.
-	textToSplit := textToSplit copyReplaceAll: '!' with: '!<stop>'.
-	textToSplit := textToSplit copyReplaceAll: '.' with: '.<stop>'.
+	textToSplit := textToSplit copyWithRegex: sentenceEndings matchesTranslatedUsing: [:each | each, '<stop>'].
 
 	textToSplit := textToSplit copyReplaceAll: '<prd>' with: '.'.
 

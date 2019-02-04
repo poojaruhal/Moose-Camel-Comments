@@ -54,7 +54,7 @@ MccSmalltalkInCommentParser class >> parse: aString [
 				
 				[ aStream nextPut: tokenToParse parse ]
 					on: Error
-					do: [ aStream nextPut: tokenToParse asTextToken ] ] ].
+					do: [ aStream nextPut: tokenToParse asCodeToken ] ] ].
 		
 	^ (theNodes size = 1)
 		ifTrue: [ theNodes first ]

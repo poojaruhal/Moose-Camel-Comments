@@ -18,6 +18,14 @@ MccSmalltalkToken >> allCodeAndTextDo: aBlock [
 ]
 
 { #category : #converting }
+MccSmalltalkToken >> asCodeToken [
+	^ MccSmalltalkCodeToken 
+		on: self collection
+		start: self start
+		stop: self stop
+]
+
+{ #category : #converting }
 MccSmalltalkToken >> asTextToken [
 	^ MccSmalltalkTextToken 
 		on: self collection
