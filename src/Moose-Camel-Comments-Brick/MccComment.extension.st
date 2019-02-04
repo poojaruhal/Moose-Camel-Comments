@@ -25,7 +25,7 @@ MccComment >> gtViewText [
 				beNotOverwritableByStyler;
 				action: [ :clickedText :aTarget :aTextEditor :anEvent | eachReference browseDueTo: anEvent ] } ].
 		
-	codeSnippets := MccSmalltalkInCommentParser parse: self asString.
+	codeSnippets := (MccSmalltalkInCommentParser parse: self asString) textAndCodeTokens.
 	codeSnippets do: [ :eachToken | eachToken codeDo: [ :aCodeToken |
 		| aSubText |
 		aSubText := aText from: eachToken start to: eachToken stop.

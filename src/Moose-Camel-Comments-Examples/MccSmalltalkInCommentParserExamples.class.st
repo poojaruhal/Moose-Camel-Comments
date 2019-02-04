@@ -148,6 +148,28 @@ MccSmalltalkInCommentParserExamples >> parseMultipleSnippetsInSentence [
 	^ theTokens
 ]
 
+{ #category : #parsing }
+MccSmalltalkInCommentParserExamples >> parseRandomCodeSnippet [
+	<gtExample>
+	| aParser aString theTokens anAST |
+	
+	aParser := self parser.
+
+	aString := '[
+	(1 to: 200) do: [ :i | p value: i.  (Delay forMilliseconds: 10) wait ].
+	p delete ] fork'.
+	
+	anAST := aParser parse: aString.
+	theTokens := anAST textAndCodeTokens.
+	self assert: theTokens size equals: 1.
+	
+	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	"self assert: (theTokens second isKindOf: MccSmalltalkCodeToken)."
+
+	
+	^ theTokens
+]
+
 { #category : #'parsing - simple' }
 MccSmalltalkInCommentParserExamples >> parseSelfInSentence [
 	<gtExample>
