@@ -107,6 +107,22 @@ MccSentence >> interval: anObject [
 	interval := anObject
 ]
 
+{ #category : #testing }
+MccSentence >> isEmpty [ 
+	"a sentence is said to be empty if it does not contain any word or all MccWord are empty.
+	If a sentence contains seperator symbol, then also it is marked as empty."
+	
+	^ self words allSatisfy: [ :aWord | aWord isEmpty] 
+]
+
+{ #category : #testing }
+MccSentence >> isNotEmpty [ 
+	"a sentence is said to be empty if it does not contain any word or all MccWord are empty.
+	If a sentence contains seperator symbol, then also it is marked as empty."
+	
+	^ self isEmpty not 
+]
+
 { #category : #accessing }
 MccSentence >> nouns [
 	^ nouns

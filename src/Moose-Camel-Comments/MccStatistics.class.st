@@ -73,9 +73,11 @@ MccStatistics >> createAllEntities [
 
 { #category : #initialization }
 MccStatistics >> createFilteredEntities [
-	<return:#Array of: #Object>
-
-	^ self createAllEntities reject: [ :eachEntity | eachEntity mccComment isEmpty ]
+	<return: #Array of: #Object>
+	
+	^ self createAllEntities
+		reject: [ :eachEntity | 
+			eachEntity mccComment isEmpty ]
 ]
 
 { #category : #accessing }
@@ -114,9 +116,10 @@ MccStatistics >> lexicalDensity [
 
 { #category : #'private-accessing' }
 MccStatistics >> lines [
-	<return:#Array of:#MccClasses>
-	
-	^ self filteredEntities flatCollect: [ :eachEntity | eachEntity mccComment sentences ]
+	<return: #Array of: #MccSentences>
+	^ self filteredEntities
+		 flatCollect: [ :eachEntity |
+			 eachEntity mccComment sentences ]
 ]
 
 { #category : #metrics }

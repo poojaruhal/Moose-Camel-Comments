@@ -1,12 +1,6 @@
 Class {
 	#name : #MccClassStatistics,
 	#superclass : #MccStatistics,
-	#instVars : [
-		'inst'
-	],
-	#classVars : [
-		'cls'
-	],
 	#classInstVars : [
 		'stat'
 	],

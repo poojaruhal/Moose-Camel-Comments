@@ -68,6 +68,12 @@ MccWord >> isEmpty [
 ]
 
 { #category : #testing }
+MccWord >> isNotEmpty [
+	
+	^ self isEmpty not
+]
+
+{ #category : #testing }
 MccWord >> isStopword [
 
 	^ self stopwords includes:(self string) asLowercase.
