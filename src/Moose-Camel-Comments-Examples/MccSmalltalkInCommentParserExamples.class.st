@@ -4,6 +4,64 @@ Class {
 	#category : #'Moose-Camel-Comments-Examples-Parser'
 }
 
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> morphicParseTextParagraph [
+	<gtExample>
+	| aParser aString theAST theTokens |
+	
+	aParser := self parser.
+	aString := 'Morphs exist in a tree, rooted at a World (generally a PasteUpMorph). The morphs owned by a morph ...Morph and its submorphs, set its #visible property to false using the #visible: method. '.
+	
+	theAST := aParser parse: aString.
+	theTokens := theAST textAndCodeTokens.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
+	self assert: (theTokens first) start equals: 1.
+	self assert: (theTokens first) stop equals: aString size.
+	self assert: theTokens first value equals: aString.
+
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> morphicParseTitleMorph [
+	<gtExample>
+	| aParser aString theAST theTokens |
+	
+	aParser := self parser.
+	aString := 'Example usage:
+
+	| menu |
+	
+	menu := MenuMorph new.
+
+	menu buildTitle: [ :titleMorph | titleMorph
+		title: ''aCoolTitle'';
+		icon: self theme icons alertIcon;
+		withCloseBox;
+		withPinBox;
+		color: Color purple		
+	].
+
+	... " add items" ...
+	
+	menu popUpInWorld'.
+	
+	theAST := aParser parse: aString.
+	theTokens := theAST textAndCodeTokens.
+	self assert: theTokens size equals: 7.
+	self assert: (theTokens first isText).
+	self assert: (theTokens second isCode).
+	self assert: (theTokens third isText).
+	self assert: (theTokens fourth isCode).
+	self assert: (theTokens fifth isCode).
+	self assert: (theTokens sixth isText).
+	self assert: (theTokens seventh isCode).
+
+
+	^ theTokens
+]
+
 { #category : #parsing }
 MccSmalltalkInCommentParserExamples >> parseCodeWithLastDot [
 	<gtExample>
@@ -164,6 +222,26 @@ MccSmalltalkInCommentParserExamples >> parseRandomCodeSnippet [
 	self assert: theTokens size equals: 1.
 	
 	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
+	"self assert: (theTokens second isKindOf: MccSmalltalkCodeToken)."
+
+	
+	^ theTokens
+]
+
+{ #category : #parsing }
+MccSmalltalkInCommentParserExamples >> parseRandomSentenceWithLiteral [
+	<gtExample>
+	| aParser aString theTokens anAST |
+	
+	aParser := self parser.
+
+	aString := '1 is the smallest number after zero.'.
+	
+	anAST := aParser parse: aString.
+	theTokens := anAST textAndCodeTokens.
+	self assert: theTokens size equals: 1.
+	
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
 	"self assert: (theTokens second isKindOf: MccSmalltalkCodeToken)."
 
 	
@@ -426,7 +504,7 @@ MccSmalltalkInCommentParserExamples >> parseUndeclaredVariableAsReceivedObject [
 	anAST := aParser parse: aString.
 	theTokens := anAST textAndCodeTokens.
 	self assert: theTokens size equals: 1.
-	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
+	self assert: (theTokens first isKindOf: MccSmalltalkCodeToken).
 	self assert: theTokens first start equals: 1.
 	self assert: theTokens first stop equals: aString size.
 	self assert: theTokens first value equals: aString.

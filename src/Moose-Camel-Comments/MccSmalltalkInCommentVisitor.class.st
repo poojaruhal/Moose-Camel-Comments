@@ -2,11 +2,11 @@ Class {
 	#name : #MccSmalltalkInCommentVisitor,
 	#superclass : #RBProgramNodeVisitor,
 	#instVars : [
-		'assignments',
 		'classOrMetaclass'
 	],
 	#classVars : [
-		'allMethods'
+		'allMethods',
+		'assignments'
 	],
 	#category : #'Moose-Camel-Comments-Parser'
 }
@@ -144,7 +144,7 @@ MccSmalltalkInCommentVisitor >> visitLiteralArrayNode: aLiteralNode [
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
 	| aLiteralResult stringLiteral |
-	
+
 	aLiteralResult := self resultFor: aLiteralNode.
 	stringLiteral := aLiteralNode value asString.
 	
@@ -152,7 +152,7 @@ MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
 		ifTrue: [ ^ aLiteralResult  ].
 
 	((stringLiteral copyFrom: 1 to: 2) isWordContraction 
-		or: [ (stringLiteral copyFrom: 1 to: 3) isWordContraction ])
+		or: [ (stringLiteral copyFrom: 1 to: 3) isWordContraction or: [ (aLiteralNode asString at: 20) = $# ]])
 			ifFalse: [ ^ aLiteralResult ].
 
 	^ (self errorFor: aLiteralNode) "filteredAST: (aLiteralNode class named: #'' start: 1)"
@@ -209,9 +209,10 @@ MccSmalltalkInCommentVisitor >> visitMessageNode: aMessageNode [
 				aMessageResult errorResult: eachResult.
 				
 				^ aMessageResult ] ].
-		
+
+	(aMessageNode parents anySatisfy: [ :parent | parent isCascade ]) ifFalse: [  
 	theSelector := aMessageNode selector.
-	( allMethods includes: theSelector )
+	(allMethods includes: theSelector)
 		ifFalse: [ 
 				aMessageResult isValid: false.
 				aMessageResult isPartiallyValid: true.
@@ -220,6 +221,7 @@ MccSmalltalkInCommentVisitor >> visitMessageNode: aMessageNode [
 				aMessageResult filteredAST: aMessageNode receiver.
 	
 				^ aMessageResult ].
+			].
 	
 	^ aMessageResult
 ]
@@ -228,6 +230,7 @@ MccSmalltalkInCommentVisitor >> visitMessageNode: aMessageNode [
 MccSmalltalkInCommentVisitor >> visitSequenceNode: aSequenceNode [
 	| theStatements theResult |
 	self visitTemporaryNodes: aSequenceNode temporaries.
+	aSequenceNode temporaries do: [ :temporary | assignments add: temporary ].
 
 	theStatements := aSequenceNode statements.
 	theStatements ifEmpty: [ aSequenceNode periods: #() ].
@@ -270,13 +273,13 @@ MccSmalltalkInCommentVisitor >> visitVariableNode: aVariableNode [
 	(self isGlobal: aVariableNode)
 		ifTrue: [ ^ theResult ].
 
-	aVariableNode name = #self
+	aVariableNode name = 'self'
 		ifTrue: [ ^ theResult ].
 	
-	aVariableNode name = #super
+	aVariableNode name = 'super'
 		ifTrue: [ ^ theResult ].
 		
-	(aVariableNode parents anySatisfy: [ :eachParentNode | eachParentNode isCascade ])
+	(aVariableNode parents anySatisfy: [ :eachParentNode | eachParentNode isCascade or: [ eachParentNode isBlock ] ])
 		ifTrue: [ ^ theResult ].
 	
 	^ (self errorFor: aVariableNode) filteredAST: (aVariableNode class named: #'' start: 1)
