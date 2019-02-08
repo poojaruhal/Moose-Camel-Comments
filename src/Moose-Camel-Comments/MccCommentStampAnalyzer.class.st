@@ -26,6 +26,15 @@ MccCommentStampAnalyzer class >> fromCSV: aFileReference [
 ]
 
 { #category : #'as yet unclassified' }
+MccCommentStampAnalyzer >> authors [
+	"get information of which author commited on which date"
+	
+	^ (self filterHistorical
+			collect:[:eachAssociation |
+				eachAssociation value first]) asSet asOrderedCollection sorted.
+]
+
+{ #category : #'as yet unclassified' }
 MccCommentStampAnalyzer >> authorsWithCommentDate [
 	"get information which author commited on which date"
 	
