@@ -30,7 +30,7 @@ MccCommentStatistics >> avgWords [
 
 { #category : #initialization }
 MccCommentStatistics >> createAllEntities [
-	^ self environment classesWithComment collect:[:eachAssociation | eachAssociation value]
+	^ self environment allComments
 ]
 
 { #category : #initialization }

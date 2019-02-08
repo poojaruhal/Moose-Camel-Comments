@@ -23,6 +23,18 @@ MccStatisticsExamples >> classMetrics [
 ]
 
 { #category : #navigation }
+MccStatisticsExamples >> commentMetrics [
+	<gtExample>
+	<return: #Dictionary of: 'Comment Metrics'>
+	
+	|anExternalEnvironment mccCommentAnalysis|
+	
+	anExternalEnvironment := MccExternalEnvironmentExamples new externalEnvironmentModel.
+	mccCommentAnalysis := MccCommentStatistics with: anExternalEnvironment.
+	^ mccCommentAnalysis metrics.
+]
+
+{ #category : #navigation }
 MccStatisticsExamples >> mccStatistics [
 	<gtExample>
 	<return: #Instance of: #MccStatistics>

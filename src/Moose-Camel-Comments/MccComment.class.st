@@ -66,7 +66,8 @@ Class {
 		'sentences',
 		'words',
 		'code',
-		'text'
+		'text',
+		'statistics'
 	],
 	#category : #'Moose-Camel-Comments-Model - Comment'
 }
@@ -234,6 +235,20 @@ MccComment >> gtInspectorSentencesIn: aComposite [
 ]
 
 { #category : #'gt-inspector-extension' }
+MccComment >> gtInspectorStatisticsIn: aComposite [
+	<gtInspectorPresentationOrder: 1>
+
+	^ aComposite table
+			title: 'Statistics' translated;
+			display: [ self  metrics associations];
+			beMultiple;
+			column: 'Metric'
+			evaluated: [ :each | GTObjectPrinter asTruncatedTextFrom: each key  ];
+			column: 'Value'
+			evaluated: [ :each | GTObjectPrinter asTruncatedTextFrom: each value ].
+]
+
+{ #category : #'gt-inspector-extension' }
 MccComment >> gtInspectorTextIn: aComposite [
 	<gtInspectorPresentationOrder: 1>
 
@@ -255,6 +270,22 @@ MccComment >> isEmpty [
 	<return: #Boolean>
 	
 	^ self asString isEmpty
+]
+
+{ #category : #metrics }
+MccComment >> metrics [ 
+
+	statistics := OrderedDictionary new.
+	
+	self statistics addAll:
+	{ 
+	'No. of total words' -> self words size.
+	'No. of stopwords' -> self stopwords size.
+	'No. unique words'-> (self words as:Set) size.
+	'No. of sentences' -> (self sentences select:[:aSentence | aSentence isNotEmpty])size.
+	 }asDictionary.
+	
+ 	^ self statistics. 
 ]
 
 { #category : #printing }
@@ -288,6 +319,11 @@ MccComment >> sentences [
 	<return: #Collection of: #MccSentence>
 
 	^ sentences ifNil: [ sentences := self computeSentences ]
+]
+
+{ #category : #accessing }
+MccComment >> statistics [
+	^ statistics
 ]
 
 { #category : #accessing }

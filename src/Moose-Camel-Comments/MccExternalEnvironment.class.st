@@ -8,8 +8,8 @@ Class {
 	#superclass : #MccEnvironment,
 	#instVars : [
 		'classes',
-		'classesWithComment',
-		'classCommentModel'
+		'comments',
+		'classesAndComments'
 	],
 	#category : #'Moose-Camel-Comments-Model - Environment'
 }
@@ -25,7 +25,7 @@ MccExternalEnvironment class >> fromCSV: aFileReference [
 			addField;
 			upToEnd.
 			
-	^ self new classesWithComment: (
+	^ self new classesAndComments: (
 		aCollectionOfClassComment 
 			collect:[:eachItem |
 				 (eachItem at:1) -> (MccTextComment of:(eachItem at:2))]).
@@ -43,12 +43,11 @@ MccExternalEnvironment >> allClasses [
 ]
 
 { #category : #'as yet unclassified' }
-MccExternalEnvironment >> classCommentModel [
+MccExternalEnvironment >> allComments [
+	"Return all comments in this environment"
+	<return: #Collection of: #MccComment>
 
-	^ self classCommentModel 
-	
-				
-
+	^ self comments.
 ]
 
 { #category : #accessing }
@@ -64,24 +63,30 @@ MccExternalEnvironment >> classes: aCollectionOfClasses [
 ]
 
 { #category : #accessing }
-MccExternalEnvironment >> classesWithComment [
-	^ classesWithComment
+MccExternalEnvironment >> classesAndComments: theAssociations [	
+	
+	self classes:(theAssociations collect:[:eachItem | eachItem key]).
+	self comments:(theAssociations collect:[:eachItem | eachItem value]).
+	 
+	^ self.
 ]
 
 { #category : #accessing }
-MccExternalEnvironment >> classesWithComment: anObject [
-	classesWithComment := anObject
+MccExternalEnvironment >> comments [
+	<return: #Collection of: #MccComment>
+
+	^ comments
 ]
 
-{ #category : #'as yet unclassified' }
-MccExternalEnvironment >> createClassCommentModel [
-			
-	^ self classes:(self classesWithComment collect:[:eachItem | eachItem key])
+{ #category : #accessing }
+MccExternalEnvironment >> comments: aCollectionOfComments [
+	comments:= aCollectionOfComments
 ]
 
 { #category : #initialization }
 MccExternalEnvironment >> initialize [
 	super initialize.
 	
-	classes := OrderedCollection new
+	classes := OrderedCollection new.
+	comments := OrderedCollection new.
 ]

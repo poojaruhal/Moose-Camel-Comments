@@ -17,8 +17,8 @@ MccExternalEnvironmentExamples >> externalEnvironmentModel [
 	
 	"get the collection of the class with its comment"
 	
-	anExternalEnviornment := MccExternalEnvironment fromCSV:(self inputFileReference).
-	anExternalEnviornment createClassCommentModel.
+	^ MccExternalEnvironment fromCSV:(self inputFileReference).
+	
 ]
 
 { #category : #'as yet unclassified' }

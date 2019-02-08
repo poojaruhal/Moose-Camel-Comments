@@ -15,6 +15,14 @@ MccEnvironment >> allClasses [
 	^ self subclassResponsibility
 ]
 
+{ #category : #'as yet unclassified' }
+MccEnvironment >> allComments [
+	"Return all comments in this environment"
+	<return: #Collection of: #MccComment>
+
+	^ self subclassResponsibility
+]
+
 { #category : #navigation }
 MccEnvironment >> allMethods [
 	"Return all methods in this environment"
