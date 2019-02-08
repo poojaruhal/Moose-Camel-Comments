@@ -54,7 +54,7 @@ MccSmalltalkInCommentParser class >> parse: aString [
 				
 				[ aStream nextPut: tokenToParse parse ]
 					on: Error
-					do: [ aStream nextPut: tokenToParse asCodeToken ] ] ].
+					do: [ aStream nextPut: tokenToParse asTextToken ] ] ].
 		
 	^ (theNodes size = 1)
 		ifTrue: [ theNodes first ]
@@ -80,5 +80,8 @@ MccSmalltalkInCommentParser >> parseOn: aPP2Context [
 
 { #category : #initialization }
 MccSmalltalkInCommentParser >> resetStrategy [
-	strategy := MccSmalltalkInCommentStrategy on: self
+
+	strategy := MccSmalltalkInCommentStrategy on: self.
+	strategy visitor: MccSmalltalkInCommentVisitor new.
+
 ]

@@ -32,7 +32,7 @@ MccSmalltalkCompositeToken >> isEmpty [
 { #category : #parsing }
 MccSmalltalkCompositeToken >> parse [
 	<return: #MccSmalltalkToken>
-		
+	
 	children := children select: #isNotEmpty thenCollect: #parse.
 	
 	^ self

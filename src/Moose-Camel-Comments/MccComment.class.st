@@ -130,9 +130,9 @@ MccComment >> code [
 	| aParser theTokens |
 
 	aParser := MccSmalltalkInCommentParser.
-	theTokens := aParser parse: self asString.
+	theTokens := (aParser parse: self asString) textAndCodeTokens.
 	code := theTokens select: [ :eachToken | 
-		eachToken isKindOf: MccSmalltalkCodeToken ].
+		eachToken isCode ].
 	^ code
 ]
 
@@ -153,7 +153,7 @@ MccComment >> computeSentences [
 				computedEnd := end - (6*counter).
 				counter := counter + 1.
 				aString := aCommentString copyFrom: start to: end.
-				aString ifNotEmpty: [
+				aString trim ifNotEmpty: [
 					aStream nextPut: (MccSentence new string: aString interval: (computedStart to: computedEnd)) ] ] ]
 ]
 
@@ -211,6 +211,16 @@ MccComment >> computeWords [
 ]
 
 { #category : #'gt-inspector-extension' }
+MccComment >> gtInspectorCodeSnippetsIn: aComposite [
+	<gtInspectorPresentationOrder: 3>
+	
+	^ aComposite fastList
+		title: 'Code Snippets' translated;
+		display: [ self code ];
+		when: [  self code isNotEmpty ]
+]
+
+{ #category : #'gt-inspector-extension' }
 MccComment >> gtInspectorMccCommentReferencesIn: aComposite inContext: aGTInspector [
 	"Override extension from Object to break infinite recursion"
 ]
@@ -250,11 +260,12 @@ MccComment >> gtInspectorStatisticsIn: aComposite [
 
 { #category : #'gt-inspector-extension' }
 MccComment >> gtInspectorTextIn: aComposite [
-	<gtInspectorPresentationOrder: 1>
-
-	^ aComposite text
-			title: 'Text' translated;
-			display: [ self asString ]
+	<gtInspectorPresentationOrder: 3>
+	
+	^ aComposite fastList
+		title: 'Text' translated;
+		display: [ self text ];
+		when: [  self text isNotEmpty ]
 ]
 
 { #category : #initialization }
@@ -340,9 +351,9 @@ MccComment >> text [
 	| aParser theTokens |
 
 	aParser := MccSmalltalkInCommentParser.
-	theTokens := aParser parse: self asString.
+	theTokens := (aParser parse: self asString) textAndCodeTokens.
 	text := theTokens select: [ :eachToken | 
-		eachToken isKindOf: MccSmalltalkTextToken ].
+		eachToken isText ].
 	^ text
 ]
 

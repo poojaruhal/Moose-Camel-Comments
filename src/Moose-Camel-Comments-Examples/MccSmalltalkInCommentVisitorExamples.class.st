@@ -178,6 +178,38 @@ MccSmalltalkInCommentVisitorExamples >> visitLiteralArray [
 ]
 
 { #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitMenuTitleMorph [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := '
+	| menu |
+	
+	menu := MenuMorph new.
+
+	menu buildTitle: [ :titleMorph | titleMorph
+		title: ''aCoolTitle'';
+		icon: self theme icons alertIcon;
+		withCloseBox;
+		withPinBox;
+		color: Color purple		
+	].
+	
+	menu popUpInWorld'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid.
+	self assert: aResult isPartiallyValid.
+
+	
+	^ aResult
+]
+
+{ #category : #visiting }
 MccSmalltalkInCommentVisitorExamples >> visitObjectWithDot [
 	<gtExample>
 	| aParser aText aVisitor anAST aResult |
@@ -328,6 +360,29 @@ MccSmalltalkInCommentVisitorExamples >> visitSequenceWithInvalidFirstStatementAn
 	
 	self assert: aResult isValid not.
 	self assert: aResult isPartiallyValid not.
+	
+	^ aResult
+]
+
+{ #category : #visiting }
+MccSmalltalkInCommentVisitorExamples >> visitUndeclaredVariableInCode [
+	<gtExample>
+	| aParser aText aVisitor anAST aResult |
+	
+	aParser := self smalltalkParser.
+	aText := 'LayoutFrame identity
+	topOffset: topHeight;
+	bottomFraction: 0;
+	bottomOffset: self buttonsBarHeight;
+	leftOffset: -1;
+	rightOffset: 1'.
+	aVisitor := self visitor.
+	
+	anAST := aParser parse: aText.
+	aResult := anAST acceptVisitor: aVisitor.
+	
+	self assert: aResult isValid.
+	self assert: aResult isPartiallyValid.
 	
 	^ aResult
 ]
