@@ -1,107 +1,186 @@
+"
+I am an analyzer responsibile for analyzing different version of the commentStamp file.
+"
 Class {
 	#name : #MccCommentStampAnalyzer,
 	#superclass : #Object,
 	#instVars : [
-		'commentClass',
-		'commentStamp',
-		'classesWithCommentStamp',
-		'parsedCommentStamps'
+		'versionOne',
+		'versionTwo',
+		'parsedFilteredVersionOne',
+		'parsedFilteredVersionTwo',
+		'metrics'
 	],
 	#category : #'Moose-Camel-Comments'
 }
 
-{ #category : #'instance creation' }
-MccCommentStampAnalyzer class >> fromCSV: aFileReference [
-
-	|aCollectionOfClassAndCommentStamps|
-	
-	aCollectionOfClassAndCommentStamps := (NeoCSVReader on: aFileReference readStream)
-		addField;
-		addField;
-		upToEnd.
-		
-	^ self new classesWithCommentStamp: (aCollectionOfClassAndCommentStamps
-		collect:[:eachItem |
-			(eachItem at:1) -> (eachItem at:2)])
-]
-
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzer >> authors [
-	"get information of which author commited on which date"
+MccCommentStampAnalyzer class >> version: inputFileReferenceOne to: inputFileReferenceTwo [
+
+	^ self new
+		versionOne: inputFileReferenceOne;
+		versionTwo: inputFileReferenceTwo.
+]
+
+{ #category : #computing }
+MccCommentStampAnalyzer >> analyze [
 	
-	^ (self filterHistorical
-			collect:[:eachAssociation |
-				eachAssociation value first]) asSet asOrderedCollection sorted.
-]
-
-{ #category : #'as yet unclassified' }
-MccCommentStampAnalyzer >> authorsWithCommentDate [
-	"get information which author commited on which date"
+	|commentStampVersionOne commentStampVersionTwo|
 	
-	^ (self filterHistorical 
-			collect:[:eachItem |
-				(eachItem value at:1)-> (eachItem value at:2)]) sort: [ :a :b | a value < b value ]
-]
-
-{ #category : #'as yet unclassified' }
-MccCommentStampAnalyzer >> classesWithCommentDate [
-	"get information which author commited on which date"
+	commentStampVersionOne :=  MccCommentStamp fromCSV:self versionOne.
+	commentStampVersionTwo := MccCommentStamp fromCSV: self versionTwo.
+	self parsedFilteredVersionOne: commentStampVersionOne parseAndFilter.
+	self parsedFilteredVersionTwo: commentStampVersionTwo parseAndFilter.
 	
-	^ (self filterHistorical 
-			collect:[:eachItem |
-				(eachItem key )-> (eachItem value at:2)]) sort: [ :a :b | a value < b value ]
-]
-
-{ #category : #accessing }
-MccCommentStampAnalyzer >> classesWithCommentStamp [
-	^ classesWithCommentStamp
-]
-
-{ #category : #accessing }
-MccCommentStampAnalyzer >> classesWithCommentStamp: aCollection [
-	classesWithCommentStamp := aCollection
-]
-
-{ #category : #accessing }
-MccCommentStampAnalyzer >> filterHistorical [
-	"return all classes without comment stamp as historical. 
-	Historical means comment stamp is not available."
+	self metrics addAll: 
+	{ 
+	'Different Classes' -> self differentClassesInVersions.
+	'Different Classes By Keys' -> self differentClassesByKeysInVersions.
+	'Common Classes' -> self commonClassesInVersions.
+	'Common Classes By Keys' -> self commonClassesByKeysInVersions.
+	'Common Classes With TimeStamps from Versions' -> self commonClassesWithTimeStampsFromVersions.
+	} asDictionary.
 	
-	^ self classesWithCommentStamp select:[:eachItem | eachItem value ~= 'historical'].
+	^ self metrics.
+	
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> commonClassesByKeysInVersions [
+
+	^ ((self parsedFilteredVersionOne collect: #key)
+			intersection:
+				(self parsedFilteredVersionTwo
+				 	collect: #key)) 
+						sort: [:a :b | a < b ]
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> commonClassesInVersions [
+
+	^ (self parsedFilteredVersionOne intersection: self parsedFilteredVersionTwo) sort: [:a :b | a < b ]
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> commonClassesWithTimeStampsFromVersions [
+
+	| output versionOneList versionTwoList |
+	
+	versionOneList := self parsedFilteredVersionOne.
+	versionTwoList := self parsedFilteredVersionTwo.
+	output := OrderedCollection new.
+	
+	versionOneList
+		do: [ :anAssociation | 
+			(versionTwoList includes: anAssociation)
+				ifTrue: [ | index |
+					index := versionTwoList indexOf: anAssociation.
+					output
+						add:
+							{anAssociation key.
+							anAssociation value second.
+							(versionTwoList at: index) value second} ] ].
+	^ output
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> differentClassesByKeysInVersions [
+
+	^ ((self parsedFilteredVersionOne collect: #key)
+		difference: (self parsedFilteredVersionTwo collect: #key))sort: [:a :b | a < b ]
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> differentClassesInVersions [
+
+	^ (self parsedFilteredVersionOne difference: self parsedFilteredVersionTwo) sort: [:a :b | a < b  ]
 ]
 
 { #category : #'gt-inspector-extension' }
-MccCommentStampAnalyzer >> gtInspectorCommentStampsIn: aComposite [
+MccCommentStampAnalyzer >> gtInspectorVersionsMetricsIn: aComposite [
 	<gtInspectorPresentationOrder: 0>
-
-	^ aComposite table
-		title: 'Classes With CommentStamps' translated;
-		display: [
-			 self classesWithCommentStamp.
-			]
-]
-
-{ #category : #accessing }
-MccCommentStampAnalyzer >> historical [
-	"return all classes with comment stamp as historical. 
-	Historical means comment stamp is not available."
 	
-	^ self classesWithCommentStamp select:[:eachItem | eachItem value = 'historical']
+	^	aComposite fastTable
+			title:'Metric';
+			display: [  self metrics associations];
+			column: 'Key'
+				evaluated: [ :each | GTObjectPrinter asTruncatedTextFrom: each key ];
+			column: 'Value'
+				evaluated: [ :each | GTObjectPrinter asTruncatedTextFrom: each value ];
+				beMultiple;
+				send: [ :selection | 
+				selection isNil 
+				ifTrue: [ nil ]
+				ifFalse: [ selection size = 1  
+					ifTrue: [ selection anyOne value ] 
+					ifFalse: [ selection collect: #value ] ]]		
+			
+		
 ]
 
 { #category : #initialization }
-MccCommentStampAnalyzer >> initialize [ 	
+MccCommentStampAnalyzer >> initialize [ 
 	super initialize.
-	classesWithCommentStamp := OrderedCollection new.
+	
+	metrics := OrderedDictionary new.
+	
+	parsedFilteredVersionOne := nil. "lazy"
+	parsedFilteredVersionTwo := nil. "lazy"
+	
 ]
 
-{ #category : #parsing }
-MccCommentStampAnalyzer >> parseCommentStamps [
-	| mccCommentStampParser|
+{ #category : #accessing }
+MccCommentStampAnalyzer >> metrics [
+	^ metrics
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> metrics: anObject [
+	metrics := anObject
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> parsedFilteredVersionOne [
+	^ parsedFilteredVersionOne
 	
-	mccCommentStampParser := MccCommentStampParser new.
 	
-	^ self classesWithCommentStamp collect: [ 
-		:eachRecord |
-		eachRecord value: (mccCommentStampParser parse:(eachRecord value))]
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> parsedFilteredVersionOne: aCollection [
+	parsedFilteredVersionOne := aCollection
+	
+	
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> parsedFilteredVersionTwo [
+	^ parsedFilteredVersionTwo
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> parsedFilteredVersionTwo: aCollection [
+	parsedFilteredVersionTwo := aCollection
+	
+	
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> versionOne [
+	^ versionOne
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> versionOne: anObject [
+	versionOne := anObject
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> versionTwo [
+	^ versionTwo
+]
+
+{ #category : #accessing }
+MccCommentStampAnalyzer >> versionTwo: anObject [
+	versionTwo := anObject
 ]

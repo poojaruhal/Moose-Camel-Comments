@@ -1,3 +1,9 @@
+"
+I analyze difference versions given in inputOne and inputTwo.
+inputOne and InputTwo are 2 version to be analyzed.
+
+I can find different classes, common classes in two versions.
+"
 Class {
 	#name : #MccCommentStampAnalyzerExamples,
 	#superclass : #Object,
@@ -5,69 +11,102 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> analyzeVersions [
+	<gtExample>
+		
+	|anAnalyzer|
+	
+	anAnalyzer := MccCommentStampAnalyzer version: self pharo3FileReference  to: self pharo4FileReference.
+	^ anAnalyzer analyze.
+]
+
+{ #category : #'as yet unclassified' }
 MccCommentStampAnalyzerExamples >> collectTimeStampsOfTwoVersions [
 	<gtExample>
 	
-	| output pharo3List pharo4List |
+	^ self collectTimeStampsOfTwoVersions.
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> commonClassesByKeysInVersions [
+	<gtExample>
 	
-	pharo3List := self pharo3CommentStamps.
-	pharo4List := self pharo4CommentStamps.
-	output := OrderedCollection new.
-	
-	pharo3List
-		do: [ :anAssociation | 
-			(pharo4List includes: anAssociation)
-				ifTrue: [ | index |
-					index := pharo4List indexOf: anAssociation.
-					output
-						add:
-							{anAssociation key.
-							anAssociation value second.
-							(pharo4List at: index) value second} ] ].
-					
-	^ output
+	^ self commonClassesByKeysInVersions.
 ]
 
 { #category : #'as yet unclassified' }
 MccCommentStampAnalyzerExamples >> commonClassesInVersions [
 	<gtExample>
 	
-	^ self pharo3CommentStamps intersection: self pharo4CommentStamps.
+	^ self commonClassesInVersions.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> differenceInVersions [
+MccCommentStampAnalyzerExamples >> differentClassesByKeysInVersions [
 	<gtExample>
 	
-	^ self pharo3CommentStamps difference: self pharo4CommentStamps.
+		^ self differentClassesByKeysInVersions.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> pharo3CommentStamps [
+MccCommentStampAnalyzerExamples >> differentClassesInVersions [
 	<gtExample>
 	
-	| input aMccCommentAnalyzer |
-	
-	input := '/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classesCommentsStamp-pharo3-package-morph.csv' asFileReference.
+	^ self differentClassesInVersions.
+]
 
-	aMccCommentAnalyzer := MccCommentStampAnalyzer fromCSV: input.
-	aMccCommentAnalyzer parseCommentStamps .
-	^ aMccCommentAnalyzer filterHistorical.
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> inputVersionOne [
+	<gtExample>
+	
+	"self pharo3FileReference."	
+	^ self pharo4FileReference.
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> inputVersionTwo [
+	<gtExample>
+	
+	"self pharo4FileReference."
+	^ self pharo3FileReference.
 	
 	
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> pharo4CommentStamps [
+MccCommentStampAnalyzerExamples >> parsedFilteredVersionOne [
 	<gtExample>
 	
-	| pharo4FileReference aMccCommentAnalyzer |
-	
-	pharo4FileReference:= '/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classesCommentsStamp-pharo4-package-morph.csv' asFileReference.
+	^ self parsedFilteredVersionOne.
+]
 
-	aMccCommentAnalyzer := MccCommentStampAnalyzer fromCSV: pharo4FileReference.
-	aMccCommentAnalyzer parseCommentStamps .
-	^ aMccCommentAnalyzer filterHistorical.
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> parsedFilteredVersionTwo [
+	<gtExample>
 	
+	^ self parsedFilteredVersionTwo.
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> pharo3FileReference [
+	<gtExample>
 	
+	^ '/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classesCommentsStamp-pharo3-package-morph.csv'
+		asFileReference
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> pharo4FileReference [
+	<gtExample>
+	
+	^ '/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classesCommentsStamp-pharo4-package-morph.csv'
+		asFileReference.
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> pharo5FileReference [
+	<gtExample>
+	
+	^ '/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classesCommentsStamp-pharo5-package-morph.csv'
+		asFileReference
 ]
