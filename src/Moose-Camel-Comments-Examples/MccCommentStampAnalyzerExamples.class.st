@@ -11,20 +11,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> ClassesHaveDifferentTimestamp [
-	<gtExample>
-	
-	^ self ClassesHaveDifferentTimestamp.
-]
-
-{ #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> ClassesHaveSameTimestamp [
-	<gtExample>
-	
-	^ self ClassesHaveSameTimestamp.
-]
-
-{ #category : #'as yet unclassified' }
 MccCommentStampAnalyzerExamples >> analyzeVersions [
 	<gtExample>
 		
@@ -32,6 +18,20 @@ MccCommentStampAnalyzerExamples >> analyzeVersions [
 	
 	anAnalyzer := MccCommentStampAnalyzer version: self pharo3FileReference  to: self pharo4FileReference.
 	^ anAnalyzer analyze.
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> classesHaveDifferentTimestamp [
+	<gtExample>
+	
+	^ self classesHaveDifferentTimestamp.
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> classesHaveSameTimestamp [
+	<gtExample>
+	
+	^ self classesHaveSameTimestamp.
 ]
 
 { #category : #'as yet unclassified' }

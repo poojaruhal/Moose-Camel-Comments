@@ -63,11 +63,17 @@ MccExternalEnvironment >> classes: aCollectionOfClasses [
 ]
 
 { #category : #accessing }
+MccExternalEnvironment >> classesAndComments [
+	^ classesAndComments
+]
+
+{ #category : #accessing }
 MccExternalEnvironment >> classesAndComments: theAssociations [	
 	
+	classesAndComments := theAssociations sort:[:a :b | a key < b key].
 	self classes:(theAssociations collect:[:eachItem | eachItem key]).
 	self comments:(theAssociations collect:[:eachItem | eachItem value]).
-	 
+	
 	^ self.
 ]
 
@@ -89,4 +95,5 @@ MccExternalEnvironment >> initialize [
 	
 	classes := OrderedCollection new.
 	comments := OrderedCollection new.
+	classesAndComments := OrderedDictionary new.
 ]

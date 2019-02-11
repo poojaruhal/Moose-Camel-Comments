@@ -15,7 +15,7 @@ smalltalkHubProjects timestampsByTimeline.
 Class {
 	#name : #MccSmalltalkHubStatistics,
 	#superclass : #MccStatistics,
-	#category : #'Moose-Camel-Comments-Model'
+	#category : #'Moose-Camel-Comments-Model - Statistics'
 }
 
 { #category : #walking }

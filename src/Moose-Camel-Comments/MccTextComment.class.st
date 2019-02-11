@@ -27,6 +27,15 @@ MccTextComment >> asString [
 	^ self text asString
 ]
 
+{ #category : #printing }
+MccTextComment >> printOn: aStream [
+	aStream
+		nextPutAll: 'Comment: ';
+		nextPut: $(;
+		nextPutAll: self asString;
+		nextPut: $)
+]
+
 { #category : #references }
 MccTextComment >> referencesIn: aMccEnvironment [
 	"Return a collection of references from this comment within a given environment"

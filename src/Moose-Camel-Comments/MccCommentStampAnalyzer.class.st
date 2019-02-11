@@ -22,33 +22,21 @@ MccCommentStampAnalyzer class >> version: inputFileReferenceOne to: inputFileRef
 		versionTwo: inputFileReferenceTwo.
 ]
 
-{ #category : #metrics }
-MccCommentStampAnalyzer >> ClassesHaveDifferentTimestamp [
-
-	^ (self parsedFilteredVersionOne difference: self parsedFilteredVersionTwo) sort: [:a :b | a < b  ]
-]
-
-{ #category : #metrics }
-MccCommentStampAnalyzer >> ClassesHaveSameTimestamp [
-
-	^ (self parsedFilteredVersionOne intersection: self parsedFilteredVersionTwo) sort: [:a :b | a < b ]
-]
-
 { #category : #computing }
 MccCommentStampAnalyzer >> analyze [
 	
 	|commentStampVersionOne commentStampVersionTwo|
 	
-	commentStampVersionOne :=  MccCommentStamp fromCSV:self versionOne.
+	commentStampVersionOne :=  MccCommentStamp fromCSV: self versionOne.
 	commentStampVersionTwo := MccCommentStamp fromCSV: self versionTwo.
 	self parsedFilteredVersionOne: commentStampVersionOne parseAndFilter.
 	self parsedFilteredVersionTwo: commentStampVersionTwo parseAndFilter.
 	
 	self metrics addAll: 
 	{ 
-	'Classes Have Different Timestamp' -> self ClassesHaveDifferentTimestamp.
+	'Classes Have Different Timestamp' -> self classesHaveDifferentTimestamp.
 	'Different Classes' -> self differentClasses.
-	'Classes Have Same Timestamp ' -> self ClassesHaveSameTimestamp.
+	'Classes Have Same Timestamp ' -> self classesHaveSameTimestamp.
 	'Common Classes' -> self commonClasses.
 	'Common Classes With TimeStamps from Versions' -> self classesHaveSameTimeStampWithTimeStampFromVersions.
 	'Comment Stamp Changed From Common Classes' ->  self commentStampChangedClasses.
@@ -56,6 +44,12 @@ MccCommentStampAnalyzer >> analyze [
 	
 	^ self metrics.
 	
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> classesHaveDifferentTimestamp [
+
+	^ (self parsedFilteredVersionOne difference: self parsedFilteredVersionTwo) sort: [:a :b | a < b  ]
 ]
 
 { #category : #metrics }
@@ -81,6 +75,12 @@ MccCommentStampAnalyzer >> classesHaveSameTimeStampWithTimeStampFromVersions [
 ]
 
 { #category : #metrics }
+MccCommentStampAnalyzer >> classesHaveSameTimestamp [
+
+	^ (self parsedFilteredVersionOne intersection: self parsedFilteredVersionTwo) sort: [:a :b | a < b ]
+]
+
+{ #category : #metrics }
 MccCommentStampAnalyzer >> commentStampChangedClasses [
 
 	| output stampChangedClasses|
@@ -89,7 +89,7 @@ MccCommentStampAnalyzer >> commentStampChangedClasses [
 	
 	stampChangedClasses := self commonClasses
 		difference: 
-			(self ClassesHaveSameTimestamp collect: #key).
+			(self classesHaveSameTimestamp collect: #key).
 	
 	stampChangedClasses
 		do: [ :aClassName | 
