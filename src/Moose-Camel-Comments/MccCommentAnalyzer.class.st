@@ -33,7 +33,7 @@ MccCommentAnalyzer >> analyze [
 	{ 
 	'Different Classes' -> self differentClasses.
 	'Common Classes' -> self commonClasses.
-	'Comment Changed From Common Classes' ->  self commentChangedClasses.
+	'Classes Have Different comment' ->  self classesHaveDifferentComment.
 	} asDictionary.
 	
 	^ self metrics.
@@ -41,13 +41,7 @@ MccCommentAnalyzer >> analyze [
 ]
 
 { #category : #metrics }
-MccCommentAnalyzer >> classesHaveSameComments [
-
-	^ (self versionOneClassesAndComments intersection: self versionTwoClassesAndComments) sort: [:a :b | a < b ]
-]
-
-{ #category : #metrics }
-MccCommentAnalyzer >> commentChangedClasses [
+MccCommentAnalyzer >> classesHaveDifferentComment [
 
 	| output commentChangedClasses|
 
@@ -66,6 +60,12 @@ MccCommentAnalyzer >> commentChangedClasses [
 			 }].
 	^ output
 
+]
+
+{ #category : #metrics }
+MccCommentAnalyzer >> classesHaveSameComments [
+
+	^ (self versionOneClassesAndComments intersection: self versionTwoClassesAndComments) sort: [:a :b | a < b ]
 ]
 
 { #category : #metrics }
