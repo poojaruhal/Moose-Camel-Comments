@@ -11,6 +11,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> ClassesHaveDifferentTimestamp [
+	<gtExample>
+	
+	^ self ClassesHaveDifferentTimestamp.
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampAnalyzerExamples >> ClassesHaveSameTimestamp [
+	<gtExample>
+	
+	^ self ClassesHaveSameTimestamp.
+]
+
+{ #category : #'as yet unclassified' }
 MccCommentStampAnalyzerExamples >> analyzeVersions [
 	<gtExample>
 		
@@ -28,31 +42,17 @@ MccCommentStampAnalyzerExamples >> collectTimeStampsOfTwoVersions [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> commonClassesByKeysInVersions [
+MccCommentStampAnalyzerExamples >> commonClasses [
 	<gtExample>
 	
-	^ self commonClassesByKeysInVersions.
+	^ self commonClasses.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> commonClassesInVersions [
+MccCommentStampAnalyzerExamples >> differentClasses [
 	<gtExample>
 	
-	^ self commonClassesInVersions.
-]
-
-{ #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> differentClassesByKeysInVersions [
-	<gtExample>
-	
-		^ self differentClassesByKeysInVersions.
-]
-
-{ #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> differentClassesInVersions [
-	<gtExample>
-	
-	^ self differentClassesInVersions.
+		^ self differentClasses.
 ]
 
 { #category : #'as yet unclassified' }

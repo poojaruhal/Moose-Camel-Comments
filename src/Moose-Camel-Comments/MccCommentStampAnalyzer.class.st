@@ -11,7 +11,7 @@ Class {
 		'parsedFilteredVersionTwo',
 		'metrics'
 	],
-	#category : #'Moose-Camel-Comments'
+	#category : #'Moose-Camel-Comments-Model'
 }
 
 { #category : #'as yet unclassified' }
@@ -20,6 +20,18 @@ MccCommentStampAnalyzer class >> version: inputFileReferenceOne to: inputFileRef
 	^ self new
 		versionOne: inputFileReferenceOne;
 		versionTwo: inputFileReferenceTwo.
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> ClassesHaveDifferentTimestamp [
+
+	^ (self parsedFilteredVersionOne difference: self parsedFilteredVersionTwo) sort: [:a :b | a < b  ]
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> ClassesHaveSameTimestamp [
+
+	^ (self parsedFilteredVersionOne intersection: self parsedFilteredVersionTwo) sort: [:a :b | a < b ]
 ]
 
 { #category : #computing }
@@ -34,11 +46,12 @@ MccCommentStampAnalyzer >> analyze [
 	
 	self metrics addAll: 
 	{ 
-	'Different Classes' -> self differentClassesInVersions.
-	'Different Classes By Keys' -> self differentClassesByKeysInVersions.
-	'Common Classes' -> self commonClassesInVersions.
-	'Common Classes By Keys' -> self commonClassesByKeysInVersions.
-	'Common Classes With TimeStamps from Versions' -> self commonClassesWithTimeStampsFromVersions.
+	'Classes Have Different Timestamp' -> self ClassesHaveDifferentTimestamp.
+	'Different Classes' -> self differentClasses.
+	'Classes Have Same Timestamp ' -> self ClassesHaveSameTimestamp.
+	'Common Classes' -> self commonClasses.
+	'Common Classes With TimeStamps from Versions' -> self classesHaveSameTimeStampWithTimeStampFromVersions.
+	'Comment Stamp Changed From Common Classes' ->  self commentStampChangedClasses.
 	} asDictionary.
 	
 	^ self metrics.
@@ -46,23 +59,7 @@ MccCommentStampAnalyzer >> analyze [
 ]
 
 { #category : #metrics }
-MccCommentStampAnalyzer >> commonClassesByKeysInVersions [
-
-	^ ((self parsedFilteredVersionOne collect: #key)
-			intersection:
-				(self parsedFilteredVersionTwo
-				 	collect: #key)) 
-						sort: [:a :b | a < b ]
-]
-
-{ #category : #metrics }
-MccCommentStampAnalyzer >> commonClassesInVersions [
-
-	^ (self parsedFilteredVersionOne intersection: self parsedFilteredVersionTwo) sort: [:a :b | a < b ]
-]
-
-{ #category : #metrics }
-MccCommentStampAnalyzer >> commonClassesWithTimeStampsFromVersions [
+MccCommentStampAnalyzer >> classesHaveSameTimeStampWithTimeStampFromVersions [
 
 	| output versionOneList versionTwoList |
 	
@@ -84,16 +81,42 @@ MccCommentStampAnalyzer >> commonClassesWithTimeStampsFromVersions [
 ]
 
 { #category : #metrics }
-MccCommentStampAnalyzer >> differentClassesByKeysInVersions [
+MccCommentStampAnalyzer >> commentStampChangedClasses [
 
-	^ ((self parsedFilteredVersionOne collect: #key)
-		difference: (self parsedFilteredVersionTwo collect: #key))sort: [:a :b | a < b ]
+	| output stampChangedClasses|
+
+	output := OrderedCollection new.
+	
+	stampChangedClasses := self commonClasses
+		difference: 
+			(self ClassesHaveSameTimestamp collect: #key).
+	
+	stampChangedClasses
+		do: [ :aClassName | 
+			output add: {
+			aClassName. 
+			(self parsedFilteredVersionOne detect: [:anAssociation | anAssociation key = aClassName]) value second.
+			(self parsedFilteredVersionTwo detect: [:anAssociation | anAssociation key = aClassName]) value second
+			 }].
+	^ output
+
 ]
 
 { #category : #metrics }
-MccCommentStampAnalyzer >> differentClassesInVersions [
+MccCommentStampAnalyzer >> commonClasses [
 
-	^ (self parsedFilteredVersionOne difference: self parsedFilteredVersionTwo) sort: [:a :b | a < b  ]
+	^ ((self parsedFilteredVersionOne collect: #key)
+			intersection:
+				(self parsedFilteredVersionTwo
+				 	collect: #key)) 
+						sort: [:a :b | a < b ]
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> differentClasses [
+
+	^ ((self parsedFilteredVersionOne collect: #key)
+		difference: (self parsedFilteredVersionTwo collect: #key))sort: [:a :b | a < b ]
 ]
 
 { #category : #'gt-inspector-extension' }
