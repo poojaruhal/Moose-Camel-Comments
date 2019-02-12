@@ -56,7 +56,7 @@ MccCommentAnalyzer >> classesHaveDifferentComment [
 			output add: {
 			aClassName. 
 			(self versionOneClassesAndComments  detect: [:anAssociation | anAssociation key = aClassName]) value.
-			(self versionOneClassesAndComments  detect: [:anAssociation | anAssociation key = aClassName]) value
+			(self versionTwoClassesAndComments  detect: [:anAssociation | anAssociation key = aClassName]) value
 			 }].
 	^ output
 
@@ -64,7 +64,6 @@ MccCommentAnalyzer >> classesHaveDifferentComment [
 
 { #category : #metrics }
 MccCommentAnalyzer >> classesHaveSameComments [
-
 	^ (self versionOneClassesAndComments intersection: self versionTwoClassesAndComments) sort: [:a :b | a < b ]
 ]
 

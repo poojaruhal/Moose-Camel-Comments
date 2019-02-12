@@ -18,13 +18,13 @@ Class {
 MccExternalEnvironment class >> fromCSV: aFileReference [
 
 	|aCollectionOfClassComment|
-	
+
 	aCollectionOfClassComment:=
 		(NeoCSVReader on: aFileReference readStream)
 			addField;
 			addField;
 			upToEnd.
-			
+		
 	^ self new classesAndComments: (
 		aCollectionOfClassComment 
 			collect:[:eachItem |
