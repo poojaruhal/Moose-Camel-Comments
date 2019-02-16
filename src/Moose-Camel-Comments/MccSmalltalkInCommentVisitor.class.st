@@ -91,7 +91,7 @@ MccSmalltalkInCommentVisitor >> visitArrayNode: anArrayNode [
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitAssignmentNode: anAssignmentNode [
 	assignments add: anAssignmentNode variable.
-	
+
 	^ self resultFor: anAssignmentNode
 ]
 
@@ -152,7 +152,7 @@ MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
 		ifTrue: [ ^ aLiteralResult  ].
 
 	((stringLiteral copyFrom: 1 to: 2) isWordContraction 
-		or: [ (stringLiteral copyFrom: 1 to: 3) isWordContraction or: [ (aLiteralNode asString at: 20) = $# ]])
+		or: [ (stringLiteral copyFrom: 1 to: 3) isWordContraction "or: [ (aLiteralNode asString at: 20) = $# ]"])
 			ifFalse: [ ^ aLiteralResult ].
 
 	^ (self errorFor: aLiteralNode) "filteredAST: (aLiteralNode class named: #'' start: 1)"
@@ -278,6 +278,9 @@ MccSmalltalkInCommentVisitor >> visitVariableNode: aVariableNode [
 	
 	aVariableNode name = 'super'
 		ifTrue: [ ^ theResult ].
+		
+	"((aVariableNode name) matchesRegex: '(([a-z]+)([A-Z]+[a-z]*)+)')
+		ifTrue: [ ^ theResult ]."
 		
 	(aVariableNode parents anySatisfy: [ :eachParentNode | eachParentNode isCascade or: [ eachParentNode isBlock ] ])
 		ifTrue: [ ^ theResult ].

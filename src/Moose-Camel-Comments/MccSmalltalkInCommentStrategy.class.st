@@ -2,7 +2,8 @@ Class {
 	#name : #MccSmalltalkInCommentStrategy,
 	#superclass : #PP2Strategy,
 	#instVars : [
-		'visitor'
+		'visitor',
+		'assignments'
 	],
 	#classVars : [
 		'allMethods'
@@ -12,6 +13,18 @@ Class {
 	],
 	#category : #'Moose-Camel-Comments-Parser'
 }
+
+{ #category : #'as yet unclassified' }
+MccSmalltalkInCommentStrategy >> assignments [
+
+	^ assignments
+]
+
+{ #category : #'as yet unclassified' }
+MccSmalltalkInCommentStrategy >> assignments: someAssignments [
+
+	assignments := someAssignments 
+]
 
 { #category : #initialization }
 MccSmalltalkInCommentStrategy >> initialize [ 
@@ -30,7 +43,7 @@ MccSmalltalkInCommentStrategy >> parseOn: aPP2Context [
 	
 	smalltalkParser := MccSmalltalkParser new.
 	aResult := smalltalkParser parseOn: aPP2Context.
-
+	
 	aResult isPetit2Failure
 		ifTrue: [ aPP2Context restorePosition: position ]
 		ifFalse: [ aResult := self processAST: aResult with: aPP2Context at: position ].
@@ -43,7 +56,6 @@ MccSmalltalkInCommentStrategy >> processAST: anRBNode with: aPP2Context at: aPos
 	| aResult allNodes aFirstNode hasSequenceOrCascade |
 
 	allNodes := { anRBNode } , anRBNode allChildren.
-	
 	"If all nodes are message nodes and one of them a literal, it's probably just a natural language sentence"
 	(allNodes allSatisfy: [ :eachNode | eachNode isMessage or: [ eachNode isLiteralNode ] ])
 	ifTrue: [ 

@@ -26,20 +26,42 @@ asfafasfj' copyReplaceAll: String cr with: String cr, '.'.
 Class {
 	#name : #MccSmalltalkInCommentParser,
 	#superclass : #PP2PluggableNode,
+	#classVars : [
+		'assignments'
+	],
 	#category : #'Moose-Camel-Comments-Parser'
 }
+
+{ #category : #accessing }
+MccSmalltalkInCommentParser class >> assignments [
+
+	^ assignments
+]
+
+{ #category : #accessing }
+MccSmalltalkInCommentParser class >> assignments: someAssignments [ 
+
+	assignments := someAssignments 
+]
 
 { #category : #parsing }
 MccSmalltalkInCommentParser class >> parse: aString [
 	| aStringToSplit theNodes |
 
+	assignments := OrderedCollection new.
 	aString
 		ifEmpty: [ ^ #() ].
 
 	aStringToSplit := ({ Character cr . Character lf } includes: aString last)
 		ifTrue: [ aString ]
 		ifFalse: [
-			aString, String cr ].		
+			aString, String cr ].	
+			
+	aStringToSplit := (((aStringToSplit includes: '[[[') and: [ aStringToSplit includes:']]]' ]) or: [ 
+		 aStringToSplit includes: '´´´' ])
+		ifTrue: [ aStringToSplit copyReplaceAll: '[[[' with: '   '.
+						aStringToSplit copyReplaceAll: ']]]' with: '   ' ]
+		ifFalse: [ aStringToSplit ].
 		
 	theNodes := Array streamContents: [ :aStream |
 		aStringToSplit
@@ -66,6 +88,18 @@ MccSmalltalkInCommentParser >> accept: aPP2ParserVisitor [
 	^ self
 ]
 
+{ #category : #accessing }
+MccSmalltalkInCommentParser >> assignments [ 
+
+	^ assignments
+]
+
+{ #category : #accessing }
+MccSmalltalkInCommentParser >> assignments: someAssignments [ 
+
+	assignments := someAssignments 
+]
+
 { #category : #initialization }
 MccSmalltalkInCommentParser >> initialize [
 	super initialize.
@@ -83,5 +117,7 @@ MccSmalltalkInCommentParser >> resetStrategy [
 
 	strategy := MccSmalltalkInCommentStrategy on: self.
 	strategy visitor: MccSmalltalkInCommentVisitor new.
+	strategy visitor assignments: assignments.
+	strategy assignments: assignments.
 
 ]
