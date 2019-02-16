@@ -17,7 +17,7 @@ Class {
 		'classesWithCommentStamp',
 		'parsedCommentStamps'
 	],
-	#category : #'Moose-Camel-Comments'
+	#category : #'Moose-Camel-Comments-Model'
 }
 
 { #category : #'instance creation' }

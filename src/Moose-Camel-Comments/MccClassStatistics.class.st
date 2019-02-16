@@ -4,7 +4,7 @@ Class {
 	#classInstVars : [
 		'stat'
 	],
-	#category : #'Moose-Camel-Comments-Model'
+	#category : #'Moose-Camel-Comments-Model - Statistics'
 }
 
 { #category : #accessing }

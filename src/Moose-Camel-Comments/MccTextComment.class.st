@@ -19,12 +19,39 @@ MccTextComment class >> hasComment: anObject [
 	^ anObject isString
 ]
 
+{ #category : #comparing }
+MccTextComment >> = anObject [
+	"Answer whether the receiver and anObject represent the same object."
+
+	self == anObject
+		ifTrue: [ ^ true ].
+	self class = anObject class
+		ifFalse: [ ^ false ].
+	^ self text = anObject text
+]
+
 { #category : #converting }
 MccTextComment >> asString [
 	"Return a string representation of the comment"
 	<return: #String>
 	
 	^ self text asString
+]
+
+{ #category : #comparing }
+MccTextComment >> hash [
+	"Answer an integer value that is related to the identity of the receiver."
+
+	^ self text hash
+]
+
+{ #category : #printing }
+MccTextComment >> printOn: aStream [
+	aStream
+		nextPutAll: 'Comment: ';
+		nextPut: $(;
+		nextPutAll: self asString;
+		nextPut: $)
 ]
 
 { #category : #references }

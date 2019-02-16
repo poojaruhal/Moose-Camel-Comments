@@ -12,7 +12,7 @@ Class {
 	#instVars : [
 		'project'
 	],
-	#category : #'Moose-Camel-Comments-Model'
+	#category : #'Moose-Camel-Comments-Model - Statistics'
 }
 
 { #category : #'instance creation' }

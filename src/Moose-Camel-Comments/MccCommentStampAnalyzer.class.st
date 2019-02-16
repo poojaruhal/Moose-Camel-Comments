@@ -11,7 +11,7 @@ Class {
 		'parsedFilteredVersionTwo',
 		'metrics'
 	],
-	#category : #'Moose-Camel-Comments'
+	#category : #'Moose-Camel-Comments-Model'
 }
 
 { #category : #'as yet unclassified' }
@@ -27,18 +27,19 @@ MccCommentStampAnalyzer >> analyze [
 	
 	|commentStampVersionOne commentStampVersionTwo|
 	
-	commentStampVersionOne :=  MccCommentStamp fromCSV:self versionOne.
+	commentStampVersionOne :=  MccCommentStamp fromCSV: self versionOne.
 	commentStampVersionTwo := MccCommentStamp fromCSV: self versionTwo.
 	self parsedFilteredVersionOne: commentStampVersionOne parseAndFilter.
 	self parsedFilteredVersionTwo: commentStampVersionTwo parseAndFilter.
 	
 	self metrics addAll: 
 	{ 
-	'Different Classes' -> self differentClassesInVersions.
-	'Different Classes By Keys' -> self differentClassesByKeysInVersions.
-	'Common Classes' -> self commonClassesInVersions.
-	'Common Classes By Keys' -> self commonClassesByKeysInVersions.
-	'Common Classes With TimeStamps from Versions' -> self commonClassesWithTimeStampsFromVersions.
+	'Classes Have Different Timestamp' -> self classesHaveDifferentTimestamp.
+	'Different Classes' -> self differentClasses.
+	'Classes Have Same Timestamp ' -> self classesHaveSameTimestamp.
+	'Common Classes' -> self commonClasses.
+	'Common Classes With TimeStamps from Versions' -> self classesHaveSameTimeStampWithTimeStampFromVersions.
+	'Comment Stamp Changed From Common Classes' ->  self commentStampChangedClasses.
 	} asDictionary.
 	
 	^ self metrics.
@@ -46,23 +47,13 @@ MccCommentStampAnalyzer >> analyze [
 ]
 
 { #category : #metrics }
-MccCommentStampAnalyzer >> commonClassesByKeysInVersions [
+MccCommentStampAnalyzer >> classesHaveDifferentTimestamp [
 
-	^ ((self parsedFilteredVersionOne collect: #key)
-			intersection:
-				(self parsedFilteredVersionTwo
-				 	collect: #key)) 
-						sort: [:a :b | a < b ]
+	^ (self parsedFilteredVersionOne difference: self parsedFilteredVersionTwo) sort: [:a :b | a < b  ]
 ]
 
 { #category : #metrics }
-MccCommentStampAnalyzer >> commonClassesInVersions [
-
-	^ (self parsedFilteredVersionOne intersection: self parsedFilteredVersionTwo) sort: [:a :b | a < b ]
-]
-
-{ #category : #metrics }
-MccCommentStampAnalyzer >> commonClassesWithTimeStampsFromVersions [
+MccCommentStampAnalyzer >> classesHaveSameTimeStampWithTimeStampFromVersions [
 
 	| output versionOneList versionTwoList |
 	
@@ -84,16 +75,48 @@ MccCommentStampAnalyzer >> commonClassesWithTimeStampsFromVersions [
 ]
 
 { #category : #metrics }
-MccCommentStampAnalyzer >> differentClassesByKeysInVersions [
+MccCommentStampAnalyzer >> classesHaveSameTimestamp [
 
-	^ ((self parsedFilteredVersionOne collect: #key)
-		difference: (self parsedFilteredVersionTwo collect: #key))sort: [:a :b | a < b ]
+	^ (self parsedFilteredVersionOne intersection: self parsedFilteredVersionTwo) sort: [:a :b | a < b ]
 ]
 
 { #category : #metrics }
-MccCommentStampAnalyzer >> differentClassesInVersions [
+MccCommentStampAnalyzer >> commentStampChangedClasses [
 
-	^ (self parsedFilteredVersionOne difference: self parsedFilteredVersionTwo) sort: [:a :b | a < b  ]
+	| output stampChangedClasses|
+
+	output := OrderedCollection new.
+	
+	stampChangedClasses := self commonClasses
+		difference: 
+			(self classesHaveSameTimestamp collect: #key).
+	
+	stampChangedClasses
+		do: [ :aClassName | 
+			output add: {
+			aClassName. 
+			(self parsedFilteredVersionOne detect: [:anAssociation | anAssociation key = aClassName]) value second.
+			(self parsedFilteredVersionTwo detect: [:anAssociation | anAssociation key = aClassName]) value second
+			 }].
+	^ output
+
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> commonClasses [
+
+	^ ((self parsedFilteredVersionOne collect: #key)
+			intersection:
+				(self parsedFilteredVersionTwo
+				 	collect: #key)) 
+						sort: [:a :b | a < b ]
+]
+
+{ #category : #metrics }
+MccCommentStampAnalyzer >> differentClasses [
+
+	^ ((self parsedFilteredVersionOne collect: #key)
+		difference: (self parsedFilteredVersionTwo collect: #key))sort: [:a :b | a < b ]
 ]
 
 { #category : #'gt-inspector-extension' }
