@@ -57,11 +57,12 @@ MccSmalltalkInCommentParser class >> parse: aString [
 		ifFalse: [
 			aString, String cr ].	
 			
-	aStringToSplit := (((aStringToSplit includes: '[[[') and: [ aStringToSplit includes:']]]' ]) or: [ 
-		 aStringToSplit includes: '´´´' ])
-		ifTrue: [ aStringToSplit copyReplaceAll: '[[[' with: '   '.
-						aStringToSplit copyReplaceAll: ']]]' with: '   ' ]
-		ifFalse: [ aStringToSplit ].
+	((aStringToSplit includesSubstring: '[[[') and: [ aStringToSplit includesSubstring:']]]' ])
+		ifTrue: [ aStringToSplit := aStringToSplit copyReplaceAll: '[[[' with: '   '.
+					 aStringToSplit := aStringToSplit copyReplaceAll: ']]]' with: '   '. ].
+	 
+	(aStringToSplit includesSubstring: '```') 
+		ifTrue: [ aStringToSplit := aStringToSplit copyReplaceAll: '```' with: '   ' ].
 		
 	theNodes := Array streamContents: [ :aStream |
 		aStringToSplit

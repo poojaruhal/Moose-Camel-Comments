@@ -129,10 +129,11 @@ MccComment >> code [
 	"returns array of code tokens from comment"
 	| aParser theTokens |
 
+	code isNotNil ifFalse: [  
 	aParser := MccSmalltalkInCommentParser.
 	theTokens := (aParser parse: self asString) textAndCodeTokens.
 	code := theTokens select: [ :eachToken | 
-		eachToken isCode ].
+		eachToken isCode ]].
 	^ code
 ]
 
@@ -350,10 +351,11 @@ MccComment >> text [
 	"returns array of text tokens from comment"
 	| aParser theTokens |
 
+	text isNotNil ifFalse: [  
 	aParser := MccSmalltalkInCommentParser.
 	theTokens := (aParser parse: self asString) textAndCodeTokens.
 	text := theTokens select: [ :eachToken | 
-		eachToken isText ].
+		eachToken isText ]].
 	^ text
 ]
 

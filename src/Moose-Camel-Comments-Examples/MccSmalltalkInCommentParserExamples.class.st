@@ -5,6 +5,32 @@ Class {
 }
 
 { #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> MetacelloParseCodeSnippet [
+	<gtExample>
+	| aParser aString theAST theTokens |
+	
+	aParser := self parser.
+	aString := '```Smalltalk
+| repositorySpec |
+"edit to match your username, repository name and branch"
+repositorySpec := ''dalehenrich/metacello-work:master''.
+Metacello new
+  baseline: ''Sample'';
+  repository: ''github://'', repositorySpec;
+  load.
+```'.
+	
+	theAST := aParser parse: aString.
+	theTokens := theAST textAndCodeTokens.
+	self assert: theTokens size equals: 3.
+	self assert: (theTokens first isText).
+	self assert: (theTokens second isCode).
+	self assert: (theTokens third isText).
+
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
 MccSmalltalkInCommentParserExamples >> morphicParseComplexBorder [
 	<gtExample>
 	| aParser aString theAST theTokens |
@@ -135,6 +161,26 @@ MccSmalltalkInCommentParserExamples >> morphicParseTitleMorph [
 	self assert: (theTokens seventh isCode).
 
 
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> parseBlockWithSingleWord [
+	<gtExample>
+	| aParser aString anAST theTokens |
+	
+	aParser := self parser.
+	aString := '[2]'.
+	
+	anAST := aParser parse: aString.
+	theTokens := anAST textAndCodeTokens.
+	self assert: theTokens size equals: 1.
+	self assert: (theTokens first isKindOf: MccSmalltalkTextToken).
+	self assert: theTokens first start equals: 1.
+	self assert: theTokens first stop equals: aString size.
+	self assert: theTokens first value equals: aString.
+	
+	
 	^ theTokens
 ]
 

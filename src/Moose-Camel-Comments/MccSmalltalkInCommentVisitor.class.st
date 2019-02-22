@@ -144,6 +144,10 @@ MccSmalltalkInCommentVisitor >> visitLiteralArrayNode: aLiteralNode [
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
 	| aLiteralResult stringLiteral |
+	
+	aLiteralNode parent isSequence ifTrue: [ 
+		^ (self errorFor: aLiteralNode) 
+		 ].
 
 	aLiteralResult := self resultFor: aLiteralNode.
 	stringLiteral := aLiteralNode value asString.
@@ -263,6 +267,10 @@ MccSmalltalkInCommentVisitor >> visitSequenceNode: aSequenceNode [
 MccSmalltalkInCommentVisitor >> visitVariableNode: aVariableNode [
 	"a variable is already assigned"
 	| theResult |
+	
+		aVariableNode parent isSequence ifTrue: [ 
+		^ (self errorFor: aVariableNode) filteredAST: (aVariableNode class named: #'' start: 1)
+		 ].
 	
 	theResult := self resultFor: aVariableNode.
 	
