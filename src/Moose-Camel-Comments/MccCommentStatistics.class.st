@@ -13,10 +13,18 @@ MccCommentStatistics >> avgLines [
 ]
 
 { #category : #metrics }
+MccCommentStatistics >> avgPronouns [
+	"Return the average amount of pronouns per entity with a comment"
+	<return: #Number>
+
+	^ (self filteredEntities sum: [ :eachEntity | eachEntity pronouns size ]) / self filteredEntities size asFloat
+]
+
+{ #category : #metrics }
 MccCommentStatistics >> avgStopwords [
 	"Return the average amount of stopwords per entity with a comment"
 	<return: #Number>
-
+	
 	^ (self filteredEntities sum: [ :eachEntity | eachEntity stopwords size ]) / self filteredEntities size asFloat
 ]
 
@@ -66,11 +74,41 @@ MccCommentStatistics >> metrics [
 
 	self allStatistics addAll:
 	{ 
+		'total number of comments' -> self filteredEntities size.
+		'total lines' -> self lines size.
+		'total words' -> self totalWords.
+		'total stopwords' -> self stopwords.
+		'total pronouns' -> self pronouns.
 		'average number of lines in comments' -> self avgLines.
 		'average number of words' -> self avgWords.
 		'average number of stopwords' -> self avgStopwords.
-		'lexical Density' -> self lexicalDensity
+		'average number of unique words' -> self lexicalDensity.
+		'avg number of pronouns' -> self avgPronouns.
 	} asDictionary.
 		
 	^ self allStatistics.
+]
+
+{ #category : #metrics }
+MccCommentStatistics >> pronouns [
+	"Return the average amount of pronouns per entity with a comment"
+	<return: #Number>
+
+	^ (self filteredEntities sum: [ :eachEntity | eachEntity pronouns size ])
+]
+
+{ #category : #metrics }
+MccCommentStatistics >> stopwords [
+	"Return the average amount of stopwords per entity with a comment"
+	<return: #Number>
+	
+	^ (self filteredEntities sum: [ :eachEntity | eachEntity stopwords size ])
+]
+
+{ #category : #metrics }
+MccCommentStatistics >> totalWords [
+	"Return the total number of words per entity with a comment"
+	<return: #Number>
+	
+	^ self filteredEntities sum: [ :eachEntity | eachEntity words size ]
 ]

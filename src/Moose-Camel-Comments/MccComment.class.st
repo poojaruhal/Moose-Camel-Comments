@@ -292,6 +292,7 @@ MccComment >> metrics [
 	{ 
 	'No. of total words' -> self words size.
 	'No. of stopwords' -> self stopwords size.
+	'No. of pronouns' -> self pronouns size.
 	'No. unique words'-> (self words as:Set) size.
 	'No. of sentences' -> (self sentences select:[:aSentence | aSentence isNotEmpty])size.
 	 }asDictionary.
@@ -306,6 +307,14 @@ MccComment >> printOn: aStream [
 		nextPut: $(;
 		nextPutAll: self artefact asString;
 		nextPut: $)
+]
+
+{ #category : #accessing }
+MccComment >> pronouns [
+	"Split and return a collection of pronouns (with possible duplications) in this comment"
+	<return: #Collection of: #MccWord>
+
+	^ self words select: #isPronoun
 ]
 
 { #category : #references }

@@ -13,17 +13,22 @@ Class {
 MccExternalEnvironmentExamples >> externalEnvironmentModel [
 	<gtExample>
 	
-	|anExternalEnviornment|
-	
 	"get the collection of the class with its comment"
 	
-	^ MccExternalEnvironment fromCSV:(self inputFileReference).
+	^ MccExternalEnvironment fromCSV:(self pharo7FileReference).
 	
 ]
 
 { #category : #'as yet unclassified' }
-MccExternalEnvironmentExamples >> inputFileReference [
+MccExternalEnvironmentExamples >> pharo1FileReference [
 	"path of the csv file that we want to analyze"
 	
-	^'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/Pharo class somments/1-Classes-comments-pharo.csv' asFileReference
+	^'/Users/poojarani/Downloads/Pharo-Projects/Pharo-class-comments/1-Classes-comments-pharo.csv' asFileReference
+]
+
+{ #category : #'as yet unclassified' }
+MccExternalEnvironmentExamples >> pharo7FileReference [
+	"path of the csv file that we want to analyze"
+	
+	^'/Users/poojarani/Downloads/Pharo-Projects/Pharo-class-comments/7-Classes-comments-pharo.csv' asFileReference
 ]

@@ -36,7 +36,7 @@ MccCommentAnalyzerExamples >> analyzeVersions [
 		
 	|anAnalyzer|
 	
-	anAnalyzer := MccCommentAnalyzer version: self pharo3FileReference  to: self pharo4FileReference.
+	anAnalyzer := MccCommentAnalyzer version: self pharo1FileReference  to: self pharo7FileReference.
 	^ anAnalyzer analyze.
 ]
 
