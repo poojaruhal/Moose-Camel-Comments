@@ -66,7 +66,7 @@ MccSmalltalkInCommentStrategy >> processAST: anRBNode with: aPP2Context at: aPos
 		messageSelectors do: [ :theSelector | (allMethods includes: theSelector) 
 			ifTrue: [ counter := counter + 1. ]].
 		"Check if less than 50% are existing messages"
-		(counter < (messageSelectors size)/2) ifTrue:  [ 
+		(counter < (messageSelectors size)) ifTrue:  [ 
 			aPP2Context restorePosition: aPosition.
 			^ PP2Failure message: 'Not enough existing message names' context: aPP2Context ]
 	].

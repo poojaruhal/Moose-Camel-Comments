@@ -97,11 +97,19 @@ MccSmalltalkInCommentVisitor >> visitAssignmentNode: anAssignmentNode [
 
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitBlockNode: aBlockNode [
-	| theBodyResult |
+	| theBodyResult children |
 	self pushArgumentNodes: aBlockNode arguments.
 	
+	children := aBlockNode allChildren.
 	theBodyResult := self visitNode: aBlockNode body.
 	
+	(children size = 3 and: [children second isSequence and: [children third isLiteralNode or: [children third isVariable ]]])
+		ifTrue: [
+			| anError |
+			anError := (self errorFor: aBlockNode) errorResult: theBodyResult.
+			aBlockNode right: aBlockNode left - 1.
+			^ anError ].
+		
 	self popArgumentNodes: aBlockNode arguments.
 	
 	^ theBodyResult isValid
@@ -145,9 +153,9 @@ MccSmalltalkInCommentVisitor >> visitLiteralArrayNode: aLiteralNode [
 MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
 	| aLiteralResult stringLiteral |
 	
-	aLiteralNode parent isSequence ifTrue: [ 
+	"aLiteralNode parent isSequence ifTrue: [ 
 		^ (self errorFor: aLiteralNode) 
-		 ].
+		 ]."
 
 	aLiteralResult := self resultFor: aLiteralNode.
 	stringLiteral := aLiteralNode value asString.
@@ -268,9 +276,9 @@ MccSmalltalkInCommentVisitor >> visitVariableNode: aVariableNode [
 	"a variable is already assigned"
 	| theResult |
 	
-		aVariableNode parent isSequence ifTrue: [ 
+		"aVariableNode parent isSequence ifTrue: [ 
 		^ (self errorFor: aVariableNode) filteredAST: (aVariableNode class named: #'' start: 1)
-		 ].
+		 ]."
 	
 	theResult := self resultFor: aVariableNode.
 	

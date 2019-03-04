@@ -22,11 +22,52 @@ Metacello new
 	
 	theAST := aParser parse: aString.
 	theTokens := theAST textAndCodeTokens.
-	self assert: theTokens size equals: 3.
+	self assert: theTokens size equals: 2.
 	self assert: (theTokens first isText).
 	self assert: (theTokens second isCode).
-	self assert: (theTokens third isText).
 
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> MetacelloParseCodeSnippet2 [
+	<gtExample>
+	| aParser aString theAST theTokens |
+	
+	aParser := self parser.
+	aString := '            
+Metacello image
+  configuration: [:spec | true ];
+  list.'.
+	
+	theAST := aParser parse: aString.
+	theTokens := theAST textAndCodeTokens.
+	self assert: theTokens size equals: 2.
+	self assert: (theTokens first isText).
+	self assert: (theTokens second isCode).
+
+	^ theTokens
+]
+
+{ #category : #'parsing - simple' }
+MccSmalltalkInCommentParserExamples >> MetacelloParseSmalltalkExample [
+	<gtExample>
+	| aParser aString anAST theTokens |
+	
+	aParser := self parser.
+	aString := '```Smalltalk
+Metacello new
+  configuration: [:spec | spec name beginsWith: ''Seaside''];
+  squeaksource: ''MetacelloRepository'';
+  list.
+```'.
+	
+	anAST := aParser parse: aString.
+	theTokens := anAST textAndCodeTokens.
+	self assert: theTokens size equals: 2.
+	self assert: (theTokens first isText).
+	self assert: (theTokens second isCode).
+	
 	^ theTokens
 ]
 
