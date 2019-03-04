@@ -91,17 +91,25 @@ MccSmalltalkInCommentVisitor >> visitArrayNode: anArrayNode [
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitAssignmentNode: anAssignmentNode [
 	assignments add: anAssignmentNode variable.
-	
+
 	^ self resultFor: anAssignmentNode
 ]
 
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitBlockNode: aBlockNode [
-	| theBodyResult |
+	| theBodyResult children |
 	self pushArgumentNodes: aBlockNode arguments.
 	
+	children := aBlockNode allChildren.
 	theBodyResult := self visitNode: aBlockNode body.
 	
+	(children size = 3 and: [children second isSequence and: [children third isLiteralNode or: [children third isVariable ]]])
+		ifTrue: [
+			| anError |
+			anError := (self errorFor: aBlockNode) errorResult: theBodyResult.
+			aBlockNode right: aBlockNode left - 1.
+			^ anError ].
+		
 	self popArgumentNodes: aBlockNode arguments.
 	
 	^ theBodyResult isValid
@@ -144,6 +152,10 @@ MccSmalltalkInCommentVisitor >> visitLiteralArrayNode: aLiteralNode [
 { #category : #visiting }
 MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
 	| aLiteralResult stringLiteral |
+	
+	"aLiteralNode parent isSequence ifTrue: [ 
+		^ (self errorFor: aLiteralNode) 
+		 ]."
 
 	aLiteralResult := self resultFor: aLiteralNode.
 	stringLiteral := aLiteralNode value asString.
@@ -152,7 +164,7 @@ MccSmalltalkInCommentVisitor >> visitLiteralNode: aLiteralNode [
 		ifTrue: [ ^ aLiteralResult  ].
 
 	((stringLiteral copyFrom: 1 to: 2) isWordContraction 
-		or: [ (stringLiteral copyFrom: 1 to: 3) isWordContraction or: [ (aLiteralNode asString at: 20) = $# ]])
+		or: [ (stringLiteral copyFrom: 1 to: 3) isWordContraction "or: [ (aLiteralNode asString at: 20) = $# ]"])
 			ifFalse: [ ^ aLiteralResult ].
 
 	^ (self errorFor: aLiteralNode) "filteredAST: (aLiteralNode class named: #'' start: 1)"
@@ -264,6 +276,10 @@ MccSmalltalkInCommentVisitor >> visitVariableNode: aVariableNode [
 	"a variable is already assigned"
 	| theResult |
 	
+		"aVariableNode parent isSequence ifTrue: [ 
+		^ (self errorFor: aVariableNode) filteredAST: (aVariableNode class named: #'' start: 1)
+		 ]."
+	
 	theResult := self resultFor: aVariableNode.
 	
 	(assignments includes: aVariableNode)
@@ -278,6 +294,9 @@ MccSmalltalkInCommentVisitor >> visitVariableNode: aVariableNode [
 	
 	aVariableNode name = 'super'
 		ifTrue: [ ^ theResult ].
+		
+	"((aVariableNode name) matchesRegex: '(([a-z]+)([A-Z]+[a-z]*)+)')
+		ifTrue: [ ^ theResult ]."
 		
 	(aVariableNode parents anySatisfy: [ :eachParentNode | eachParentNode isCascade or: [ eachParentNode isBlock ] ])
 		ifTrue: [ ^ theResult ].

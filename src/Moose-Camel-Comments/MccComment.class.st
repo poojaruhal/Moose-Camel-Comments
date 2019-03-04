@@ -358,7 +358,7 @@ MccComment >> stopwords [
 MccComment >> text [
 	"returns array of text tokens from comment"
 	| aParser theTokens |
-
+ 
 	aParser := MccSmalltalkInCommentParser.
 	theTokens := (aParser parse: self asString) textAndCodeTokens.
 	text := theTokens select: [ :eachToken | 
