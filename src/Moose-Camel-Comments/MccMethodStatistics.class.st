@@ -1,3 +1,6 @@
+"
+I am responsible for adding special metrics to Statistics like avg line of code that is not applicable on class comments but on the method comments. I am specific to method comments.
+"
 Class {
 	#name : #MccMethodStatistics,
 	#superclass : #MccStatistics,

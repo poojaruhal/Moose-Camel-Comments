@@ -5,58 +5,58 @@ inputOne and InputTwo are 2 version to be analyzed.
 I can find different classes, common classes in two versions.
 "
 Class {
-	#name : #MccCommentStampAnalyzerExamples,
+	#name : #MccCommentStampComparatorExamples,
 	#superclass : #Object,
 	#category : #'Moose-Camel-Comments-Examples-Parser'
 }
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> analyzeVersions [
-	<gtExample>
-		
-	|anAnalyzer|
-	
-	anAnalyzer := MccCommentStampAnalyzer version: self pharo3FileReference  to: self pharo4FileReference.
-	^ anAnalyzer analyze.
-]
-
-{ #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> classesHaveDifferentTimestamp [
+MccCommentStampComparatorExamples >> classesHaveDifferentTimestamp [
 	<gtExample>
 	
 	^ self classesHaveDifferentTimestamp.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> classesHaveSameTimestamp [
+MccCommentStampComparatorExamples >> classesHaveSameTimestamp [
 	<gtExample>
 	
 	^ self classesHaveSameTimestamp.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> collectTimeStampsOfTwoVersions [
+MccCommentStampComparatorExamples >> collectTimeStampsOfTwoVersions [
 	<gtExample>
 	
 	^ self collectTimeStampsOfTwoVersions.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> commonClasses [
+MccCommentStampComparatorExamples >> commonClasses [
 	<gtExample>
 	
 	^ self commonClasses.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> differentClasses [
+MccCommentStampComparatorExamples >> compareVersions [
+	<gtExample>
+		
+	|anAnalyzer|
+	
+	anAnalyzer := MccCommentStampVersionComparator version: self pharo3FileReference  to: self pharo4FileReference.
+	^ anAnalyzer compare.
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStampComparatorExamples >> differentClasses [
 	<gtExample>
 	
 		^ self differentClasses.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> inputVersionOne [
+MccCommentStampComparatorExamples >> inputVersionOne [
 	<gtExample>
 	
 	"self pharo3FileReference."	
@@ -64,7 +64,7 @@ MccCommentStampAnalyzerExamples >> inputVersionOne [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> inputVersionTwo [
+MccCommentStampComparatorExamples >> inputVersionTwo [
 	<gtExample>
 	
 	"self pharo4FileReference."
@@ -74,21 +74,21 @@ MccCommentStampAnalyzerExamples >> inputVersionTwo [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> parsedFilteredVersionOne [
+MccCommentStampComparatorExamples >> parsedFilteredVersionOne [
 	<gtExample>
 	
 	^ self parsedFilteredVersionOne.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> parsedFilteredVersionTwo [
+MccCommentStampComparatorExamples >> parsedFilteredVersionTwo [
 	<gtExample>
 	
 	^ self parsedFilteredVersionTwo.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> pharo3FileReference [
+MccCommentStampComparatorExamples >> pharo3FileReference [
 	<gtExample>
 	
 	^ '/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classesCommentsStamp-pharo3-package-morph.csv'
@@ -96,7 +96,7 @@ MccCommentStampAnalyzerExamples >> pharo3FileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> pharo4FileReference [
+MccCommentStampComparatorExamples >> pharo4FileReference [
 	<gtExample>
 	
 	^ '/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classesCommentsStamp-pharo4-package-morph.csv'
@@ -104,7 +104,7 @@ MccCommentStampAnalyzerExamples >> pharo4FileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentStampAnalyzerExamples >> pharo5FileReference [
+MccCommentStampComparatorExamples >> pharo5FileReference [
 	<gtExample>
 	
 	^ '/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classesCommentsStamp-pharo5-package-morph.csv'

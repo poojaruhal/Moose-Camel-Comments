@@ -1,8 +1,8 @@
 "
-I am an analyzer responsibile for analyzing two different version of the class-comment file.
+I am an comparator responsibile for comparator two different version of the class-comment file.
 "
 Class {
-	#name : #MccCommentAnalyzer,
+	#name : #MccCommentsVersionComparator,
 	#superclass : #Object,
 	#instVars : [
 		'versionOne',
@@ -15,33 +15,15 @@ Class {
 }
 
 { #category : #versions }
-MccCommentAnalyzer class >> version: inputFileReferenceOne to: inputFileReferenceTwo [
+MccCommentsVersionComparator class >> version: inputFileReferenceOne to: inputFileReferenceTwo [
 
 	^ self new
 		versionOne: inputFileReferenceOne;
 		versionTwo: inputFileReferenceTwo.
 ]
 
-{ #category : #private }
-MccCommentAnalyzer >> analyze [
-	
-	
-	self versionOneClassesAndComments: (MccExternalEnvironment fromCSV:self versionOne) classesAndComments.
-	self versionTwoClassesAndComments: (MccExternalEnvironment fromCSV: self versionTwo) classesAndComments.
-	
-	self metrics addAll: 
-	{ 
-	'Different Classes' -> self differentClasses.
-	'Common Classes' -> self commonClasses.
-	'Classes Have Different comment' ->  self classesHaveDifferentComment.
-	} asDictionary.
-	
-	^ self metrics.
-	
-]
-
 { #category : #metrics }
-MccCommentAnalyzer >> classesHaveDifferentComment [
+MccCommentsVersionComparator >> classesHaveDifferentComment [
 
 	| output commentChangedClasses|
 
@@ -63,12 +45,12 @@ MccCommentAnalyzer >> classesHaveDifferentComment [
 ]
 
 { #category : #metrics }
-MccCommentAnalyzer >> classesHaveSameComments [
+MccCommentsVersionComparator >> classesHaveSameComments [
 	^ (self versionOneClassesAndComments intersection: self versionTwoClassesAndComments) sort: [:a :b | a < b ]
 ]
 
 { #category : #metrics }
-MccCommentAnalyzer >> commonClasses [
+MccCommentsVersionComparator >> commonClasses [
 
 	^ ((self versionOneClassesAndComments collect: #key)
 			intersection:
@@ -77,15 +59,33 @@ MccCommentAnalyzer >> commonClasses [
 						sort: [:a :b | a < b ]
 ]
 
+{ #category : #private }
+MccCommentsVersionComparator >> compare [
+	
+	
+	self versionOneClassesAndComments: (MccExternalEnvironment fromCSV:self versionOne) classesAndComments.
+	self versionTwoClassesAndComments: (MccExternalEnvironment fromCSV: self versionTwo) classesAndComments.
+	
+	self metrics addAll: 
+	{ 
+	'Different Classes' -> self differentClasses.
+	'Common Classes' -> self commonClasses.
+	'Classes Have Different comment' ->  self classesHaveDifferentComment.
+	} asDictionary.
+	
+	^ self metrics.
+	
+]
+
 { #category : #metrics }
-MccCommentAnalyzer >> differentClasses [
+MccCommentsVersionComparator >> differentClasses [
 
 	^ ((self versionOneClassesAndComments  collect: #key)
 		difference: (self versionTwoClassesAndComments collect: #key))sort: [:a :b | a < b ]
 ]
 
 { #category : #'gt-inspector-extension' }
-MccCommentAnalyzer >> gtInspectorVersionsMetricsIn: aComposite [
+MccCommentsVersionComparator >> gtInspectorVersionsMetricsIn: aComposite [
 	<gtInspectorPresentationOrder: 0>
 	
 	^	aComposite fastTable
@@ -107,7 +107,7 @@ MccCommentAnalyzer >> gtInspectorVersionsMetricsIn: aComposite [
 ]
 
 { #category : #initialization }
-MccCommentAnalyzer >> initialize [ 
+MccCommentsVersionComparator >> initialize [ 
 	super initialize.
 	
 	metrics := OrderedDictionary new.
@@ -117,51 +117,51 @@ MccCommentAnalyzer >> initialize [
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> metrics [
+MccCommentsVersionComparator >> metrics [
 	^ metrics
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> metrics: anObject [
+MccCommentsVersionComparator >> metrics: anObject [
 	metrics := anObject
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> versionOne [
+MccCommentsVersionComparator >> versionOne [
 	^ versionOne
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> versionOne: anObject [
+MccCommentsVersionComparator >> versionOne: anObject [
 	versionOne := anObject
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> versionOneClassesAndComments [
+MccCommentsVersionComparator >> versionOneClassesAndComments [
 	^ versionOneClassesAndComments
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> versionOneClassesAndComments: anObject [
+MccCommentsVersionComparator >> versionOneClassesAndComments: anObject [
 	versionOneClassesAndComments := anObject
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> versionTwo [
+MccCommentsVersionComparator >> versionTwo [
 	^ versionTwo
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> versionTwo: anObject [
+MccCommentsVersionComparator >> versionTwo: anObject [
 	versionTwo := anObject
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> versionTwoClassesAndComments [
+MccCommentsVersionComparator >> versionTwoClassesAndComments [
 	^ versionTwoClassesAndComments
 ]
 
 { #category : #accessing }
-MccCommentAnalyzer >> versionTwoClassesAndComments: anObject [
+MccCommentsVersionComparator >> versionTwoClassesAndComments: anObject [
 	versionTwoClassesAndComments := anObject
 ]

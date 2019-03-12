@@ -28,7 +28,7 @@ MccExternalEnvironment class >> fromCSV: aFileReference [
 	^ self new classesAndComments: (
 		aCollectionOfClassComment 
 			collect:[:eachItem |
-				 (eachItem at:1) -> (MccTextComment of:(eachItem at:2))]).
+				 (eachItem at:1) -> (MccTextComment of:(eachItem at:2) with:(eachItem at:1))]).
 	
 	
 	 

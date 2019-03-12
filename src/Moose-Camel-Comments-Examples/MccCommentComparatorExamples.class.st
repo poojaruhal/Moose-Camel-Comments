@@ -1,13 +1,13 @@
 Class {
-	#name : #MccCommentAnalyzerExamples,
+	#name : #MccCommentComparatorExamples,
 	#superclass : #Object,
 	#category : #'Moose-Camel-Comments-Examples-Parser'
 }
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> analyzeAllVersions [
+MccCommentComparatorExamples >> compareAllVersions [
 	<gtExample>
-	| rowVersions columnVersion aCommentAnalyzer |
+	| rowVersions columnVersion aCommentComparator |
 	
 	rowVersions := OrderedCollection new.
 	
@@ -21,27 +21,27 @@ MccCommentAnalyzerExamples >> analyzeAllVersions [
 			| versionTwoReference |
 			versionTwoReference := (self composeFileReferenceBlock value: column) asSymbol.
 			
-			aCommentAnalyzer := MccCommentAnalyzer
+			aCommentComparator := MccCommentsVersionComparator
 				version: (self perform: versionOneReference)
 				to: (self perform: versionTwoReference).
-			columnVersion add: {(aCommentAnalyzer analyze dictionary collect: [ :e | e value size ])} ].
+			columnVersion add: {(aCommentComparator compare dictionary collect: [ :e | e value size ])} ].
 		rowVersions add: {((self pharoVersionBlock value: row) -> columnVersion)} ].
 	
 	^ rowVersions.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> analyzeVersions [
+MccCommentComparatorExamples >> compareVersions [
 	<gtExample>
 		
-	|anAnalyzer|
+	|aComparator|
 	
-	anAnalyzer := MccCommentAnalyzer version: self pharo1FileReference  to: self pharo7FileReference.
-	^ anAnalyzer analyze.
+	aComparator := MccCommentsVersionComparator version: self pharo1FileReference  to: self pharo7FileReference.
+	^ aComparator compare.
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> composeFileReferenceBlock [
+MccCommentComparatorExamples >> composeFileReferenceBlock [
 	<gtExample>
 	
 	|aBlock|
@@ -60,7 +60,7 @@ MccCommentAnalyzerExamples >> composeFileReferenceBlock [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> pharo1FileReference [
+MccCommentComparatorExamples >> pharo1FileReference [
 	<gtExample>
 	
 	^	'/Users/poojarani/Downloads/Pharo-Projects/Pharo-class-comments/1-Classes-comments-pharo.csv' asFileReference.
@@ -69,7 +69,7 @@ MccCommentAnalyzerExamples >> pharo1FileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> pharo2FileReference [
+MccCommentComparatorExamples >> pharo2FileReference [
 	<gtExample>
 	
 	^	'/Users/poojarani/Downloads/Pharo-Projects/Pharo-class-comments/2-Classes-comments-pharo.csv' asFileReference.
@@ -78,7 +78,7 @@ MccCommentAnalyzerExamples >> pharo2FileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> pharo3FileReference [
+MccCommentComparatorExamples >> pharo3FileReference [
 	<gtExample>
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-comments-pharo3-package-morph.csv' asFileReference."
@@ -87,7 +87,7 @@ MccCommentAnalyzerExamples >> pharo3FileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> pharo4FileReference [
+MccCommentComparatorExamples >> pharo4FileReference [
 	<gtExample>
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-Comments-pharo4-package-morph.csv' asFileReference."
@@ -96,7 +96,7 @@ MccCommentAnalyzerExamples >> pharo4FileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> pharo5FileReference [
+MccCommentComparatorExamples >> pharo5FileReference [
 	<gtExample>
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-Comments-pharo4-package-morph.csv' asFileReference."
@@ -105,7 +105,7 @@ MccCommentAnalyzerExamples >> pharo5FileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> pharo6FileReference [
+MccCommentComparatorExamples >> pharo6FileReference [
 	<gtExample>
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-Comments-pharo4-package-morph.csv' asFileReference."
@@ -114,7 +114,7 @@ MccCommentAnalyzerExamples >> pharo6FileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> pharo7FileReference [
+MccCommentComparatorExamples >> pharo7FileReference [
 	<gtExample>
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-Comments-pharo4-package-morph.csv' asFileReference."
@@ -123,7 +123,7 @@ MccCommentAnalyzerExamples >> pharo7FileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MccCommentAnalyzerExamples >> pharoVersionBlock [
+MccCommentComparatorExamples >> pharoVersionBlock [
 	<gtExample>
 	
 	|aBlock|

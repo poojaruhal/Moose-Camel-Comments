@@ -1,7 +1,10 @@
+"
+Exmaples to test MccSentence
+"
 Class {
 	#name : #MccSentenceProcessorExamples,
 	#superclass : #Object,
-	#category : 'Moose-Camel-Comments-Examples'
+	#category : #'Moose-Camel-Comments-Examples'
 }
 
 { #category : #accessing }

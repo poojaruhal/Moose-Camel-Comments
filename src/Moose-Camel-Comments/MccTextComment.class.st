@@ -1,5 +1,5 @@
 "
-I am just a textual comment that does not belong to anything.
+I am just a textual comment that does not belong to anything. I am generally created form external environment CSV of class and its comments. If I am loaded with class information, I know my class using className.
 
 [[[
 	MccTextComment of: 'Number holds the most general methods for dealing with numbers.'
@@ -8,7 +8,10 @@ I am just a textual comment that does not belong to anything.
 Class {
 	#name : #MccTextComment,
 	#superclass : #MccComment,
-	#category : 'Moose-Camel-Comments-Model - Comment'
+	#instVars : [
+		'className'
+	],
+	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
 { #category : #testing }
@@ -17,6 +20,14 @@ MccTextComment class >> hasComment: anObject [
 	<return: #Boolean>
 
 	^ anObject isString
+]
+
+{ #category : #'as yet unclassified' }
+MccTextComment class >> of: aText with: className [
+ "create a MccTextComment with given text of class className"
+	^ (self of:aText) className: className
+
+
 ]
 
 { #category : #comparing }
@@ -36,6 +47,16 @@ MccTextComment >> asString [
 	<return: #String>
 	
 	^ self text asString
+]
+
+{ #category : #accessing }
+MccTextComment >> className [
+	^ className
+]
+
+{ #category : #accessing }
+MccTextComment >> className: anObject [
+	className := anObject
 ]
 
 { #category : #comparing }

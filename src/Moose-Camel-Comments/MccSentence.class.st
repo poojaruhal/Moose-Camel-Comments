@@ -77,7 +77,7 @@ MccSentence >> hasWarning [
 	
 	| warnings |
 	
-	warnings := MccClassGoal new warningWords.
+	warnings := MccCommentLinguisticAnlyzer new warningWords.
 	
 	^ warnings anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
 ]

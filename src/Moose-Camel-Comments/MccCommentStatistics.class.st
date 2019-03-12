@@ -1,3 +1,14 @@
+"
+I am responsible for gathering metrics from the comments. The comments are general text comment. 
+I can be instantiated with 
+[ [ [ 
+			MccCommentStatistics with: anExternalEnvironment.
+			 ] ] ]
+The external enviornment can be created using 
+[ [ [ 
+			MccExternalEnvironment fromCSV: (MccCommentComparatorExamples new pharo1FileReference)
+			 ] ] ]
+"
 Class {
 	#name : #MccCommentStatistics,
 	#superclass : #MccStatistics,
@@ -34,6 +45,19 @@ MccCommentStatistics >> avgWords [
 	<return: #Number>
 	
 	^ (self filteredEntities sum: [ :eachEntity | eachEntity words size ]) / self filteredEntities size asFloat
+]
+
+{ #category : #metrics }
+MccCommentStatistics >> collectPronouns [
+	"Return the average amount of pronouns per entity with a comment"
+	<return: #Number>
+
+	^ self filteredEntities
+		select:
+			[ :eachEntity | 
+				eachEntity pronouns isNotEmpty]
+		thenCollect:
+			[ :eachEntity | eachEntity className -> eachEntity pronouns ]
 ]
 
 { #category : #initialization }
@@ -77,8 +101,8 @@ MccCommentStatistics >> metrics [
 		'total number of comments' -> self filteredEntities size.
 		'total lines' -> self lines size.
 		'total words' -> self totalWords.
-		'total stopwords' -> self stopwords.
-		'total pronouns' -> self pronouns.
+		'total stopwords' -> self totalStopwords.
+		'total pronouns' -> self totalPronouns.
 		'average number of lines in comments' -> self avgLines.
 		'average number of words' -> self avgWords.
 		'average number of stopwords' -> self avgStopwords.
@@ -90,16 +114,16 @@ MccCommentStatistics >> metrics [
 ]
 
 { #category : #metrics }
-MccCommentStatistics >> pronouns [
-	"Return the average amount of pronouns per entity with a comment"
+MccCommentStatistics >> totalPronouns [
+	"Return total sum of pronouns in filteredEntiies calculated from each comment"
 	<return: #Number>
-
+	
 	^ (self filteredEntities sum: [ :eachEntity | eachEntity pronouns size ])
 ]
 
 { #category : #metrics }
-MccCommentStatistics >> stopwords [
-	"Return the average amount of stopwords per entity with a comment"
+MccCommentStatistics >> totalStopwords [
+	"Return the total number of stopwords in filteredEntiies calculated from each comment"
 	<return: #Number>
 	
 	^ (self filteredEntities sum: [ :eachEntity | eachEntity stopwords size ])
@@ -107,7 +131,7 @@ MccCommentStatistics >> stopwords [
 
 { #category : #metrics }
 MccCommentStatistics >> totalWords [
-	"Return the total number of words per entity with a comment"
+	"Return the total number of words of filteredEntiies calculated from each comment"
 	<return: #Number>
 	
 	^ self filteredEntities sum: [ :eachEntity | eachEntity words size ]

@@ -1,7 +1,10 @@
+"
+I am responsibile to show examples of Nouns.
+"
 Class {
 	#name : #MccNounExamples,
 	#superclass : #Object,
-	#category : 'Moose-Camel-Comments-Examples'
+	#category : #'Moose-Camel-Comments-Examples'
 }
 
 { #category : #converting }

@@ -62,3 +62,9 @@ MccEnvironment >> hasClassNamed: aClassName [
 		ifFound: [ true ]
 		ifNone: [ false ]
 ]
+
+{ #category : #testing }
+MccEnvironment >> isEmpty [ 
+	
+	^ (self allClasses isEmpty).
+]

@@ -3,10 +3,14 @@ I represent all the classes considered for the experiment.
 I know classes with comments and without comments.
 I also have responsibility of creating mccComment Object using API mccCommentClasses.
 
-    Instance Variables
+Instance Variables
 	allClasses:		<Object>
 	mccCommentClasses:		<Object>
 
+I can be instantiated
+[ [ [ 
+			MccClasses from: (MccSystemEnvironment new allClasses)
+			 ] ] ]
 "
 Class {
 	#name : #MccClasses,
@@ -15,11 +19,11 @@ Class {
 	#instVars : [
 		'mccCommentClasses'
 	],
-	#category : 'Moose-Camel-Comments-Model'
+	#category : #'Moose-Camel-Comments-Model'
 }
 
 { #category : #'instance creation' }
-MccClasses class >> fromClasses: aListOfClasses [
+MccClasses class >> from: aListOfClasses [
 	^ aListOfClasses as: self
 ]
 

@@ -15,7 +15,7 @@ MccExternalEnvironmentExamples >> externalEnvironmentModel [
 	
 	"get the collection of the class with its comment"
 	
-	^ MccExternalEnvironment fromCSV:(self pharo7FileReference).
+	^ MccExternalEnvironment fromCSV:(MccCommentComparatorExamples new pharo7FileReference).
 	
 ]
 
