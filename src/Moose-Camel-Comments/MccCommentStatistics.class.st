@@ -24,6 +24,19 @@ MccCommentStatistics >> avgLines [
 ]
 
 { #category : #metrics }
+MccCommentStatistics >> avgMetrics [
+	
+	^ { 
+		'avg lines in comments' -> self avgLines.
+		'avg words' -> self avgWords.
+		'avg stopwords' -> self avgStopwords.
+		'avg unique words' -> self lexicalDensity.
+		'avg pronouns' -> self avgPronouns.
+	} asDictionary.
+
+]
+
+{ #category : #metrics }
 MccCommentStatistics >> avgPronouns [
 	"Return the average amount of pronouns per entity with a comment"
 	<return: #Number>
@@ -74,6 +87,28 @@ MccCommentStatistics >> createFilteredEntities [
 			eachEntity isEmpty ]
 ]
 
+{ #category : #'gt-inspector-extension' }
+MccCommentStatistics >> gtInspectorClassesIn: aComposite [
+	<gtInspectorPresentationOrder: 1>
+
+	^ aComposite roassal2 
+		title: 'Overview' translated;
+		initializeView: [ RTMondrian new ];
+		painting: [ :view | 
+			view interaction popupText: [ :aComment | aComment className ].
+			view shape
+				circle;
+				size: [ :e | e words size ].
+			view nodes: self environment comments.
+			view normalizer
+				objects: self environment comments;
+				normalizeColor: [ :e | e words asSet size ] using: (Array with: Color gray with: Color blue with: Color red) using: [ :value | (value + 1) ln ].
+			view layout grid.
+			"view build." ].
+			
+			
+]
+
 { #category : #metrics }
 MccCommentStatistics >> lexicalDensity [
 	"Return the average amount of unique words per entity with a comment"
@@ -103,11 +138,6 @@ MccCommentStatistics >> metrics [
 		'total words' -> self totalWords.
 		'total stopwords' -> self totalStopwords.
 		'total pronouns' -> self totalPronouns.
-		'average number of lines in comments' -> self avgLines.
-		'average number of words' -> self avgWords.
-		'average number of stopwords' -> self avgStopwords.
-		'average number of unique words' -> self lexicalDensity.
-		'avg number of pronouns' -> self avgPronouns.
 	} asDictionary.
 		
 	^ self allStatistics.
@@ -135,4 +165,31 @@ MccCommentStatistics >> totalWords [
 	<return: #Number>
 	
 	^ self filteredEntities sum: [ :eachEntity | eachEntity words size ]
+]
+
+{ #category : #accessing }
+MccCommentStatistics >> view [
+	| b ds dataSet|.
+
+	b := RTGrapher new.
+	b extent: 500 @ 200.
+	"ds := RTData new.
+	ds interaction highlight.
+	ds points: self metrics associations.
+	ds barShape width: 10.
+	ds y: [ :e | e value].
+	ds barChartWithBarTitle: #key.
+	b add: ds."
+	dataSet := RTData new.
+	dataSet dotShape color: (Color red alpha: 0.3);
+	labeledAs: [ :e | e key asString].
+	dataSet
+	points: self avgMetrics associations;
+	y: [ :e | e value].
+	b add: dataSet.
+	b axisY.
+	b axisX
+		noTick;
+		noLabel.
+ 	^ b
 ]

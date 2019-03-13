@@ -260,7 +260,7 @@ MccComment >> gtInspectorStatisticsIn: aComposite [
 
 { #category : #'gt-inspector-extension' }
 MccComment >> gtInspectorTextIn: aComposite [
-	<gtInspectorPresentationOrder: 3>
+	"<gtInspectorPresentationOrder: 3>"
 	
 	^ aComposite fastList
 		title: 'Text' translated;
@@ -290,11 +290,11 @@ MccComment >> metrics [
 	
 	self statistics addAll:
 	{ 
-	'No. of total words' -> self words size.
-	'No. of stopwords' -> self stopwords size.
-	'No. of pronouns' -> self pronouns size.
-	'No. unique words'-> (self words as:Set) size.
-	'No. of sentences' -> (self sentences select:[:aSentence | aSentence isNotEmpty])size.
+	'Words' -> self words size.
+	'Stopwords' -> self stopwords size.
+	'Pronouns' -> self pronouns size.
+	'Unique words'-> (self words as:Set) size.
+	'Sentences' -> (self sentences select:[:aSentence | aSentence isNotEmpty])size.
 	 }asDictionary.
 	
  	^ self statistics. 
@@ -364,6 +364,27 @@ MccComment >> text [
 	text := theTokens select: [ :eachToken | 
 		eachToken isText ].
 	^ text
+]
+
+{ #category : #'gt-inspector-extension' }
+MccComment >> view [
+
+	|b ds|
+	
+	b := RTGrapher new.
+	b extent: 500 @ 200.
+	ds := RTData new.
+	ds interaction highlight.
+	ds points: self metrics associations.
+	ds barShape width: 10.
+	ds y: [ :e |  e value ].
+	ds barChartWithBarTitle: #key.
+	b add: ds.
+	b axisY.
+	b axisX
+		noTick;
+		noLabel.
+	^ b
 ]
 
 { #category : #accessing }

@@ -40,9 +40,9 @@ MccReferenceFinder >> references [
 	"Find and return code artefact references from a comment within provided environment"
 	<return: #Collection of: #MccReference>
 	
-	^ self comment sentences flatCollect: [ :aSentense |
+	^ self comment sentences flatCollect: [ :aSentence |
 		| theReferences |
-		theReferences := self referencesIn: aSentense.
+		theReferences := self referencesIn: aSentence.
 		theReferences do: [ :eachReference | eachReference comment: self comment ].
 		theReferences ]
 ]
