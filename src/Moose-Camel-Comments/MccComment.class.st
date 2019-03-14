@@ -225,6 +225,30 @@ MccComment >> gtInspectorMccCommentReferencesIn: aComposite inContext: aGTInspec
 	"Override extension from Object to break infinite recursion"
 ]
 
+{ #category : #'as yet unclassified' }
+MccComment >> gtInspectorNotAGoodNameIn: aComposite [
+	<gtInspectorPresentationOrder: 2>
+	^ aComposite roassal2
+		title: 'NOt a good name' translated;
+		initializeView: [ RTGrapher new ];
+		painting: [ :b | 
+			| ds |
+			b extent: 500 @ 200.
+			ds := RTData new.
+			ds interaction highlight.
+			ds points: self metrics associations.
+			ds barShape width: 10.
+			ds y: [ :e | e value ].
+			ds barChartWithBarTitle: #key.
+			b add: ds.
+			b axisY.
+			b axisX
+				noTick;
+				noLabel.
+			b build.
+			b ]
+]
+
 { #category : #'gt-inspector-extension' }
 MccComment >> gtInspectorReferencesIn: aComposite [
 	<gtInspectorPresentationOrder: 2>
