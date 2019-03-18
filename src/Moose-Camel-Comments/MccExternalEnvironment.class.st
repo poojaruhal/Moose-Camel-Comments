@@ -27,7 +27,8 @@ MccExternalEnvironment class >> fromCSV: aFileReference [
 		
 	^ self new classesAndComments: (
 		aCollectionOfClassComment 
-			collect:[:eachItem |
+			reject:[:eachItem | eachItem first isEmptyOrNil or:[eachItem second isEmptyOrNil]]
+			thenCollect:[:eachItem |
 				 (eachItem at:1) -> (MccTextComment of:(eachItem at:2) with:(eachItem at:1))]).
 	
 	

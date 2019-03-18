@@ -26,7 +26,7 @@ MccTextComment class >> hasComment: anObject [
 MccTextComment class >> of: aText with: className [
  "create a MccTextComment with given text of class className"
 	(aText isEmptyOrNil)
-		ifTrue:[^ MccEmptyComment of: aText with: className ]
+		ifTrue:[^ MccEmptyComment fromClass: className ]
 		ifFalse: [^ (self of:aText) className: className]
 
 
