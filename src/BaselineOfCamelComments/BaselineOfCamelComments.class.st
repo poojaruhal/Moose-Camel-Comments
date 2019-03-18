@@ -12,9 +12,10 @@ BaselineOfCamelComments >> baseline: spec [
 		spec
 			baseline: 'Camel' with: [ spec repository: 'github://poojaruhal65/Moose-Camel/src' ];
 			baseline: 'PetitParser2' with: [ spec repository: 'github://kursjan/petitparser2' ];
-			baseline: 'NeoJSON' with: [ spec repository: 'github://svenvc/NeoJSON:master/repository' ].
-		
-		spec package: #'Moose-Camel-Comments' with: [ spec requires: #(Camel PetitParser2 NeoJSON) ].
+			baseline: 'NeoJSON' with: [ spec repository: 'github://svenvc/NeoJSON:master/repository' ];
+			baseline: 'NeoCSV' with: [ spec repository: 'http://mc.stfx.eu/Neo' ].
+			
+		spec package: #'Moose-Camel-Comments' with: [ spec requires: #(Camel PetitParser2 NeoJSON NeoCSV) ].
 		spec package: #'Moose-Camel-Comments-Examples' with: [ spec requires: #('Moose-Camel-Comments') ].
 	
 		spec group: 'default' with: #('Moose-Camel-Comments' 'Moose-Camel-Comments-Examples') ]

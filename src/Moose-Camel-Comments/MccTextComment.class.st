@@ -25,7 +25,9 @@ MccTextComment class >> hasComment: anObject [
 { #category : #'as yet unclassified' }
 MccTextComment class >> of: aText with: className [
  "create a MccTextComment with given text of class className"
-	^ (self of:aText) className: className
+	(aText isEmptyOrNil)
+		ifTrue:[^ MccEmptyComment of: aText with: className ]
+		ifFalse: [^ (self of:aText) className: className]
 
 
 ]

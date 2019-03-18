@@ -127,10 +127,11 @@ MccComment >> asString [
 { #category : #accessing }
 MccComment >> code [
 	"returns array of code tokens from comment"
-	| aParser theTokens |
+	| aParser aParsedString theTokens |
 
 	aParser := MccSmalltalkInCommentParser.
-	theTokens := (aParser parse: self asString) textAndCodeTokens.
+	aParsedString := aParser parse: self asString.
+	theTokens := (aParsedString isEmptyOrNil) ifTrue: [ '' ] ifFalse: [aParsedString textAndCodeTokens].
 	code := theTokens select: [ :eachToken | 
 		eachToken isCode ].
 	^ code
