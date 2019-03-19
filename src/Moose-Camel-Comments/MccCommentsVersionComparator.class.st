@@ -29,7 +29,7 @@ MccCommentsVersionComparator >> classesHaveDifferentComment [
 
 	output := OrderedCollection new.
 	
-	commentChangedClasses := self commonClasses
+	commentChangedClasses := self commonClassesWithComments
 		difference: 
 			(self classesHaveSameComments collect: #key).
 	
@@ -46,7 +46,9 @@ MccCommentsVersionComparator >> classesHaveDifferentComment [
 
 { #category : #metrics }
 MccCommentsVersionComparator >> classesHaveSameComments [
-	^ (self versionOneClassesAndComments intersection: self versionTwoClassesAndComments) sort: [:a :b | a < b ]
+	
+
+	^ ((self onlyWithComments:versionOneClassesAndComments) intersection: (self onlyWithComments: versionTwoClassesAndComments)) sort: [:a :b | a < b ]
 ]
 
 { #category : #metrics }
@@ -59,9 +61,18 @@ MccCommentsVersionComparator >> commonClasses [
 						sort: [:a :b | a < b ]
 ]
 
+{ #category : #metrics }
+MccCommentsVersionComparator >> commonClassesWithComments [
+
+	^ (((self onlyWithComments: versionOneClassesAndComments) collect: #key)
+			intersection:
+				((self onlyWithComments: versionTwoClassesAndComments)
+				 	collect: #key)) 
+						sort: [:a :b | a < b ]
+]
+
 { #category : #private }
 MccCommentsVersionComparator >> compare [
-	
 	
 	self versionOneClassesAndComments: (MccExternalEnvironment fromCSV:self versionOne) classesAndComments.
 	self versionTwoClassesAndComments: (MccExternalEnvironment fromCSV: self versionTwo) classesAndComments.
@@ -124,6 +135,12 @@ MccCommentsVersionComparator >> metrics [
 { #category : #accessing }
 MccCommentsVersionComparator >> metrics: anObject [
 	metrics := anObject
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentsVersionComparator >> onlyWithComments: aCollectionOfClassesAndComments [
+
+	^ aCollectionOfClassesAndComments reject:[:anAssociation | anAssociation value isEmpty]
 ]
 
 { #category : #accessing }

@@ -19,6 +19,7 @@ MccExternalEnvironment class >> fromCSV: aFileReference [
 
 	|aCollectionOfClassComment|
 
+	"first column- className, secondColumn- class comment"
 	aCollectionOfClassComment:=
 		(NeoCSVReader on: aFileReference readStream)
 			addField;
@@ -27,7 +28,7 @@ MccExternalEnvironment class >> fromCSV: aFileReference [
 		
 	^ self new classesAndComments: (
 		aCollectionOfClassComment 
-			reject:[:eachItem | eachItem first isEmptyOrNil or:[eachItem second isEmptyOrNil]]
+			reject:[:eachItem | eachItem first isEmptyOrNil and:[eachItem second isEmptyOrNil]]
 			thenCollect:[:eachItem |
 				 (eachItem at:1) -> (MccTextComment of:(eachItem at:2) with:(eachItem at:1))]).
 	

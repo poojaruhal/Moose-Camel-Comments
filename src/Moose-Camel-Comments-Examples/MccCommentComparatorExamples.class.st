@@ -48,7 +48,7 @@ MccCommentComparatorExamples >> compareVersions [
 		
 	|aComparator|
 	
-	aComparator := MccCommentsVersionComparator version: self pharo1FileReference  to: self pharo7FileReference.
+	aComparator := MccCommentsVersionComparator version: self pharo1FileReference  to: self pharo2FileReference.
 	^ aComparator compare.
 ]
 
