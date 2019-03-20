@@ -2,8 +2,8 @@
 https://poojaruhal65.github.io/
 
 ## About Project
-This Project analyze the linguistic pattern of developers when they write comments. 
-How developers express their thoughts of writing code and what pattern this produces.
+The Project analyze the Pharo class-comments,  evolution of the class-comments and linguistic pattern of developer. 
+How developers express their thoughts in natural language (English).
 
 # Install
 ```smalltalk
