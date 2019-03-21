@@ -17,23 +17,54 @@ Class {
 { #category : #'instance creation' }
 MccExternalEnvironment class >> fromCSV: aFileReference [
 
-	|aCollectionOfClassComment|
-
+	| aCollectionOfClassComment |
 	"first column- className, secondColumn- class comment"
-	aCollectionOfClassComment:=
-		(NeoCSVReader on: aFileReference readStream)
-			addField;
-			addField;
-			upToEnd.
+	
+	aCollectionOfClassComment := (NeoCSVReader on: aFileReference readStream)
+		addField;
+		addField;
+		upToEnd.
 		
-	^ self new classesAndComments: (
-		aCollectionOfClassComment 
-			reject:[:eachItem | eachItem first isEmptyOrNil and:[eachItem second isEmptyOrNil]]
-			thenCollect:[:eachItem |
-				 (eachItem at:1) -> (MccTextComment of:(eachItem at:2) with:(eachItem at:1))]).
+	^ self new classes: (aCollectionOfClassComment
+		reject: [ :eachItem | eachItem first isEmptyOrNil and: [ eachItem second isEmptyOrNil ] ]
+		thenCollect: [ :eachItem | 
+					MccTextClass
+						from: (eachItem at: 1) 
+						comment: (MccTextComment of: (eachItem at: 2))])
 	
 	
 	 
+]
+
+{ #category : #'instance creation' }
+MccExternalEnvironment class >> fromCSV: aFileReference of: aVersionNumber [
+	| aCollectionOfClassComment |
+	"first column- className, secondColumn- class comment"
+	aCollectionOfClassComment := (NeoCSVReader on: aFileReference readStream)
+		addField;
+		addField;
+		upToEnd.
+		
+	^ self new classes: 
+		(aCollectionOfClassComment
+		reject: [ :eachItem | eachItem first isEmptyOrNil and: [ eachItem second isEmptyOrNil ] ]
+		thenCollect: [ :eachItem | 
+			(eachItem second isEmptyOrNil)
+				ifTrue:[
+					MccTextClass
+						from: (eachItem at: 1) 
+						comment: (MccEmptyComment of: eachItem first)]
+				ifFalse:[
+					aVersionNumber isNil
+						ifTrue: [
+							MccTextClass
+								from: (eachItem at: 1) 
+								comment: (MccTextComment of: (eachItem at: 2))]
+						ifFalse: [ 
+							MccTextClass
+								from: (eachItem at: 1)
+								comment: (MccTextComment of: (eachItem at: 2))
+								version: aVersionNumber ]]])
 ]
 
 { #category : #navigation }

@@ -6,7 +6,7 @@ A CSV file contains each class with its comment in a row.
 Class {
 	#name : #MccExternalEnvironmentExamples,
 	#superclass : #Object,
-	#category : #'Moose-Camel-Comments-Examples-Examples'
+	#category : #'Moose-Camel-Comments-Examples-Environment- Examples'
 }
 
 { #category : #'as yet unclassified' }

@@ -13,9 +13,42 @@ Class {
 }
 
 { #category : #accessing }
-MccClassWithComment >> methodWithComment [
-	"I am a method with comment.
-	I return a Number which is the Answer to the Ultimate Question of Life, the Universe, and Everything"
+MccClassWithComment >> classesWithComment [
+	"all classes with comments from systemEnvironment"
+	<gtExample>
+		
+	^ self environment allClasses select: #hasComment.
+]
 
-	^ 42
+{ #category : #accessing }
+MccClassWithComment >> environment [ 
+	"all classes with comments from systemEnvironment"
+	<gtExample>
+		
+	^ MccSystemEnvironmentExamples new.
+]
+
+{ #category : #accessing }
+MccClassWithComment >> methodsWithComment [
+	"I am a method with comment"
+	
+	
+]
+
+{ #category : #'as yet unclassified' }
+MccClassWithComment >> randomSamplingOfCommentClasses [
+<gtExample>
+
+	^ (((1 to: 120) 
+	collect: [ :e | self classesWithComment atRandom ]) asSet asOrderedCollection 
+	groupedBy: [ :e | 
+		|sentences|
+		sentences := e mccComment sentences.
+		sentences size = 1 
+			ifTrue: [ #oneSentence ]
+			ifFalse: [
+				sentences size <=10
+					ifTrue:[#MultiSentence]
+					ifFalse:[#MultiParagraph]
+				  ]	])
 ]

@@ -15,11 +15,11 @@ Class {
 }
 
 { #category : #versions }
-MccCommentsVersionComparator class >> version: inputFileReferenceOne to: inputFileReferenceTwo [
+MccCommentsVersionComparator class >> version: versionOne to: versionTwo [
 
 	^ self new
-		versionOne: inputFileReferenceOne;
-		versionTwo: inputFileReferenceTwo.
+		versionOne: versionOne;
+		versionTwo: versionTwo.
 ]
 
 { #category : #metrics }
@@ -47,17 +47,16 @@ MccCommentsVersionComparator >> classesHaveDifferentComment [
 { #category : #metrics }
 MccCommentsVersionComparator >> classesHaveSameComments [
 	
-
 	^ ((self onlyWithComments:versionOneClassesAndComments) intersection: (self onlyWithComments: versionTwoClassesAndComments)) sort: [:a :b | a < b ]
 ]
 
 { #category : #metrics }
 MccCommentsVersionComparator >> commonClasses [
 
-	^ ((self versionOneClassesAndComments collect: #key)
+	^ ((self versionOneClassesAndComments collect:[:anAssociation | anAssociation key name])
 			intersection:
 				(self versionTwoClassesAndComments
-				 	collect: #key)) 
+				 	collect: [:anAssociation | anAssociation key name])) 
 						sort: [:a :b | a < b ]
 ]
 
@@ -73,9 +72,9 @@ MccCommentsVersionComparator >> commonClassesWithComments [
 
 { #category : #private }
 MccCommentsVersionComparator >> compare [
-	
-	self versionOneClassesAndComments: (MccExternalEnvironment fromCSV:self versionOne) classesAndComments.
-	self versionTwoClassesAndComments: (MccExternalEnvironment fromCSV: self versionTwo) classesAndComments.
+	self halt.
+	self versionOneClassesAndComments: self versionOne classesAndComments.
+	self versionTwoClassesAndComments: self versionTwo classesAndComments.
 	
 	self metrics addAll: 
 	{ 
@@ -91,8 +90,8 @@ MccCommentsVersionComparator >> compare [
 { #category : #metrics }
 MccCommentsVersionComparator >> differentClasses [
 
-	^ ((self versionOneClassesAndComments  collect: #key)
-		difference: (self versionTwoClassesAndComments collect: #key))sort: [:a :b | a < b ]
+	^ ((self versionOneClassesAndComments  collect: [:anAssociation | anAssociation key name])
+		difference: (self versionTwoClassesAndComments collect: [:anAssociation | anAssociation key name]))sort: [:a :b | a < b ]
 ]
 
 { #category : #'gt-inspector-extension' }

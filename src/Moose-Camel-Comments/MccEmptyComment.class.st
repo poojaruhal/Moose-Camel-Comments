@@ -1,12 +1,10 @@
 "
-I represent empty comment in case some code artefact does not have a comment.
-
-Empty comments do not reference any code artefacts
+An object can have emtpty comment
 "
 Class {
 	#name : #MccEmptyComment,
 	#superclass : #MccComment,
-	#category : 'Moose-Camel-Comments-Model - Comment'
+	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
 { #category : #testing }
@@ -14,7 +12,6 @@ MccEmptyComment class >> hasComment: anObject [
 	"Return true of a given code artefact has a comment"
 	<return: #Boolean>
 
-	"Any object can have empty comment, therefore return true"
 	^ true
 ]
 
@@ -24,13 +21,6 @@ MccEmptyComment >> asString [
 	<return: #String>
 	
 	^ ''
-]
-
-{ #category : #testing }
-MccEmptyComment >> isEmpty [
-	<return: #Boolean>
-	
-	^ true
 ]
 
 { #category : #references }

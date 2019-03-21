@@ -22,16 +22,6 @@ MccTextComment class >> hasComment: anObject [
 	^ anObject isString
 ]
 
-{ #category : #'as yet unclassified' }
-MccTextComment class >> of: aText with: className [
- "create a MccTextComment with given text of class className"
-	(aText isEmptyOrNil)
-		ifTrue:[^ MccEmptyComment fromClass: className ]
-		ifFalse: [^ (self of:aText) className: className]
-
-
-]
-
 { #category : #comparing }
 MccTextComment >> = anObject [
 	"Answer whether the receiver and anObject represent the same object."
@@ -51,14 +41,28 @@ MccTextComment >> asString [
 	^ self text asString
 ]
 
-{ #category : #accessing }
-MccTextComment >> className [
-	^ className
-]
-
-{ #category : #accessing }
-MccTextComment >> className: anObject [
-	className := anObject
+{ #category : #'as yet unclassified' }
+MccTextComment >> gtInspectorLinguisticOverviewIn: aComposite [
+	<gtInspectorPresentationOrder: 1>
+	^ aComposite roassal2
+		title: 'Linguistic Overview' translated;
+		initializeView: [ RTGrapher new ];
+		painting: [ :b | 
+			| ds |
+			b extent: 500 @ 200.
+			ds := RTData new.
+			ds interaction highlight.
+			ds points: self metrics associations.
+			ds barShape width: 10.
+			ds y: [ :e | e value ].
+			ds barChartWithBarTitle: #key.
+			b add: ds.
+			b axisY.
+			b axisX
+				noTick;
+				noLabel.
+			b build.
+			b ]
 ]
 
 { #category : #comparing }
