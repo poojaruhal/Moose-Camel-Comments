@@ -109,9 +109,7 @@ MccComment >> artefact [
 
 { #category : #accessing }
 MccComment >> artefact: anObject [
-	self
-		assert: [ anObject isNotNil ]
-		description: [ 'Code artefact must not be nil' ].
+	"anObject can be nil"
 
 	artefact := anObject
 ]
@@ -282,6 +280,11 @@ MccComment >> isEmpty [
 	<return: #Boolean>
 	
 	^ self asString isEmpty
+]
+
+{ #category : #testing }
+MccComment >> isNotEmpty [
+	^ self isEmpty not
 ]
 
 { #category : #metrics }

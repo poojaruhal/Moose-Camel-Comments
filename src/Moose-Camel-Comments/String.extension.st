@@ -23,5 +23,7 @@ String >> mccComment [
 	"Return a comment of this object if applicable"
 	<return: #MccComment>
 
-	^ MccTextComment of: self
+	^ (self
+		ifEmpty: [ MccEmptyComment ]
+		ifNotEmpty: [ MccTextComment ]) of: self
 ]

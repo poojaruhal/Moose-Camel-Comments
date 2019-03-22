@@ -47,7 +47,7 @@ MccTextClass >> = anObject [
 		ifTrue: [ ^ true ].
 	self class = anObject class
 		ifFalse: [ ^ false ].
-	^ self name = anObject name
+	^ name = anObject name
 ]
 
 { #category : #converting }
@@ -77,7 +77,7 @@ MccTextClass >> hasComment [
 MccTextClass >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
 
-	^ self name hash
+	^ name hash
 ]
 
 { #category : #accessing }
@@ -92,11 +92,12 @@ MccTextClass >> name: anObject [
 
 { #category : #printing }
 MccTextClass >> printOn: aStream [
+	"Append a sequence of characters to aStream that identify the receiver."
+
+	super printOn: aStream.
 	aStream
-		nextPutAll: 'Class: ';
-		nextPut: $(;
-		nextPutAll: self asString;
-		nextPut: $)
+		nextPutAll: ' class: ';
+		print: name
 ]
 
 { #category : #accessing }

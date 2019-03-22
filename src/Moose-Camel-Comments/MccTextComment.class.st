@@ -8,9 +8,6 @@ I am just a textual comment that does not belong to anything. I am generally cre
 Class {
 	#name : #MccTextComment,
 	#superclass : #MccComment,
-	#instVars : [
-		'className'
-	],
 	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 

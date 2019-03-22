@@ -49,7 +49,18 @@ MccExternalEnvironment class >> fromCSV: aFileReference of: aVersionNumber [
 		(aCollectionOfClassComment
 		reject: [ :eachItem | eachItem first isEmptyOrNil and: [ eachItem second isEmptyOrNil ] ]
 		thenCollect: [ :eachItem | 
-			(eachItem second isEmptyOrNil)
+					aVersionNumber isNil
+						ifTrue: [
+							MccTextClass
+								from: (eachItem at: 1) 
+								comment: (MccTextComment of: (eachItem at: 2))]
+						ifFalse: [ 
+							MccTextClass
+								from: (eachItem at: 1)
+								comment: (MccTextComment of: (eachItem at: 2))
+								version: aVersionNumber ]]).
+
+			"(eachItem second isEmptyOrNil)
 				ifTrue:[
 					MccTextClass
 						from: (eachItem at: 1) 
@@ -64,7 +75,7 @@ MccExternalEnvironment class >> fromCSV: aFileReference of: aVersionNumber [
 							MccTextClass
 								from: (eachItem at: 1)
 								comment: (MccTextComment of: (eachItem at: 2))
-								version: aVersionNumber ]]])
+								version: aVersionNumber ]]])"
 ]
 
 { #category : #navigation }

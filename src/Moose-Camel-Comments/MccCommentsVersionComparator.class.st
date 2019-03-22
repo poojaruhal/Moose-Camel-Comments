@@ -47,7 +47,7 @@ MccCommentsVersionComparator >> classesHaveDifferentComment [
 { #category : #metrics }
 MccCommentsVersionComparator >> classesHaveSameComments [
 	
-	^ ((self onlyWithComments:versionOneClassesAndComments) intersection: (self onlyWithComments: versionTwoClassesAndComments)) sort: [:a :b | a < b ]
+	^ ((self onlyWithComments:versionOneClassesAndComments) intersection: (self onlyWithComments: versionTwoClassesAndComments)) sort: [:a :b | a name < b name]
 ]
 
 { #category : #metrics }
@@ -67,12 +67,12 @@ MccCommentsVersionComparator >> commonClassesWithComments [
 			intersection:
 				((self onlyWithComments: versionTwoClassesAndComments)
 				 	collect: #key)) 
-						sort: [:a :b | a < b ]
+						sort: [:a :b | a name < b name ]
 ]
 
 { #category : #private }
 MccCommentsVersionComparator >> compare [
-	self halt.
+
 	self versionOneClassesAndComments: self versionOne classesAndComments.
 	self versionTwoClassesAndComments: self versionTwo classesAndComments.
 	
