@@ -86,6 +86,18 @@ MccWord >> isPronoun:aWord [
 ]
 
 { #category : #testing }
+MccWord >> isPunctuation [
+
+	^ self punctuation includes:(self string) asLowercase.
+]
+
+{ #category : #testing }
+MccWord >> isPunctuation: aWord [
+
+	^ self punctuation includes:aWord asLowercase.
+]
+
+{ #category : #testing }
 MccWord >> isStopword [
 
 	^ self stopwords includes:(self string) asLowercase.
@@ -107,6 +119,13 @@ MccWord >> pronouns [
 	"list of stopwords"
 	
 	^ #( 'i' 'me' 'myself' 'mine' 'my' 'we' 'we''d' 'we''ll' 'we''re' 'we''ve' 'us' 'ourselves' 'ourself' 'ours' 'our' 'he' 'he''d' 'he''ll' 'he''s' 'her' 'hers' 'herself' 'him' 'himself' 'his' 'it' 'it''s' 'its' 'itself' 'she' 'she''d' 'she''ll' 'she''s' 'their' 'theirs' 'them' 'themselves' 'they' 'they''d' 'they''ll' 'they''re' 'they''ve' 'youd' 'youll' 'youre' 'youve' 'you' 'you''d' 'you''ll' 'you''re' 'you''ve' 'your' 'yours' 'yourself' 'yourselves' '###' 'its' 'theyll' 'theyre' 'theyve' 'whats' 'whos' 'what' 'what''s' 'which' 'who' 'who''s' 'whom' 'whose')
+]
+
+{ #category : #'as yet unclassified' }
+MccWord >> punctuation [
+	"list of punctuation"
+	
+	^ #( '.' ';' ':' ',' '[' ']' '{' '}' '|' '?' '/' '&' '(' ')' '..' '==' '*' '**')
 ]
 
 { #category : #'as yet unclassified' }

@@ -32,8 +32,6 @@ MccExternalEnvironment class >> fromCSV: aFileReference [
 						from: (eachItem at: 1) 
 						comment: (MccTextComment of: (eachItem at: 2))])
 	
-	
-	 
 ]
 
 { #category : #'instance creation' }
@@ -59,23 +57,6 @@ MccExternalEnvironment class >> fromCSV: aFileReference of: aVersionNumber [
 								from: (eachItem at: 1)
 								comment: (MccTextComment of: (eachItem at: 2))
 								version: aVersionNumber ]]).
-
-			"(eachItem second isEmptyOrNil)
-				ifTrue:[
-					MccTextClass
-						from: (eachItem at: 1) 
-						comment: (MccEmptyComment of: eachItem first)]
-				ifFalse:[
-					aVersionNumber isNil
-						ifTrue: [
-							MccTextClass
-								from: (eachItem at: 1) 
-								comment: (MccTextComment of: (eachItem at: 2))]
-						ifFalse: [ 
-							MccTextClass
-								from: (eachItem at: 1)
-								comment: (MccTextComment of: (eachItem at: 2))
-								version: aVersionNumber ]]])"
 ]
 
 { #category : #navigation }
@@ -108,29 +89,19 @@ MccExternalEnvironment >> classes: aCollectionOfClasses [
 
 { #category : #accessing }
 MccExternalEnvironment >> classesAndComments [
+	
+	classesAndComments := OrderedCollection new.
+	classesAndComments := self classes collect:[:aClass | aClass -> aClass comment].
 	^ classesAndComments
-]
-
-{ #category : #accessing }
-MccExternalEnvironment >> classesAndComments: theAssociations [	
-	
-	classesAndComments := theAssociations sort:[:a :b | a key < b key].
-	self classes:(theAssociations collect:[:eachItem | eachItem key]).
-	self comments:(theAssociations collect:[:eachItem | eachItem value]).
-	
-	^ self.
 ]
 
 { #category : #accessing }
 MccExternalEnvironment >> comments [
 	<return: #Collection of: #MccComment>
-
+	
+	comments := OrderedCollection new.
+	comments := self classes collect:#comment.
 	^ comments
-]
-
-{ #category : #accessing }
-MccExternalEnvironment >> comments: aCollectionOfComments [
-	comments:= aCollectionOfComments
 ]
 
 { #category : #initialization }
@@ -138,6 +109,7 @@ MccExternalEnvironment >> initialize [
 	super initialize.
 	
 	classes := OrderedCollection new.
-	comments := OrderedCollection new.
-	classesAndComments := OrderedDictionary new.
+	comments := nil. "lazy initialzation"
+	classesAndComments := nil. "lazy initialzation"
+
 ]

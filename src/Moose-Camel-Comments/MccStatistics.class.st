@@ -43,11 +43,11 @@ MccStatistics >> avgEntitiesWithComment [
 ]
 
 { #category : #metrics }
-MccStatistics >> avgLines [
+MccStatistics >> avgSentences [
 	"Return the average amount of lines in a comment among entities with a comment"
 	<return: #Number>
 
-	^ (self lines size / self filteredEntities size) asFloat
+	^ (self sentences size / self filteredEntities size) asFloat
 ]
 
 { #category : #metrics }
@@ -63,7 +63,13 @@ MccStatistics >> avgWords [
 	"Return the average amount of words per entity with a comment"
 	<return: #Number>
 	
-	^ (self filteredEntities sum: [ :eachEntity | eachEntity mccComment words size ]) / self filteredEntities size asFloat
+	^ (self filteredEntities sum: [ :eachEntity |
+		 eachEntity mccComment words size ]) / self filteredEntities size asFloat
+]
+
+{ #category : #private }
+MccStatistics >> compute [
+	self metrics.
 ]
 
 { #category : #initialization }
@@ -99,7 +105,7 @@ MccStatistics >> filteredEntities [
 MccStatistics >> initialize [
 	super initialize.
 
-	allStatistics := Dictionary new.
+	allStatistics := OrderedDictionary new.
 
 	allEntities := nil. "lazy"
 	filteredEntities := nil. "lazy"
@@ -110,16 +116,9 @@ MccStatistics >> lexicalDensity [
 	"Return the average amount of unique words per entity with a comment"
 	<return: #Number>
 
-	^ (self filteredEntities sum: [ :eachEntity |
-		 (eachEntity mccComment words as: Set) size ]) / self filteredEntities size asFloat
-]
-
-{ #category : #'private-accessing' }
-MccStatistics >> lines [
-	<return: #Array of: #MccSentences>
-	^ self filteredEntities
-		 flatCollect: [ :eachEntity |
-			 eachEntity mccComment sentences ]
+	^ (self filteredEntities sum: [ :eachEntity | eachEntity mccComment lemmas size ]) / self filteredEntities size asFloat.
+	"(self filteredEntities sum: [ :eachEntity |
+		 (eachEntity mccComment words as: Set) size ]) / self filteredEntities size asFloat"
 ]
 
 { #category : #metrics }
@@ -128,11 +127,18 @@ MccStatistics >> metrics [
 	self allStatistics addAll:
 	{ 
 		'average number of EntityComment' -> self avgEntitiesWithComment. 
-		'average number of lines in comments' -> self avgLines.
+		'average number of lines in comments' -> self avgSentences.
 		'average number of words' -> self avgWords.
 		'average number of stopwords' -> self avgStopwords.
 		'lexical Density' -> self lexicalDensity
-	} asDictionary.
+	}asDictionary.
 		
-	^ self allStatistics.
+]
+
+{ #category : #'private-accessing' }
+MccStatistics >> sentences [
+	<return: #Array of: #MccSentences>
+	^ self filteredEntities
+		 flatCollect: [ :eachEntity |
+			 eachEntity mccComment sentences ]
 ]

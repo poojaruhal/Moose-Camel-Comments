@@ -8,6 +8,9 @@ I am just a textual comment that does not belong to anything. I am generally cre
 Class {
 	#name : #MccTextComment,
 	#superclass : #MccComment,
+	#instVars : [
+		'textClassName'
+	],
 	#category : #'Moose-Camel-Comments-Model - Comment'
 }
 
@@ -93,4 +96,14 @@ MccTextComment >> text [
 	<return: #String>
 	
 	^ self artefact
+]
+
+{ #category : #accessing }
+MccTextComment >> textClassName [
+	^ textClassName.
+]
+
+{ #category : #accessing }
+MccTextComment >> textClassName: anObject [
+	textClassName := anObject
 ]

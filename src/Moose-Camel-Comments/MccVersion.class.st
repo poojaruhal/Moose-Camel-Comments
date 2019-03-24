@@ -24,11 +24,7 @@ MccVersion class >> loadFrom: aFileReference version: aVersion [
 { #category : #accessing }
 MccVersion >> classesAndComments [
 	
-	|classesAndComment|
-	
-	classesAndComment:= OrderedCollection new.
-	classesAndComment := self environment classes collect: [ :eachClass | eachClass -> eachClass comment ].
-	^ classesAndComment
+	^ self environment classesAndComments.
 ]
 
 { #category : #accessing }

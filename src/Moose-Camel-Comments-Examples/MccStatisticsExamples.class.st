@@ -32,10 +32,10 @@ MccStatisticsExamples >> commentMetrics [
 	<return: #Dictionary of: 'Comment Metrics'>
 	
 	|anExternalEnvironment mccCommentStatistics|
-	
+
 	anExternalEnvironment := MccExternalEnvironmentExamples new externalEnvironmentModel.
 	mccCommentStatistics := MccCommentStatistics with: anExternalEnvironment.
-	^ mccCommentStatistics metrics.
+	^ mccCommentStatistics compute.
 ]
 
 { #category : #navigation }

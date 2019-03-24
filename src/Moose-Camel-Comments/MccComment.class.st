@@ -67,7 +67,8 @@ Class {
 		'words',
 		'code',
 		'text',
-		'statistics'
+		'statistics',
+		'lemmas'
 	],
 	#category : #'Moose-Camel-Comments-Model - Comment'
 }
@@ -287,8 +288,28 @@ MccComment >> isNotEmpty [
 	^ self isEmpty not
 ]
 
+{ #category : #copying }
+MccComment >> lemmas [
+	"collect lemmas from McCoreResonse"
+	<return:#Set of: #MccWord>
+
+	lemmas ifNil: [lemmas := (self sentences flatCollect: [  :aSentence |
+		|aResponse mccCoreResponsetokens aSet|
+		
+		aResponse := McCoreResponse queryService: (aSentence asString).
+		mccCoreResponsetokens := aResponse tokens.
+		aSet := ((mccCoreResponsetokens lemmas) asSet) reject: [:aWord |
+		 (MccWord string:aWord) isPunctuation].
+		aSet collect:[:aWord | MccWord string:aWord].
+	]) asSet].
+
+	^ lemmas
+]
+
 { #category : #metrics }
 MccComment >> metrics [ 
+
+	<return:#Dictionary>
 
 	statistics := OrderedDictionary new.
 	
@@ -297,7 +318,7 @@ MccComment >> metrics [
 	'Words' -> self words size.
 	'Stopwords' -> self stopwords size.
 	'Pronouns' -> self pronouns size.
-	'Unique words'-> (self words as:Set) size.
+	'Unique words'-> self lemmas size.
 	'Sentences' -> (self sentences select:[:aSentence | aSentence isNotEmpty])size.
 	 }asDictionary.
 	
