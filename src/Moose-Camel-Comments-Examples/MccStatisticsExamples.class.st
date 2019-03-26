@@ -51,11 +51,75 @@ MccStatisticsExamples >> commentPronouns [
 ]
 
 { #category : #navigation }
+MccStatisticsExamples >> linesOfCodeInClass [
+	<gtExample>
+	<return: #Number>
+	^ self mccStatistics environment sum: [ :aClass | aClass linesOfCode ]
+]
+
+{ #category : #navigation }
+MccStatisticsExamples >> linesOfCodeInMethods [
+	<gtExample>
+	<return: #Number>
+	^ self mccStatistics environment
+		sum: [ :aClass | 
+			aClass methods
+				ifEmpty: [ 0 ]
+				ifNotEmpty: [ aClass methods
+						sum: [ :aMethod | 
+							aMethod comment isNil
+								ifFalse: [ 
+									aMethod linesOfCode - (aMethod comment splitOn: Character cr) size - 1 ]
+								ifTrue: [ aMethod linesOfCode - 1 ] ] ] ]
+]
+
+{ #category : #navigation }
+MccStatisticsExamples >> linesOfCommentInClass [
+	<gtExample>
+	<return: #Number>
+	^ self mccStatistics environment mccCommentClasses
+		sum: [ :aClassComment | aClassComment sentences size ]
+]
+
+{ #category : #navigation }
+MccStatisticsExamples >> linesOfCommentInMethods [
+	<gtExample>
+	<return: #Number>
+	^ self mccStatistics environment
+		sum: [ :aClass | 
+			aClass methods
+				ifEmpty: [ 0 ]
+				ifNotEmpty: [ aClass methods
+						sum: [ :aMethod | 
+							aMethod comment isNil
+								ifTrue: [ 0 ]
+								ifFalse: [ (aMethod comment splitOn: Character cr) size ] ] ] ]
+]
+
+{ #category : #navigation }
 MccStatisticsExamples >> mccStatistics [
 	<gtExample>
 	<return: #Instance of: #MccStatistics>
 	
 	^ (MccStatistics with: ((MccSystemEnvironment new) allClasses as:MccClasses))
+]
+
+{ #category : #navigation }
+MccStatisticsExamples >> numberOfClasses [
+	<gtExample>
+	<return: #Number>
+	^ self mccStatistics environment size
+]
+
+{ #category : #navigation }
+MccStatisticsExamples >> numberOfMethods [
+	<gtExample>
+	<return: #Number>
+	^ self mccStatistics environment
+		sum: [ :aClass | 
+			aClass methods
+				ifEmpty: [ 0 ]
+				ifNotEmpty: [ aClass methods size] ]
 ]
 
 { #category : #navigation }
@@ -65,4 +129,11 @@ MccStatisticsExamples >> smalltalkHubProjectsTimestamp [
 	
 	^ MccSmalltalkHubStatistics new timestampsByYear
 
+]
+
+{ #category : #navigation }
+MccStatisticsExamples >> totalCommentLines [
+	<gtExample>
+	<return: #Number>
+	^ self linesOfCommentInClass + self linesOfCommentInMethods.
 ]

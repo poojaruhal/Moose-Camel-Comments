@@ -37,18 +37,34 @@ MccClassWithComment >> methodsWithComment [
 
 { #category : #'as yet unclassified' }
 MccClassWithComment >> randomSamplingOfCommentClasses [
-<gtExample>
-
-	^ (((1 to: 120) 
-	collect: [ :e | self classesWithComment atRandom ]) asSet asOrderedCollection 
-	groupedBy: [ :e | 
-		|sentences|
-		sentences := e mccComment sentences.
-		sentences size = 1 
-			ifTrue: [ #oneSentence ]
-			ifFalse: [
-				sentences size <=10
-					ifTrue:[#MultiSentence]
-					ifFalse:[#MultiParagraph]
-				  ]	])
+	<
+	gtExample>
+	^ ((1
+	to: 100)
+		collect:
+			[ :e | 
+			self
+				classesWithComment
+				atRandom ])
+		asSet
+		asOrderedCollection
+		groupedBy:
+			[ :e | 
+			| sentences |
+			sentences := e
+				mccComment
+				sentences.
+			sentences
+				size
+				= 1
+				ifTrue:
+					[ #oneSentence ]
+				ifFalse:
+					[ sentences
+						size
+						<= 10
+						ifTrue:
+							[ #MultiSentence ]
+						ifFalse:
+							[ #MultiParagraph ] ] ]
 ]
