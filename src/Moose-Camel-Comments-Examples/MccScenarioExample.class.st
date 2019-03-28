@@ -44,7 +44,7 @@ MccScenarioExample >> allClassesOfSelectedPackage [
 	<gtExample>
 	<description:'collect all classes of Compiler package'>
 	
-	^ MccClassesExamples new allMccClasses.
+	^ MccClassesExamples new allMccCommentClasses.
 ]
 
 { #category : #'gt-examples' }
@@ -80,10 +80,9 @@ MccScenarioExample >> collectReferencedClassesFromAllClassesComment [
 	referncedClassesByAllMethods := self allClassesOfSelectedPackageAsSymbols.
 	classesReferencedFromComment :=
 		self allClassesWithComments
-			flatCollect: [ :eachClass |
-				|mccComment sentences | 
-				mccComment := MccComment fromClass: eachClass.
-				sentences := mccComment sentences sentences.
+			flatCollect: [ :aMccClassComment |
+				| sentences | 
+				sentences := aMccClassComment sentences.
 
 				sentences
 					flatCollect: [ :eachSentence | 

@@ -1,5 +1,5 @@
 "
-I represent the sentence from a comment. I have information about the Nouns.
+I represent the sentence from a comment. I have information about the Nouns, verbs.
 
     Instance Variables
 	nouns:		<Object>
@@ -14,7 +14,7 @@ Class {
 		'string',
 		'interval'
 	],
-	#category : 'Moose-Camel-Comments-Model - Text'
+	#category : #'Moose-Camel-Comments-Model - Text'
 }
 
 { #category : #'instance creation' }
@@ -73,12 +73,22 @@ MccSentence >> gtInspectorWordsIn: aComposite [
 ]
 
 { #category : #accessing }
+MccSentence >> hasNegative [
+	
+	| negativeSentiments |
+	
+	negativeSentiments := MccCommentLinguisticAnlyzer new negativeSentiments.
+
+	^ negativeSentiments anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
+]
+
+{ #category : #accessing }
 MccSentence >> hasWarning [
 	
 	| warnings |
 	
 	warnings := MccCommentLinguisticAnlyzer new warningWords.
-	
+
 	^ warnings anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
 ]
 
@@ -121,6 +131,29 @@ MccSentence >> isNotEmpty [
 	If a sentence contains seperator symbol, then also it is marked as empty."
 	
 	^ self isEmpty not 
+]
+
+{ #category : #accessing }
+MccSentence >> matcheTemplateStyle [
+	
+	| template templateSections|
+	
+	template := MccCommentTemplate new.
+	
+	templateSections := OrderedCollection new.
+	
+	templateSections addAll: {  
+	'Intent' -> (template intentWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'Responsibility' -> (template responsibilityVerbs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'PublicAPI' -> (template publicAPIs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'Example' -> (template exampleWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'InternalRepresenation' -> (template internalRepresentationAndKeyImplementationWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'Instance Variable' -> (template instanceVariableWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ])
+	}.
+	
+	^ templateSections.	
+
+
 ]
 
 { #category : #accessing }

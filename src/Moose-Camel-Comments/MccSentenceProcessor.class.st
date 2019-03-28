@@ -63,6 +63,17 @@ MccSentenceProcessor >> splitIntoNouns [
 		^ nouns.
 ]
 
+{ #category : #'gt-examples' }
+MccSentenceProcessor >> splitIntoVerbs [
+	<return: #Array of: #MccVerb>
+	| verbs |
+	"UnComment this out once you load the project"
+	verbs := (self mcInputProcessor process: self sentence) verbs
+		collect: [ :eachVerb | eachVerb word asLowercase asSymbol ].
+		
+	^ verbs
+]
+
 { #category : #accessing }
 MccSentenceProcessor >> tokens [
 	|aCoreResponse|

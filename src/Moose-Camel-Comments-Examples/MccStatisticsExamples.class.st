@@ -137,3 +137,16 @@ MccStatisticsExamples >> totalCommentLines [
 	<return: #Number>
 	^ self linesOfCommentInClass + self linesOfCommentInMethods.
 ]
+
+{ #category : #navigation }
+MccStatisticsExamples >> warningsInClassComment [
+	<gtExample>
+	<return: #Number>
+	^ (self mccStatistics environment mccCommentClasses
+		collect:[ :aMccCommentClass | 
+	aMccCommentClass hasWarnings ifTrue:[
+		 aMccCommentClass -> aMccCommentClass warningSentences
+		]
+	ifFalse: [ aMccCommentClass -> #() ]
+	]) reject: [ :a | a value isEmpty ].
+]

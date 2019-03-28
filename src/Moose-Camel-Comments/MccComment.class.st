@@ -268,6 +268,11 @@ MccComment >> gtInspectorTextIn: aComposite [
 		when: [  self text isNotEmpty ]
 ]
 
+{ #category : #'as yet unclassified' }
+MccComment >> hasWarnings [
+	^ self warningSentences isNotEmpty
+]
+
 { #category : #initialization }
 MccComment >> initializeWith: anObject [
 	"Initialize this comment with a given code artefact that depends on the comment type
@@ -410,6 +415,11 @@ MccComment >> view [
 		noTick;
 		noLabel.
 	^ b
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> warningSentences [
+	^ self sentences select:#hasWarning
 ]
 
 { #category : #accessing }
