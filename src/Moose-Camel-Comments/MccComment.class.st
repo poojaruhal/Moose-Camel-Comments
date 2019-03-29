@@ -269,6 +269,16 @@ MccComment >> gtInspectorTextIn: aComposite [
 ]
 
 { #category : #'as yet unclassified' }
+MccComment >> hasNegative [
+	^ self negativeSentences isNotEmpty
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> hasTemplateStyle [
+	^ self matchTemplateStyle isNotEmpty
+]
+
+{ #category : #'as yet unclassified' }
 MccComment >> hasWarnings [
 	^ self warningSentences isNotEmpty
 ]
@@ -311,6 +321,11 @@ MccComment >> lemmas [
 	^ lemmas
 ]
 
+{ #category : #'as yet unclassified' }
+MccComment >> matchTemplateStyle [
+	^ self sentences select:#hasTemplateStyle
+]
+
 { #category : #metrics }
 MccComment >> metrics [ 
 
@@ -328,6 +343,11 @@ MccComment >> metrics [
 	 }asDictionary.
 	
  	^ self statistics. 
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> negativeSentences [
+	^ self sentences select:#hasNegative
 ]
 
 { #category : #printing }

@@ -83,6 +83,29 @@ MccSentence >> hasNegative [
 ]
 
 { #category : #accessing }
+MccSentence >> hasTemplateStyle [
+	
+	| template templateSections|
+	
+	template := MccCommentTemplate new.
+	
+	templateSections := OrderedCollection new.
+	
+	templateSections addAll: {  
+	'Intent' -> (template intentWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'Responsibility' -> (template responsibilityVerbs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'PublicAPI' -> (template publicAPIs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'Example' -> (template exampleWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'InternalRepresenation' -> (template internalRepresentationAndKeyImplementationWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
+	'Instance Variable' -> (template instanceVariableWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ])
+	}.
+	
+	^ templateSections isNotEmpty.	
+
+
+]
+
+{ #category : #accessing }
 MccSentence >> hasWarning [
 	
 	| warnings |
@@ -131,29 +154,6 @@ MccSentence >> isNotEmpty [
 	If a sentence contains seperator symbol, then also it is marked as empty."
 	
 	^ self isEmpty not 
-]
-
-{ #category : #accessing }
-MccSentence >> matcheTemplateStyle [
-	
-	| template templateSections|
-	
-	template := MccCommentTemplate new.
-	
-	templateSections := OrderedCollection new.
-	
-	templateSections addAll: {  
-	'Intent' -> (template intentWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'Responsibility' -> (template responsibilityVerbs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'PublicAPI' -> (template publicAPIs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'Example' -> (template exampleWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'InternalRepresenation' -> (template internalRepresentationAndKeyImplementationWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'Instance Variable' -> (template instanceVariableWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ])
-	}.
-	
-	^ templateSections.	
-
-
 ]
 
 { #category : #accessing }

@@ -51,6 +51,19 @@ MccStatisticsExamples >> commentPronouns [
 ]
 
 { #category : #navigation }
+MccStatisticsExamples >> followsTemplateStyle [
+	<gtExample>
+	<return: #Collection of:#MccComment>
+	^ (self mccStatistics environment mccCommentClasses
+		collect:[ :aMccCommentClass | 
+	aMccCommentClass hasTemplateStyle ifTrue:[
+		 aMccCommentClass -> aMccCommentClass matchTemplateStyle
+		]
+	ifFalse: [ aMccCommentClass -> #() ]
+	]) reject: [ :a | a value isEmpty ].
+]
+
+{ #category : #navigation }
 MccStatisticsExamples >> linesOfCodeInClass [
 	<gtExample>
 	<return: #Number>
@@ -105,6 +118,19 @@ MccStatisticsExamples >> mccStatistics [
 ]
 
 { #category : #navigation }
+MccStatisticsExamples >> negativeSentimentsInClassComment [
+	<gtExample>
+	<return: #Collection of:#MccComment>
+	^ (self mccStatistics environment mccCommentClasses
+		collect:[ :aMccCommentClass | 
+	aMccCommentClass hasNegative ifTrue:[
+		 aMccCommentClass -> aMccCommentClass negativeSentences
+		]
+	ifFalse: [ aMccCommentClass -> #() ]
+	]) reject: [ :a | a value isEmpty ].
+]
+
+{ #category : #navigation }
 MccStatisticsExamples >> numberOfClasses [
 	<gtExample>
 	<return: #Number>
@@ -141,7 +167,7 @@ MccStatisticsExamples >> totalCommentLines [
 { #category : #navigation }
 MccStatisticsExamples >> warningsInClassComment [
 	<gtExample>
-	<return: #Number>
+	<return: #Collection of:#MccComment>
 	^ (self mccStatistics environment mccCommentClasses
 		collect:[ :aMccCommentClass | 
 	aMccCommentClass hasWarnings ifTrue:[
