@@ -72,7 +72,46 @@ MccSentence >> gtInspectorWordsIn: aComposite [
 		display: [  self words ]
 ]
 
-{ #category : #accessing }
+{ #category : #'template-comparsion' }
+MccSentence >> hasExampleWords [
+	
+	|template|
+	
+	template := MccCommentTemplate new.
+		
+	^ template exampleWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
+]
+
+{ #category : #'template-comparsion' }
+MccSentence >> hasImplementationWords [
+	
+	|template|
+	
+	template := MccCommentTemplate new.
+		
+	^ template internalRepresentationAndKeyImplementationWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
+]
+
+{ #category : #'template-comparsion' }
+MccSentence >> hasInstanceVariableWords [
+	
+	|template|
+	
+	template := MccCommentTemplate new.
+		
+	^ template instanceVariableWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
+]
+
+{ #category : #'template-comparsion' }
+MccSentence >> hasIntentWords [
+	
+	|template|
+	template := MccCommentTemplate new.
+		
+	^ template intentWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
+]
+
+{ #category : #'template-comparsion' }
 MccSentence >> hasNegative [
 	
 	| negativeSentiments |
@@ -82,30 +121,27 @@ MccSentence >> hasNegative [
 	^ negativeSentiments anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
 ]
 
-{ #category : #accessing }
-MccSentence >> hasTemplateStyle [
+{ #category : #'template-comparsion' }
+MccSentence >> hasPublicAPIs [
 	
-	| template templateSections|
+	|template|
 	
 	template := MccCommentTemplate new.
-	
-	templateSections := OrderedCollection new.
-	
-	templateSections addAll: {  
-	'Intent' -> (template intentWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'Responsibility' -> (template responsibilityVerbs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'PublicAPI' -> (template publicAPIs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'Example' -> (template exampleWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'InternalRepresenation' -> (template internalRepresentationAndKeyImplementationWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]).
-	'Instance Variable' -> (template instanceVariableWords anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ])
-	}.
-	
-	^ templateSections isNotEmpty.	
-
-
+		
+	^ template publicAPIs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
 ]
 
-{ #category : #accessing }
+{ #category : #'template-comparsion' }
+MccSentence >> hasResponsibilityWords [
+	
+	|template|
+	
+	template := MccCommentTemplate new.
+		
+	^ template responsibilityVerbs anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
+]
+
+{ #category : #'template-comparsion' }
 MccSentence >> hasWarning [
 	
 	| warnings |

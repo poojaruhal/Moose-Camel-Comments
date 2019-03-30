@@ -53,14 +53,14 @@ MccStatisticsExamples >> commentPronouns [
 { #category : #navigation }
 MccStatisticsExamples >> followsTemplateStyle [
 	<gtExample>
-	<return: #Collection of:#MccComment>
+	"return collection of MccClasses that follows template style in the class comments"
+	<return: #Collection of:#MccClasses>
 	^ (self mccStatistics environment mccCommentClasses
-		collect:[ :aMccCommentClass | 
-	aMccCommentClass hasTemplateStyle ifTrue:[
-		 aMccCommentClass -> aMccCommentClass matchTemplateStyle
-		]
-	ifFalse: [ aMccCommentClass -> #() ]
-	]) reject: [ :a | a value isEmpty ].
+		select:[ :aMccCommentClass | 
+			aMccCommentClass matchTemplateStyle ]
+	  thenCollect: [:aMccCommentClass |
+		 	aMccCommentClass -> aMccCommentClass matchedTemplateSections.
+		])
 ]
 
 { #category : #navigation }
@@ -155,6 +155,31 @@ MccStatisticsExamples >> smalltalkHubProjectsTimestamp [
 	
 	^ MccSmalltalkHubStatistics new timestampsByYear
 
+]
+
+{ #category : #navigation }
+MccStatisticsExamples >> statOfTemplateSectionMatches [
+	<gtExample>
+	"return statstics of template sections matches with the comment"
+	<return: #Collection of:#Number>
+	|commentsFollowTemplate stat|
+	commentsFollowTemplate :=   self followsTemplateStyle.
+	stat := OrderedCollection new.
+	
+	stat add: ('Intent' ->(commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'Intent']])).
+	stat add: ('Responsibility' ->(commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'Responsibility']])).	
+	stat add: ('PublicAPI'->(commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'PublicAPI']])).
+	stat add: ('Example' -> (commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'Example']])).
+	stat add: ('InternalRepresenation' -> (commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'InternalRepresenation']])).
+	stat add: ('InstanceVariable'-> (commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'InstanceVariable']])).
+		
+	^ stat
 ]
 
 { #category : #navigation }

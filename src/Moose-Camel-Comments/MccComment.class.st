@@ -68,7 +68,8 @@ Class {
 		'code',
 		'text',
 		'statistics',
-		'lemmas'
+		'lemmas',
+		'templateSections'
 	],
 	#category : #'Moose-Camel-Comments-Model - Comment'
 }
@@ -275,7 +276,8 @@ MccComment >> hasNegative [
 
 { #category : #'as yet unclassified' }
 MccComment >> hasTemplateStyle [
-	^ self matchTemplateStyle isNotEmpty
+
+	^ self matchedTemplateSections isNotEmpty.
 ]
 
 { #category : #'as yet unclassified' }
@@ -323,7 +325,26 @@ MccComment >> lemmas [
 
 { #category : #'as yet unclassified' }
 MccComment >> matchTemplateStyle [
-	^ self sentences select:#hasTemplateStyle
+	 
+	templateSections := OrderedCollection new.
+	
+	templateSections := {  
+	'Intent' -> (self sentences select:#hasIntentWords).
+	'Responsibility' -> (self sentences select:#hasResponsibilityWords).
+	'PublicAPI' -> (self sentences select:#hasPublicAPIs).
+	'Example' -> (self sentences select:#hasExampleWords).
+	'InternalRepresenation' -> (self sentences select:#hasImplementationWords).
+	'InstanceVariable' -> (self sentences select:#hasInstanceVariableWords)
+	}asDictionary.
+
+	^ (self templateSections select: [ :each | each value isNotEmpty]) isNotEmpty
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> matchedTemplateSections [
+
+	^ self templateSections reject:[:each | each value isEmpty].
+
 ]
 
 { #category : #metrics }
@@ -402,6 +423,11 @@ MccComment >> stopwords [
 	<return: #Collection of: #MccWord>
 
 	^ self words select: #isStopword
+]
+
+{ #category : #accessing }
+MccComment >> templateSections [
+	^ templateSections
 ]
 
 { #category : #accessing }
