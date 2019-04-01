@@ -29,6 +29,13 @@ Class {
 }
 
 { #category : #'word-lists' }
+MccCommentTemplate >> colloborators [
+	"a verb that expresses the class’s responsibility"
+	
+	^ #('I colloborate' 'Collaborators')
+]
+
+{ #category : #'word-lists' }
 MccCommentTemplate >> exampleWords [
 	"a verb that expresses the class’s desire/goal"
 	
@@ -46,7 +53,7 @@ MccCommentTemplate >> instanceVariableWords [
 MccCommentTemplate >> intentWords [
 	"a verb that expresses the class’s desire/goal"
 	
-	^ #('I represent' 'I represent a').
+	^ #('I represent' 'I represent a' 'I am').
 ]
 
 { #category : #'word-lists' }

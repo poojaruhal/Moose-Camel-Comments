@@ -73,6 +73,15 @@ MccSentence >> gtInspectorWordsIn: aComposite [
 ]
 
 { #category : #'template-comparsion' }
+MccSentence >> hasColloborators [
+	
+	|template|
+	template := MccCommentTemplate new.
+		
+	^ template colloborators anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
+]
+
+{ #category : #'template-comparsion' }
 MccSentence >> hasExampleWords [
 	
 	|template|

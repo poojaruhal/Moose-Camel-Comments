@@ -170,6 +170,8 @@ MccStatisticsExamples >> statOfTemplateSectionMatches [
  			each value keys anySatisfy: [:a | a = 'Intent']])).
 	stat add: ('Responsibility' ->(commentsFollowTemplate select:[:each | 
  			each value keys anySatisfy: [:a | a = 'Responsibility']])).	
+	stat add: ('Collaborators' ->(commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'Collaborators']])).	
 	stat add: ('PublicAPI'->(commentsFollowTemplate select:[:each | 
  			each value keys anySatisfy: [:a | a = 'PublicAPI']])).
 	stat add: ('Example' -> (commentsFollowTemplate select:[:each | 

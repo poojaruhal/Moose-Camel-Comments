@@ -331,6 +331,7 @@ MccComment >> matchTemplateStyle [
 	templateSections := {  
 	'Intent' -> (self sentences select:#hasIntentWords).
 	'Responsibility' -> (self sentences select:#hasResponsibilityWords).
+	'Collaborators' -> (self sentences select:#hasColloborators).
 	'PublicAPI' -> (self sentences select:#hasPublicAPIs).
 	'Example' -> (self sentences select:#hasExampleWords).
 	'InternalRepresenation' -> (self sentences select:#hasImplementationWords).
