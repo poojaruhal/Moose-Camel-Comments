@@ -22,13 +22,13 @@ MccExternalEnvironmentExamples >> externalEnvironmentModel [
 { #category : #'as yet unclassified' }
 MccExternalEnvironmentExamples >> pharo1FileReference [
 	"path of the csv file that we want to analyze"
-	
-	^'/Users/poojarani/Downloads/Pharo-Projects/Pharo-class-comments/1-Classes-comments-pharo.csv' asFileReference
+	<gtExample>
+	^'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/Pharo-only-class-with-comments CSV/1-Classes-comments-pharo.csv' asFileReference
 ]
 
 { #category : #'as yet unclassified' }
 MccExternalEnvironmentExamples >> pharo7FileReference [
 	"path of the csv file that we want to analyze"
-	
-	^'/Users/poojarani/Downloads/Pharo-Projects/Pharo-class-comments/7-Classes-comments-pharo.csv' asFileReference
+	<gtExample>
+	^'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/Pharo-only-class-with-comments CSV/7-Classes-comments-pharo.csv' asFileReference.
 ]

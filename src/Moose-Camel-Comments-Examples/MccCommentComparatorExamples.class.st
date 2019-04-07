@@ -75,7 +75,7 @@ MccCommentComparatorExamples >> composeFileReferenceBlock [
 MccCommentComparatorExamples >> pharo1FileReference [
 	<gtExample>
 	
-	^	'/Users/poojarani/Downloads/Pharo-Projects/Pharo-all-classes/all-class-comments-pharo1.csv' asFileReference.
+	^	'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/Pharo-all-classes-comments-CSV/all-class-comments-pharo1.csv' asFileReference.
 		
 	
 ]
@@ -84,7 +84,7 @@ MccCommentComparatorExamples >> pharo1FileReference [
 MccCommentComparatorExamples >> pharo2FileReference [
 	<gtExample>
 	
-	^	'/Users/poojarani/Downloads/Pharo-Projects/Pharo-all-classes/all-class-comments-pharo2.csv' asFileReference.
+	^	'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/Pharo-all-classes-comments-CSV/all-class-comments-pharo2.csv' asFileReference.
 		
 	
 ]
@@ -95,7 +95,7 @@ MccCommentComparatorExamples >> pharo3FileReference [
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-comments-pharo3-package-morph.csv' asFileReference."
 		
-	^	'/Users/poojarani/Downloads/Pharo-Projects/Pharo-all-classes/all-class-comments-pharo3.csv' asFileReference.
+	^	'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/Pharo-all-classes-comments-CSV/all-class-comments-pharo3.csv' asFileReference.
 ]
 
 { #category : #'as yet unclassified' }
@@ -104,7 +104,7 @@ MccCommentComparatorExamples >> pharo4FileReference [
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-Comments-pharo4-package-morph.csv' asFileReference."
 	
-	^	'/Users/poojarani/Downloads/Pharo-Projects/Pharo-all-classes/all-class-comments-pharo4.csv' asFileReference.
+	^	'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/Pharo-all-classes-comments-CSV/all-class-comments-pharo4.csv' asFileReference.
 ]
 
 { #category : #'as yet unclassified' }
@@ -113,7 +113,7 @@ MccCommentComparatorExamples >> pharo5FileReference [
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-Comments-pharo4-package-morph.csv' asFileReference."
 		
-	^	'/Users/poojarani/Downloads/Pharo-Projects/Pharo-all-classes/all-class-comments-pharo5.csv' asFileReference.
+	^	'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/Pharo-all-classes-comments-CSV/all-class-comments-pharo5.csv' asFileReference.
 ]
 
 { #category : #'as yet unclassified' }
@@ -122,7 +122,7 @@ MccCommentComparatorExamples >> pharo6FileReference [
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-Comments-pharo4-package-morph.csv' asFileReference."
 	
-	^	'/Users/poojarani/Downloads/Pharo-Projects/Pharo-all-classes/all-class-comments-pharo6.csv' asFileReference.
+	^	'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/Pharo-all-classes-comments-CSV/all-class-comments-pharo6.csv' asFileReference.
 ]
 
 { #category : #'as yet unclassified' }
@@ -131,7 +131,7 @@ MccCommentComparatorExamples >> pharo7FileReference [
 	
 	"^ 	'/Users/poojarani/Downloads/Pharo-Projects/pharo-versions-comment-analysis-data/classes-Comments-pharo4-package-morph.csv' asFileReference."
 	
-	^	'/Users/poojarani/Downloads/Pharo-Projects/Pharo-all-classes/all-class-comments-pharo7.csv' asFileReference.
+	^	'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/Pharo-all-classes-comments-CSV/all-class-comments-pharo7.csv' asFileReference.
 ]
 
 { #category : #'as yet unclassified' }
