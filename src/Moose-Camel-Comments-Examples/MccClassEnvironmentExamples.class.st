@@ -1,3 +1,6 @@
+"
+Example to represent class environment
+"
 Class {
 	#name : #MccClassEnvironmentExamples,
 	#superclass : #Object,

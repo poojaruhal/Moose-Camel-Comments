@@ -1,3 +1,6 @@
+"
+I represent current image environment
+"
 Class {
 	#name : #MccSystemEnvironmentExamples,
 	#superclass : #Object,
