@@ -76,6 +76,12 @@ MccCommentStatistics >> collectPronouns [
 			[ :eachEntity | eachEntity className -> eachEntity pronouns ]
 ]
 
+{ #category : #'as yet unclassified' }
+MccCommentStatistics >> commentLengthFrequency [
+	
+	^ ((( self environment classes reject: [ :e | e comment isEmpty]) collect: [ :f |  f comment sentences size]) sorted) withIndexCollect: [ :f :i | i -> f ].
+]
+
 { #category : #private }
 MccCommentStatistics >> compute [ 
 
@@ -269,6 +275,28 @@ MccCommentStatistics >> metrics [
 	
 	
 	
+]
+
+{ #category : #'as yet unclassified' }
+MccCommentStatistics >> showCommentDistribution [
+	
+	|points b ds| 
+	
+	points := self commentLengthFrequency.
+	
+	b := RTGrapher new.
+	b extent: 300 @ 300.
+	ds := RTData new.
+	ds label: 'Comment distribution w.r.t #sentence'.
+	ds dotShape color:  (Color blue alpha: 0.2).
+	ds points: points .
+	ds x: #key.
+	ds y: #value.
+	b add: ds.
+	b axisX noDecimal.
+	b axisY noDecimal.
+	^ b.
+
 ]
 
 { #category : #metrics }

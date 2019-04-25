@@ -19,7 +19,15 @@ MccExternalEnvironment class >> fromCSV: aFileReference [
 
 	| aCollectionOfClassComment |
 	"first column- className, secondColumn- class comment"
-	
+
+	"checks if the file has header or not. If it has, skip the header using 
+	(NeoCSVReader on: aFileReference readStream)
+		skipHeader;
+		addField;
+		addField;
+		upToEnd.
+	"	
+		
 	aCollectionOfClassComment := (NeoCSVReader on: aFileReference readStream)
 		addField;
 		addField;
