@@ -124,6 +124,28 @@ MccComment >> asString [
 	^ self subclassResponsibility
 ]
 
+{ #category : #'as yet unclassified' }
+MccComment >> classification [
+	^ self sentences size = 0
+		ifTrue: [ #empty ]
+		ifFalse: [ self sentences size = 1
+				ifTrue: [ #oneSentence ]
+				ifFalse: [ (self artefact trimBoth lines anySatisfy: #isEmpty)
+						ifTrue: [ #multiParagraph ]
+						ifFalse: [ #oneParagraph ] ] ]
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> classificationOnBasisOfParagraph [
+	^ self sentences size = 0
+		ifTrue: [ #empty ]
+		ifFalse: [ self sentences size = 1
+				ifTrue: [ #oneSentence ]
+				ifFalse: [ (self artefact trimBoth lines anySatisfy: #isEmpty)
+						ifTrue: [ #multiParagraph ]
+						ifFalse: [ #oneParagraph ] ] ]
+]
+
 { #category : #accessing }
 MccComment >> code [
 	"returns array of code tokens from comment"
