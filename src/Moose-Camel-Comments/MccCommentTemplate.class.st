@@ -32,14 +32,14 @@ Class {
 MccCommentTemplate >> colloborators [
 	"a verb that expresses the class’s responsibility"
 	
-	^ #('I colloborate' 'Collaborators')
+	^ #('colloborate' 'Collaborators' 'I interact')
 ]
 
 { #category : #'word-lists' }
 MccCommentTemplate >> exampleWords [
 	"a verb that expresses the class’s desire/goal"
 	
-	^ #('For example' 'example' '! Example' 'Usage' 'A typical usage' 'examples').
+	^ #('For example' 'example' '! Example' 'examples').
 ]
 
 { #category : #'word-lists' }
@@ -53,7 +53,7 @@ MccCommentTemplate >> instanceVariableWords [
 MccCommentTemplate >> intentWords [
 	"a verb that expresses the class’s desire/goal"
 	
-	^ #('I represent' 'I represent a' 'I am').
+	^ #('I represent' 'I represent a' 'I').
 ]
 
 { #category : #'word-lists' }
@@ -74,5 +74,5 @@ MccCommentTemplate >> publicAPIs [
 MccCommentTemplate >> responsibilityVerbs [
 	"a verb that expresses the class’s responsibility"
 	
-	^ #('I am responsibile' 'I do' 'I know')
+	^ #('my responsibilites' 'my main responsibilites' 'I do' 'I know')
 ]
