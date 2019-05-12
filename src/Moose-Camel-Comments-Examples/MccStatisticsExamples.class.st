@@ -64,6 +64,19 @@ MccStatisticsExamples >> followsTemplateStyle [
 ]
 
 { #category : #navigation }
+MccStatisticsExamples >> followsTemplateStyleInPharo7 [
+	<gtExample>
+	"return collection of MccClasses that follows template style in the class comments"
+	<return: #Collection of:#MccClasses>
+	^ (((MccClassWithComment new classesWithComment)collect:  #comment)
+		select:[ :aMccCommentClass | 
+			aMccCommentClass matchTemplateStyle ]
+	  thenCollect: [:aMccCommentClass |
+		 	aMccCommentClass -> aMccCommentClass matchedTemplateSections.
+		])
+]
+
+{ #category : #navigation }
 MccStatisticsExamples >> linesOfCodeInClass [
 	<gtExample>
 	<return: #Number>
@@ -163,7 +176,7 @@ MccStatisticsExamples >> statOfTemplateSectionMatches [
 	"return statstics of template sections matches with the comment"
 	<return: #Collection of:#Number>
 	|commentsFollowTemplate stat|
-	commentsFollowTemplate :=   self followsTemplateStyle.
+	commentsFollowTemplate :=   self followsTemplateStyleInPharo7.
 	stat := OrderedCollection new.
 	
 	stat add: ('Intent' ->(commentsFollowTemplate select:[:each | 

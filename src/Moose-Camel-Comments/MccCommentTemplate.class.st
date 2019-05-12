@@ -39,7 +39,7 @@ MccCommentTemplate >> colloborators [
 MccCommentTemplate >> exampleWords [
 	"a verb that expresses the class’s desire/goal"
 	
-	^ #('For example' 'example' '! Example' 'examples').
+	^ #('example' 'examples').
 ]
 
 { #category : #'word-lists' }
@@ -53,14 +53,14 @@ MccCommentTemplate >> instanceVariableWords [
 MccCommentTemplate >> intentWords [
 	"a verb that expresses the class’s desire/goal"
 	
-	^ #('I represent' 'I represent a' 'I').
+	^ #('I represent' 'I am').
 ]
 
 { #category : #'word-lists' }
 MccCommentTemplate >> internalRepresentationAndKeyImplementationWords [
 	"a verb that expresses the class’s desire/goal"
 	
-	^ #('Internal Representation' 'Key Implementation').
+	^ #('Internal Representation' 'Internal Representations' 'Key Implementation' 'Key Implementations' 'Implementation Point' 'Implementation Points').
 ]
 
 { #category : #'word-lists' }
@@ -74,5 +74,5 @@ MccCommentTemplate >> publicAPIs [
 MccCommentTemplate >> responsibilityVerbs [
 	"a verb that expresses the class’s responsibility"
 	
-	^ #('my responsibilites' 'my main responsibilites' 'I do' 'I know')
+	^ #('my responsibilites' 'my responsibility' 'my main responsibilites' 'I do' 'I know')
 ]
