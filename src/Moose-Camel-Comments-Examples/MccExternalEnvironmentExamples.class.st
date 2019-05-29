@@ -1,6 +1,7 @@
 "
 A External environment is created from the CSv file.
 A CSV file contains each class with its comment in a row.
+Make sure you have updated CSV file path.
 
 "
 Class {
