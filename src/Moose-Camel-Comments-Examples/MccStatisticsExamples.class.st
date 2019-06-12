@@ -77,6 +77,19 @@ MccStatisticsExamples >> followsTemplateStyleInPharo7 [
 ]
 
 { #category : #navigation }
+MccStatisticsExamples >> followsTemplateStyleInPharo7ManualStudy [
+	<gtExample>
+	"return collection of MccClasses that follows template style in the class comments"
+	<return: #Collection of:#MccClasses>
+	^ (((MccClassWithComment new selectedClassesComment)collect:  #comment)
+		select:[ :aMccCommentClass | 
+			aMccCommentClass matchTemplateStyle ]
+	  thenCollect: [:aMccCommentClass |
+		 	aMccCommentClass -> aMccCommentClass matchedTemplateSections.
+		])
+]
+
+{ #category : #navigation }
 MccStatisticsExamples >> linesOfCodeInClass [
 	<gtExample>
 	<return: #Number>
@@ -177,6 +190,33 @@ MccStatisticsExamples >> statOfTemplateSectionMatches [
 	<return: #Collection of:#Number>
 	|commentsFollowTemplate stat|
 	commentsFollowTemplate :=   self followsTemplateStyleInPharo7.
+	stat := OrderedCollection new.
+	
+	stat add: ('Intent' ->(commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'Intent']])).
+	stat add: ('Responsibility' ->(commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'Responsibility']])).	
+	stat add: ('Collaborators' ->(commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'Collaborators']])).	
+	stat add: ('PublicAPI'->(commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'PublicAPI']])).
+	stat add: ('Example' -> (commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'Example']])).
+	stat add: ('InternalRepresenation' -> (commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'InternalRepresenation']])).
+	stat add: ('InstanceVariable'-> (commentsFollowTemplate select:[:each | 
+ 			each value keys anySatisfy: [:a | a = 'InstanceVariable']])).
+		
+	^ stat
+]
+
+{ #category : #navigation }
+MccStatisticsExamples >> statOfTemplateSectionMatchesInManualStudy [
+	<gtExample>
+	"return statstics of template sections matches with the comment"
+	<return: #Collection of:#Number>
+	|commentsFollowTemplate stat|
+	commentsFollowTemplate :=   self followsTemplateStyleInPharo7ManualStudy.
 	stat := OrderedCollection new.
 	
 	stat add: ('Intent' ->(commentsFollowTemplate select:[:each | 
