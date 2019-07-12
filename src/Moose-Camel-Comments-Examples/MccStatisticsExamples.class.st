@@ -51,6 +51,63 @@ MccStatisticsExamples >> commentPronouns [
 ]
 
 { #category : #navigation }
+MccStatisticsExamples >> computeCodeClassChanges [
+	<gtExample>
+	| reader v1 v2 classChanges |
+	
+	reader := NeoCSVReader
+		on:
+			'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/classDefinitionHash/Pharo2-ClassDefinitionsHash.csv'
+				asFileReference readStream.
+	v1 := reader upToEnd.
+	reader close.
+	
+	reader := NeoCSVReader
+		on:
+			'/Users/poojarani/Downloads/Phd/Projects/Comment-Analysis/classDefinitionHash/Pharo3-ClassDefinitionsHash.csv'
+				asFileReference readStream.
+	v2 := reader upToEnd.
+	reader close.
+	
+	v1 := ((v1 groupedBy: [ :e | e first ]) associations
+		collect: [ :f | 
+			f key -> (f value
+						flatCollect: [ :m | 
+							{m second.
+							m third} ]) ]) sorted: [ :a :b | a key < b key ].
+	
+	v2 := ((v2 groupedBy: [ :e | e first ]) associations
+		collect: [ :f | 
+			f key -> (f value
+						flatCollect: [ :m | 
+							{m second.
+							m third} ]) ]) sorted: [ :a :b | a key < b key ].
+	
+	classChanges := (v2
+		select: [ :e | (v1 collect: #key) includes: e key ]
+		thenCollect: [ :e |
+			|def1 def2| 
+			def1 := (v1 detect: [ :c | e key = c key ]) value.
+			def2 := (v2 detect: [ :c | e key = c key ]) value.
+			def1 = def2
+				ifTrue: [ e key -> #ClassDefintiionSame ]
+				ifFalse: [ ((def1 intersection: def2) size = def1 size
+						and: [ (def1 intersection: def2) size = def2 size ])
+						ifTrue: [ e key -> #ClassDefintiionSame ]
+						ifFalse: [ (def1 first ~= def2 first or: [ def1 second ~= def2 second ])
+								ifTrue: [ | classDefChanged |
+									classDefChanged := OrderedCollection new.
+									def1 first ~= def2 first
+										ifTrue: [ classDefChanged add: #InstanceSideChanged ].
+									def1 second ~= def2 second
+										ifTrue: [ classDefChanged add: #ClassSideChanged ].
+									e key -> (#ClassDefintiionChanged -> classDefChanged) ] ] ] ])
+		groupedBy: [ :e | e value ].
+		
+	^ classChanges.
+]
+
+{ #category : #navigation }
 MccStatisticsExamples >> followsTemplateStyle [
 	<gtExample>
 	"return collection of MccClasses that follows template style in the class comments"
@@ -79,13 +136,13 @@ MccStatisticsExamples >> followsTemplateStyleInPharo7 [
 { #category : #navigation }
 MccStatisticsExamples >> followsTemplateStyleInPharo7ManualStudy [
 	<gtExample>
-	"return collection of MccClasses that follows template style in the class comments"
+	"return collection of MccTextClasses that follows template style in the class comments"
 	<return: #Collection of:#MccClasses>
-	^ (((MccClassWithComment new selectedClassesComment)collect:  #comment)
+	^ 	((MccClassWithComment new selectedClassesComment)
 		select:[ :aMccCommentClass | 
-			aMccCommentClass matchTemplateStyle ]
+			aMccCommentClass comment matchTemplateStyle ]
 	  thenCollect: [:aMccCommentClass |
-		 	aMccCommentClass -> aMccCommentClass matchedTemplateSections.
+		 	aMccCommentClass -> aMccCommentClass comment matchedTemplateSections.
 		])
 ]
 
