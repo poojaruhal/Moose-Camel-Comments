@@ -5,9 +5,11 @@ Class {
 }
 
 { #category : #'sentence - examples' }
-MccSentenceExamples >> sentenseWithDirectPreciseReferenceOfPoint [
+MccSentenceExamples >> sentence [
 	<gtExample>
 	| aSentence |
+	
+	"renamed from method sentenseWithDirectPreciseReferenceOfPoint"
 
 	aSentence := MccSentence string: 'Point represents a coordinate in space'.
 	self assert: aSentence asString equals: 'Point represents a coordinate in space'.

@@ -125,7 +125,7 @@ MccSentence >> hasNegative [
 	
 	| negativeSentiments |
 	
-	negativeSentiments := MccCommentLinguisticAnlyzer new negativeSentiments.
+	negativeSentiments := MccCommentLinguisticFeatures new negativeSentiments.
 
 	^ negativeSentiments anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
 ]
@@ -155,7 +155,7 @@ MccSentence >> hasWarning [
 	
 	| warnings |
 	
-	warnings := MccCommentLinguisticAnlyzer new warningWords.
+	warnings := MccCommentLinguisticFeatures new warningWords.
 
 	^ warnings anySatisfy: [ :each | ((self sentence) asLowercase) includesSubstring: (each asLowercase) ]
 ]
