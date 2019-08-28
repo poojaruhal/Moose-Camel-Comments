@@ -20,3 +20,11 @@ MccSystemEnvironment >> allClasses [
 
 	^ Smalltalk image allClasses
 ]
+
+{ #category : #'as yet unclassified' }
+MccSystemEnvironment >> allComments [
+	"Return all comments in this environment"
+	<return: #Collection of: #MccComment>
+
+	^ self allClasses select: [ :c | c hasComment ] thenCollect: [ :e | e comment ]
+]

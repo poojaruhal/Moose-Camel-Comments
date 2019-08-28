@@ -125,17 +125,6 @@ MccComment >> asString [
 ]
 
 { #category : #'as yet unclassified' }
-MccComment >> classification [
-	^ self sentences size = 0
-		ifTrue: [ #empty ]
-		ifFalse: [ self sentences size = 1
-				ifTrue: [ #oneSentence ]
-				ifFalse: [ (self artefact trimBoth lines anySatisfy: #isEmpty)
-						ifTrue: [ #multiParagraph ]
-						ifFalse: [ #oneParagraph ] ] ]
-]
-
-{ #category : #'as yet unclassified' }
 MccComment >> classificationOnBasisOfParagraph [
 	^ self sentences size = 0
 		ifTrue: [ #empty ]
@@ -157,6 +146,11 @@ MccComment >> code [
 	code := theTokens select: [ :eachToken | 
 		eachToken isCode ].
 	^ code
+]
+
+{ #category : #testing }
+MccComment >> complexity [
+	
 ]
 
 { #category : #private }
@@ -370,6 +364,30 @@ MccComment >> matchedTemplateSections [
 
 ]
 
+{ #category : #'as yet unclassified' }
+MccComment >> meanPronouns [
+	<return: #Number>
+	^ self pronouns size / self words size
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> meanSentenceLength [
+	<return: #Number>
+	^ self words size/self sentences size.
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> meanStopwords [
+	<return: #Number>
+	^ self stopwords size / self words size
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> meanWordLength [
+	<return: #Number>
+	^ self words size/self sentences size.
+]
+
 { #category : #metrics }
 MccComment >> metrics [ 
 
@@ -379,11 +397,12 @@ MccComment >> metrics [
 	
 	self statistics addAll:
 	{ 
-	'Words' -> self words size.
-	'Stopwords' -> self stopwords size.
-	'Pronouns' -> self pronouns size.
-	'Unique words'-> self lemmas size.
-	'Sentences' -> (self sentences select:[:aSentence | aSentence isNotEmpty])size.
+	'Average Sentence length' -> self meanSentenceLength .
+	'Average Word length' -> self meanWordLength.
+	'Average Stopwords' -> self meanStopwords .
+	'Average Pronouns' -> self meanPronouns.
+	'Vocabulary Richness'-> self vocabularyRichness.
+	'Readability' -> self readabilityStatus.	
 	 }asDictionary.
 	
  	^ self statistics. 
@@ -405,10 +424,25 @@ MccComment >> printOn: aStream [
 
 { #category : #accessing }
 MccComment >> pronouns [
-	"Split and return a collection of pronouns (with possible duplications) in this comment"
+	"Split and return a collection of pronpuns (with possible duplications) in this comment"
 	<return: #Collection of: #MccWord>
 
 	^ self words select: #isPronoun
+]
+
+{ #category : #accessing }
+MccComment >> readabilityStatus [
+	"Return a status "
+	<return: #Object>
+	|rc commentReadability readabilityScore|
+		" 0 = good; 1 = needs toning; 2 = flabby."
+	readabilityScore := {(0 -> 'good').(1 -> 'needsToning').(2 -> 'flabby')}asOrderedDictionary .
+	rc := CommentReadabilityChecker new. 
+	commentReadability := ((self sentences collect: [ :e |
+		|anArrayOfWords|
+		anArrayOfWords := e words collect: [ :w | w asString asSymbol ]. 
+	rc readabilityOf: anArrayOfWords])/self sentences size).
+	^ readabilityScore at: commentReadability.
 ]
 
 { #category : #references }
@@ -484,6 +518,20 @@ MccComment >> view [
 		noTick;
 		noLabel.
 	^ b
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> vocabulary [
+	<return: #Number>
+	^ self lemmas asSet size.
+]
+
+{ #category : #'as yet unclassified' }
+MccComment >> vocabularyRichness [
+	<return: #Number>
+	|M|
+	M := self lemmas asSet size.
+	^ (100*(M ln)/(M squared)).
 ]
 
 { #category : #'as yet unclassified' }
