@@ -263,7 +263,7 @@ MccComment >> gtInspectorSentencesIn: aComposite [
 
 { #category : #'gt-inspector-extension' }
 MccComment >> gtInspectorStatisticsIn: aComposite [
-	<gtInspectorPresentationOrder: 1>
+	"<gtInspectorPresentationOrder: 1>"
 
 	^ aComposite table
 			title: 'Statistics' translated;
@@ -441,7 +441,7 @@ MccComment >> readabilityStatus [
 	commentReadability := ((self sentences collect: [ :e |
 		|anArrayOfWords|
 		anArrayOfWords := e words collect: [ :w | w asString asSymbol ]. 
-	rc readabilityOf: anArrayOfWords])/self sentences size).
+	rc readabilityOf: anArrayOfWords])sum: [:e |  e])/self sentences size.
 	^ readabilityScore at: commentReadability.
 ]
 
