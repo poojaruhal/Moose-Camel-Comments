@@ -45,22 +45,56 @@ MccSentence >> asString [
 	^ string
 ]
 
+{ #category : #accessing }
+MccSentence >> ast [ 
+	|aResponse theAST|
+	
+	aResponse := McCoreResponse queryService: (self sentence asString).
+	 theAST := aResponse ast.
+	^ theAST
+]
+
+{ #category : #testing }
+MccSentence >> complexity [
+	| complexity negativitiy warnings intent|
+	complexity := OrderedCollection new.
+	negativitiy := self hasNegative
+		ifTrue: [ ' The sentence can be expressed more positively. ' ].
+	warnings := self hasWarning
+		ifTrue: [ 'the sentence shows warnings.'].
+	 intent := self hasIntentWords
+		ifTrue: [ 'The sentence shows representation of objects.' ].
+	negativitiy ifNotNil: [ complexity add: negativitiy ].
+	warnings ifNotNil: [ complexity add: warnings ].
+	intent ifNotNil: [ complexity add: intent ].
+	^ complexity.
+		
+]
+
 { #category : #'gt-inspector-extension' }
-MccSentence >> gtInspectorSentenceIn: aComposite [
+MccSentence >> gtInspectorSentenceComplexityIn: aComposite [
 	<gtInspectorPresentationOrder: 1>
 
-	^ aComposite text
+	^ aComposite list
+		title: 'How healthy your sentence is?' translated;
+		display: [  self complexity ]
+]
+
+{ #category : #'gt-inspector-extension' }
+MccSentence >> gtInspectorSentenceIn: aComposite [
+	<gtInspectorPresentationOrder: 2>
+
+	^ aComposite tree
 		title: 'Sentence' translated;
-		display: [  self asString ]
+		display: [  self ast ]
 ]
 
 { #category : #'gt-inspector-extension' }
 MccSentence >> gtInspectorSentenceNounsIn: aComposite [
-	<gtInspectorPresentationOrder: 3>
-
+"	<gtInspectorPresentationOrder: 3>"
 	^ aComposite list
-			title: 'List of Noun Words';
-			display: [MccSentenceProcessor fromSentence:( self sentence)splitIntoNouns].
+		title: 'Nouns';
+		display: [  self nouns ]
 ]
 
 { #category : #'gt-inspector-extension' }
@@ -203,7 +237,10 @@ MccSentence >> isNotEmpty [
 
 { #category : #accessing }
 MccSentence >> nouns [
-	^ nouns
+	|sentenceProcessor|
+	sentenceProcessor := MccSentenceProcessor fromSentence: self.
+	^ sentenceProcessor splitIntoNouns.
+	
 ]
 
 { #category : #accessing }

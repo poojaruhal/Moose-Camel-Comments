@@ -43,12 +43,12 @@ MccTextComment >> asString [
 
 { #category : #'as yet unclassified' }
 MccTextComment >> gtInspectorLinguisticOverviewIn: aComposite [
-	<gtInspectorPresentationOrder: 1>
+	"<gtInspectorPresentationOrder: 1>"
 	^ aComposite roassal2
 		title: 'Linguistic Overview' translated;
 		initializeView: [ RTGrapher new ];
 		painting: [ :b | 
-			| ds dataset|
+			| ds dataset |
 			b extent: 500 @ 200.
 			ds := RTData new.
 			ds interaction highlight.
@@ -57,14 +57,13 @@ MccTextComment >> gtInspectorLinguisticOverviewIn: aComposite [
 			ds y: [ :e | e value ].
 			ds barChartWithBarTitle: #key.
 			b add: ds.
-			
-"			dataset := RTData new.
+
+			"			dataset := RTData new.
 			dataset dotShape color: (Color red alpha: 0.3);
 			labeledAs: [ :e | e value asString].
 			dataset points: self metrics associations;
 			y: [ :e | e value].
 			b add: dataset."
-			
 			b axisY.
 			b axisX
 				noTick;

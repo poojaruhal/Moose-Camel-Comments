@@ -148,11 +148,6 @@ MccComment >> code [
 	^ code
 ]
 
-{ #category : #testing }
-MccComment >> complexity [
-	
-]
-
 { #category : #private }
 MccComment >> computeSentences [
 	"Split and return a collection of sentences of this comment"
@@ -263,16 +258,13 @@ MccComment >> gtInspectorSentencesIn: aComposite [
 
 { #category : #'gt-inspector-extension' }
 MccComment >> gtInspectorStatisticsIn: aComposite [
-	"<gtInspectorPresentationOrder: 1>"
-
+	<gtInspectorPresentationOrder: 1>
 	^ aComposite table
-			title: 'Statistics' translated;
-			display: [ self  metrics associations];
-			beMultiple;
-			column: 'Metric'
-			evaluated: [ :each | GTObjectPrinter asTruncatedTextFrom: each key  ];
-			column: 'Value'
-			evaluated: [ :each | GTObjectPrinter asTruncatedTextFrom: each value ].
+		title: 'Linguistic Overview' translated;
+		display: [ self metrics associations ];
+		beMultiple;
+		column: 'Metric' evaluated: [ :each | GTObjectPrinter asTruncatedTextFrom: each key ];
+		column: 'Value' evaluated: [ :each | GTObjectPrinter asTruncatedTextFrom: each value ]
 ]
 
 { #category : #'gt-inspector-extension' }
@@ -367,25 +359,39 @@ MccComment >> matchedTemplateSections [
 { #category : #'as yet unclassified' }
 MccComment >> meanPronouns [
 	<return: #Number>
-	^ self pronouns size / self words size
-]
-
-{ #category : #'as yet unclassified' }
-MccComment >> meanSentenceLength [
-	<return: #Number>
-	^ self words size/self sentences size.
+	|upperBound averagePronouns isPersonal pron|
+	upperBound := 5.
+	averagePronouns :=  ((self pronouns size * 100) / self words size) asFloat truncated.
+	pron := self pronouns collect: [ :e | e asString asSymbol ].
+	isPersonal := ((pron includes: #I) or: [ pron includes: #i ]).
+	((averagePronouns > upperBound) and: [isPersonal])
+	ifTrue: [ ^ 'Personal writing style' ]
+	ifFalse: [ ^ 'Formal writing style' ]
 ]
 
 { #category : #'as yet unclassified' }
 MccComment >> meanStopwords [
 	<return: #Number>
-	^ self stopwords size / self words size
+	|upperBound averageStopwords|
+	averageStopwords :=  ((self stopwords size * 100) / self words size)asFloat truncated.
+	upperBound := 30.
+	
+	averageStopwords > upperBound ifTrue: [ ^ 'Too many functional words in your sentences' ]
+	ifFalse: [ ^ 'You are fine' ]
 ]
 
 { #category : #'as yet unclassified' }
 MccComment >> meanWordLength [
 	<return: #Number>
-	^ self words size/self sentences size.
+	" words per sentence-25"
+	|averageWords upperBound lowerBound|
+	upperBound := 25.
+	lowerBound := 7.
+	averageWords :=  self words size/self sentences size.
+	
+	averageWords > upperBound ifTrue: [ ^ 'Too many words in your sentences' ]
+	ifFalse: [averageWords < lowerBound ifTrue: [ ^ 'Too less words in your sentences, make sentence bigger ' ]
+		ifFalse: [ ^ 'You have a nice combination of short and bigger sentences' ]  ]
 ]
 
 { #category : #metrics }
@@ -397,10 +403,9 @@ MccComment >> metrics [
 	
 	self statistics addAll:
 	{ 
-	'Average Sentence length' -> self meanSentenceLength .
-	'Average Word length' -> self meanWordLength.
-	'Average Stopwords' -> self meanStopwords .
-	'Average Pronouns' -> self meanPronouns.
+	'Lengthy sentences' -> self meanWordLength.
+	'Functioanl words ' -> self meanStopwords .
+	'Writing style' -> self meanPronouns.
 	'Vocabulary Richness'-> self vocabularyRichness.
 	'Readability' -> self readabilityStatus.	
 	 }asDictionary.
@@ -434,15 +439,18 @@ MccComment >> pronouns [
 MccComment >> readabilityStatus [
 	"Return a status "
 	<return: #Object>
-	|rc commentReadability readabilityScore|
+	|rc commentReadability readabilityScore cr|
 		" 0 = good; 1 = needs toning; 2 = flabby."
-	readabilityScore := {(0 -> 'good').(1 -> 'needsToning').(2 -> 'flabby')}asOrderedDictionary .
+	readabilityScore := {(0 -> 'Good').(1 -> 'Needs Toning').(2 -> 'Flabby')}asOrderedDictionary .
 	rc := CommentReadabilityChecker new. 
 	commentReadability := ((self sentences collect: [ :e |
 		|anArrayOfWords|
 		anArrayOfWords := e words collect: [ :w | w asString asSymbol ]. 
 	rc readabilityOf: anArrayOfWords])sum: [:e |  e])/self sentences size.
-	^ readabilityScore at: commentReadability.
+	cr := 
+	(commentReadability < 1 and: [ commentReadability > 0 ])
+	ifTrue: [ 1 ] ifFalse: [commentReadability > 2 ifTrue: [ 2 ] ifFalse: [ 0 ] ].
+	^ readabilityScore at: cr.
 ]
 
 { #category : #references }
@@ -529,9 +537,13 @@ MccComment >> vocabulary [
 { #category : #'as yet unclassified' }
 MccComment >> vocabularyRichness [
 	<return: #Number>
-	|M|
+	| M S upperBound|
+	upperBound := 60.
 	M := self lemmas asSet size.
-	^ (100*(M ln)/(M squared)).
+	"S := 100 * M ln / M squared."
+	S := ((100*M)/(self words size)) asFloat truncated.
+	S > 60 ifTrue: [ ^ 'You have rich vocabulary' ]
+	ifFalse: [ ^ 'Simple vocabulary' ].
 ]
 
 { #category : #'as yet unclassified' }

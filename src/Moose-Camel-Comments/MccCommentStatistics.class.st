@@ -164,39 +164,12 @@ MccCommentStatistics >> gtInspectorCommentMetricsIn: aComposite [
 { #category : #accessing }
 MccCommentStatistics >> gtInspectorCommentOverviewIn: aComposite [
 	"<gtInspectorPresentationOrder: 3>"
-	
-	^ aComposite roassal2 
+	^ aComposite roassal2
 		title: ' Overview' translated;
-		when:[self allStatistics isNotEmpty];
+		when: [ self allStatistics isNotEmpty ];
 		initializeView: [ RTGrapher new ];
 		painting: [ :view | 
-			| ds avgDataSet|
-			view extent: 500 @ 200.
-			
-			ds := RTData new.
-			ds interaction highlight.
-			ds points: self metrics associations.
-			ds barShape width: 10.
-			ds y: [ :e | e value].
-			ds barChartWithBarTitle: #key.
-			view add: ds.
-	
-			avgDataSet := RTData new.
-			avgDataSet dotShape color: (Color red alpha: 0.3);
-			labeledAs: [ :e | e key asString].
-			avgDataSet
-			points: self avgMetrics associations;
-			y: [ :e | e value].
-			view add: avgDataSet.
-			view axisY.
-			view axisX
-				noTick;
-				noLabel.
-			view build.
-			]
-	
-	
-	"| b ds dataSet|.
+			"| b ds dataSet|.
 
 	b := RTGrapher new.
 	b extent: 500 @ 200.
@@ -221,6 +194,28 @@ MccCommentStatistics >> gtInspectorCommentOverviewIn: aComposite [
 		noTick;
 		noLabel.
  	^ b"
+			| ds avgDataSet |
+			view extent: 500 @ 200.
+			ds := RTData new.
+			ds interaction highlight.
+			ds points: self metrics associations.
+			ds barShape width: 10.
+			ds y: [ :e | e value ].
+			ds barChartWithBarTitle: #key.
+			view add: ds.
+			avgDataSet := RTData new.
+			avgDataSet dotShape
+				color: (Color red alpha: 0.3);
+				labeledAs: [ :e | e key asString ].
+			avgDataSet
+				points: self avgMetrics associations;
+				y: [ :e | e value ].
+			view add: avgDataSet.
+			view axisY.
+			view axisX
+				noTick;
+				noLabel.
+			view build ]
 ]
 
 { #category : #'gt-inspector-extension' }
