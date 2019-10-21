@@ -106,3 +106,13 @@ allClasses :=  self allVersionClasses.
 							(commentsContent at: f key)} ]) asOrderedDictionary.
 			e key -> gf ]).
 ]
+
+{ #category : #'as yet unclassified' }
+McVersionBrowser >> commentChangesFrom: aModel to: anotherModel [
+	^ (((self allPharoModels at: anotherModel)
+		moCaModelClassesCommentChangedSince: (self allPharoModels at: aModel))
+		associations
+		collect: [ :e | 
+			e key -> (e value associations
+							flatCollect: [ :f | f value collect: [ :g | g name ] ]) ]) flatCollect: [ :e | e value ].
+]
