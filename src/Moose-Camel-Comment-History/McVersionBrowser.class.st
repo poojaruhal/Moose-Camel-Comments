@@ -1,3 +1,7 @@
+"
+This class knows all the Pharo models extracted from each Pharo version since Pharo 1.
+It extracts all classes from all Pharo version, all changes happened in the versions in terms of comments.
+"
 Class {
 	#name : #McVersionBrowser,
 	#superclass : #Object,
@@ -14,6 +18,17 @@ McVersionBrowser >> allClassNames [
 McVersionBrowser >> allPharoModels [
 "get all moose models of Pharo"
  ^ MooseModel root asOrderedCollection.
+]
+
+{ #category : #'as yet unclassified' }
+McVersionBrowser >> allTypeOfCommentChangesFrom: aModel to: anotherModel [
+	^ (((self allPharoModels at: anotherModel)
+		moCaModelClassesCommentChangedSince: (self allPharoModels at: aModel))
+		associations
+		collect: [ :e | 
+			e key -> (e value associations
+							flatCollect: [ :f | f value collect: [ :g | g name ] ]) ])
+						" flatCollect: [ :e | e value ]."
 ]
 
 { #category : #accessing }
@@ -108,11 +123,46 @@ allClasses :=  self allVersionClasses.
 ]
 
 { #category : #'as yet unclassified' }
-McVersionBrowser >> commentChangesFrom: aModel to: anotherModel [
-	^ (((self allPharoModels at: anotherModel)
-		moCaModelClassesCommentChangedSince: (self allPharoModels at: aModel))
+McVersionBrowser >> commentsChangesWithContentFrom: aModel to: anotherModel [
+	| commentChanges |
+	commentChanges := OrderedCollection new.
+	 ((self allPharoModels at: anotherModel)
+		moCaModelClassesCommentContentChangedSince: (self allPharoModels at: aModel))
 		associations
-		collect: [ :e | 
-			e key -> (e value associations
-							flatCollect: [ :f | f value collect: [ :g | g name ] ]) ]) flatCollect: [ :e | e value ].
+		do: [ :e | 
+			| commentsAdded commentsRemoved commentsUpdated |
+			commentsAdded := nil.
+			commentsRemoved := nil.
+			commentsUpdated := nil.
+			e key = #commentAdded
+				ifTrue: [ commentsAdded := e key
+						->
+							((e value collect: #value)
+								collect: [ :g | 
+									g first value name
+										->
+											{''.
+											g second value comments first content} ]).
+					commentChanges add: commentsAdded ].
+			e key = #commentRemoved
+				ifTrue: [ commentsRemoved := e key
+						->
+							((e value collect: #value)
+								collect: [ :g | 
+									g first value name
+										->
+											{g first value comments first content.
+											''} ]).
+					commentChanges add: commentsRemoved ].
+			e key = #commentChanged
+				ifTrue: [ commentsUpdated := e key
+						->
+							((e value collect: #value)
+								collect: [ :g | 
+									g first value name
+										->
+											{g first value comments first content.
+											g second value comments first content} ]).
+					commentChanges add: commentsUpdated ]].
+			^ commentChanges
 ]

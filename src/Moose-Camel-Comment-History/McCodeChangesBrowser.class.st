@@ -1,3 +1,8 @@
+"
+This class detects the changes of one class from other class. There are two types of changes in our defintion, changes in the class definition and another is changes in the methods. 
+The class defintion includes class side and instance side definition whereas method changes include the methods added, removed and source code changed.
+
+"
 Class {
 	#name : #McCodeChangesBrowser,
 	#superclass : #Object,
@@ -9,6 +14,12 @@ Class {
 	],
 	#category : #'Moose-Camel-Comment-History'
 }
+
+{ #category : #'as yet unclassified' }
+McCodeChangesBrowser >> allCodeChanges [
+	^ (self detectClassDefinitionChanges
+		, self detectMethodDefinitionChanges groupedBy: [ :e | e key ])collect: [ :e | e value collect: [ :f |  f value ] ]
+]
 
 { #category : #computation }
 McCodeChangesBrowser >> detectChangesIn: cv1Methods and: cv2Methods [ 
@@ -88,7 +99,7 @@ McCodeChangesBrowser >> detectClassDefinitionChanges [
 				changes := OrderedCollection new.
 				def1 first ~= def2 first ifTrue: [ changes add: #instanceSideChanged ].
 				def1 second ~= def2 second ifTrue: [ changes add: #classSideChanged ].
-				e key ->  ('-' join: changes).
+				e key ->  (changes).
 					]])
 ]
 
@@ -103,7 +114,7 @@ McCodeChangesBrowser >> detectMethodDefinitionChanges [
 		c2Methods := (e value)sorted: [ :a :b | a first < b first ]. 
 	
 		((c1Methods = c2Methods) or: [((c1Methods difference: c2Methods) isEmpty and: [ (c2Methods difference: c1Methods)isEmpty])])
-		ifTrue: [ e key -> #methodsNotChangede ]
+		ifTrue: [ e key -> #methodsNotChanged ]
 		ifFalse:[ 
 			|changes changedMethods removedMethods sameMethods|
 			
@@ -114,7 +125,6 @@ McCodeChangesBrowser >> detectMethodDefinitionChanges [
 			changedMethods ifNotNil: [changes add: (changedMethods)].
 			removedMethods := self detectRemovedMethodsIn: c1Methods  and: c2Methods.
 			removedMethods ifNotNil: [changes add: (removedMethods)].
-			changes := changes flatten.
 		   e key -> (changes).
 	]
 ].
@@ -146,7 +156,7 @@ McCodeChangesBrowser >> detectSameMethodsIn: cv1Methods and: cv2Methods [
 
 	cv1_transformed := self transform: cv1Methods.
 	cv2_transformed := self transform: cv2Methods.
-	^ ((cv1_transformed intersection: cv2_transformed) collect: [:p | #methodDefNotChanged -> p])
+	^ ((cv1_transformed intersection: cv2_transformed) collect: [:p | #methodsNotChanged -> p])
 
 ]
 
