@@ -390,7 +390,7 @@ MccComment >> meanWordLength [
 	averageWords :=  self words size/self sentences size.
 	
 	averageWords > upperBound ifTrue: [ ^ 'Too many words in your sentences' ]
-	ifFalse: [averageWords < lowerBound ifTrue: [ ^ 'Too less words in your sentences, make sentence bigger ' ]
+	ifFalse: [averageWords < lowerBound ifTrue: [ ^ 'Too few words in your sentences, make the sentence bigger' ]
 		ifFalse: [ ^ 'You have a nice combination of short and bigger sentences' ]  ]
 ]
 
@@ -404,7 +404,7 @@ MccComment >> metrics [
 	self statistics addAll:
 	{ 
 	'Lengthy sentences' -> self meanWordLength.
-	'Functioanl words ' -> self meanStopwords .
+	'Functional words ' -> self meanStopwords .
 	'Writing style' -> self meanPronouns.
 	'Vocabulary Richness'-> self vocabularyRichness.
 	'Readability' -> self readabilityStatus.	

@@ -61,7 +61,7 @@ MccSentence >> complexity [
 	negativitiy := self hasNegative
 		ifTrue: [ ' The sentence can be expressed more positively. ' ].
 	warnings := self hasWarning
-		ifTrue: [ 'the sentence shows warnings.'].
+		ifTrue: [ 'The sentence shows warnings.'].
 	 intent := self hasIntentWords
 		ifTrue: [ 'The sentence shows representation of objects.' ].
 	negativitiy ifNotNil: [ complexity add: negativitiy ].
